@@ -1,11 +1,14 @@
-import { SafeAreaView, StyleSheet, StatusBar, Platform} from "react-native";
-import AppNavigator from "./navigation/AppNavigator";
+import { NavigationContainer } from "@react-navigation/native";
+import { SafeAreaView, StyleSheet, StatusBar, Platform } from "react-native";
+import Root from "./navigation/Root";
 
 export default function App() {
   return (
-      <SafeAreaView style={styles.container}>
-        <AppNavigator/>
-      </SafeAreaView>
+    <SafeAreaView style={styles.container}>
+      <NavigationContainer>
+        <Root />
+      </NavigationContainer>
+    </SafeAreaView>
   );
 }
 
