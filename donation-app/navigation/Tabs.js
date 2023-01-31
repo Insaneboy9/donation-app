@@ -18,11 +18,13 @@ const Tabs = () => {
         tabBarStyle: { backgroundColor: "white" },
         tabBarActiveTintColor: colors.iconFillColor,
         tabBarInactiveTintColor: colors.iconColor,
+        tabBarLabelStyle: { fontSize: 12, fontWeight: "600", marginTop: -5 },
+
         headerShown: false,
       }}
     >
       <Tab.Screen
-        name="home"
+        name="Home"
         component={HomeScreen}
         options={{
           tabBarIcon: ({ color, size }) => {
@@ -31,7 +33,7 @@ const Tabs = () => {
         }}
       />
       <Tab.Screen
-        name="hawker"
+        name="Hawker"
         component={HawkerScreen}
         options={{
           tabBarIcon: ({ color, size }) => {
@@ -40,7 +42,7 @@ const Tabs = () => {
         }}
       />
       <Tab.Screen
-        name="reward"
+        name="Rewards"
         component={RewardScreen}
         options={{
           tabBarIcon: ({ color, size }) => {

@@ -1,14 +1,19 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaView, StyleSheet, StatusBar, Platform } from "react-native";
+import { QueryClient, QueryClientProvider } from "react-query";
 import Root from "./navigation/Root";
+
+const queryClient = new QueryClient();
 
 export default function App() {
   return (
-    <SafeAreaView style={styles.container}>
-      <NavigationContainer>
-        <Root />
-      </NavigationContainer>
-    </SafeAreaView>
+    <QueryClientProvider client={queryClient}>
+      <SafeAreaView style={styles.container}>
+        <NavigationContainer>
+          <Root />
+        </NavigationContainer>
+      </SafeAreaView>
+    </QueryClientProvider>
   );
 }
 
