@@ -13,10 +13,14 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import colors from "../../colors";
 import { LinearGradient } from "expo-linear-gradient";
 import { useQuery } from "react-query";
+import { signOut } from "firebase/auth";
+
+
 import { callApi } from "../../api";
 import Loader from "../../components/Loader";
 import HList from "../../components/HList";
 import { useNavigation } from "@react-navigation/native";
+import { auth } from "../../firebase/firebaseConfig";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -32,7 +36,12 @@ const HomeScreen = () => {
   const navigation = useNavigation();
 
   const logout = () => {
-    navigation.navigate("LoginScreen");
+    signOut(auth).then(() => {
+      // Sign-out successful.
+    }).catch((error) => {
+      // An error happened.
+    });
+    // navigation.navigate("LoginScreen");
   };
 
   const isLoading = hawkerLoading || communityLoading;

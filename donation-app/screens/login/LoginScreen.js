@@ -1,30 +1,49 @@
 import {
-  SafeAreaView,
   Text,
   StyleSheet,
   View,
   Image,
   Dimensions,
   TextInput,
-  Button,
   TouchableOpacity,
 } from "react-native";
-import colors from "../../colors";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import React from "react";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+
+import colors from "../../colors";
+import { auth } from "../../firebase/firebaseConfig";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const LoginScreen = () => {
-  const navigation = useNavigation();
-  const login = () => {
-    navigation.navigate("Tabs", {
-      screen: "Home",
-    });
-  };
+  const [value, setValue] = React.useState({
+    email: "",
+    password: "",
+    error: "",
+  });
+
+  async function signIn() {
+    if (value.email === "" || value.password === "") {
+      setValue({
+        ...value,
+        error: "Email and password are mandatory.",
+      });
+      return;
+    }
+
+    try {
+      await signInWithEmailAndPassword(auth, value.email, value.password);
+    } catch (error) {
+      setValue({
+        ...value,
+        error: error.message,
+      });
+    }
+    console.log(value)
+  }
+
   return (
-    // <SafeAreaView>
     <View style={styles.container}>
       <Image
         style={styles.bg}
@@ -39,14 +58,23 @@ const LoginScreen = () => {
       />
       <View style={styles.card}>
         <Text style={styles.title}>Log in to PaiDrop</Text>
-        <TextInput style={styles.input} placeholder="Username" />
-        <TextInput style={styles.input} placeholder="Password" />
-        <TouchableOpacity style={styles.button} onPress={login}>
+        <TextInput
+          style={styles.input}
+          value={value.email}
+          onChangeText={(text) => setValue({ ...value, email: text })}
+          placeholder="Username"
+        />
+        <TextInput
+          style={styles.input}
+          onChangeText={(text) => setValue({ ...value, password: text })}
+          placeholder="Password"
+        />
+        <TouchableOpacity style={styles.button} onPress={signIn}>
+          {/* <TouchableOpacity style={styles.button} > */}
           <Text style={styles.buttonText}>Log in</Text>
         </TouchableOpacity>
       </View>
     </View>
-    // </SafeAreaView>
   );
 };
 
