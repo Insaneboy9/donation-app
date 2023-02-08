@@ -16,6 +16,7 @@ export default function App() {
     </QueryClientProvider>
   );
 }
+//t
 
 const styles = StyleSheet.create({
   container: {
