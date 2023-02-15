@@ -1,8 +1,24 @@
 {
+  "name": "donation-server",
+  "version": "1.0.0",
+  "description": "Server for donation app",
+  "main": "index.js",
+  "type":"module",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "firebase": "^9.16.0",
     "nodemon": "^2.0.20"
-  }
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "node",
+    "npm"
+  ],
+  "author": "insane team",
+  "license": "ISC"
 }
