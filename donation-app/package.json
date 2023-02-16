@@ -22,10 +22,12 @@
     "react-dom": "18.1.0",
     "react-native": "0.70.5",
     "react-native-web": "~0.18.9",
-    "react-query": "^3.39.3"
+    "react-query": "^3.39.3",
+    "styled-components": "^5.3.6"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.12.9",
+    "@types/styled-components": "^5.1.26"
   },
   "private": true
 }

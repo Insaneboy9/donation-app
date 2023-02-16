@@ -1,9 +1,9 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import colors from "../colors";
-import { Ionicons } from "@expo/vector-icons/";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons/";
 import HomeScreen from "../screens/home/HomeScreen";
-import HawkerScreen from "../screens/hawker/HawkerScreen";
+import LeaderboardScreen from "../screens/leaderboard/LeaderboardScreen";
 import RewardScreen from "../screens/rewards/RewardScreen";
 
 const Tab = createBottomTabNavigator();
@@ -33,11 +33,13 @@ const Tabs = () => {
         }}
       />
       <Tab.Screen
-        name="Hawker"
-        component={HawkerScreen}
+        name="Leaderboard"
+        component={LeaderboardScreen}
         options={{
           tabBarIcon: ({ color, size }) => {
-            return <Ionicons name="restaurant" size={size} color={color} />;
+            return (
+              <MaterialIcons name="leaderboard" size={size} color={color} />
+            );
           },
         }}
       />

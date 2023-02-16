@@ -10,4 +10,9 @@ export const callApi = {
     fetch(`${BASE_URL}/trending/tv/week?api_key=${API_KEY}`).then((response) =>
       response.json()
     ),
+  test: () =>
+    fetch(`localhost:8080/hawkers`).then((response) => {
+      console.log(response);
+      return response.json();
+    }),
 };
