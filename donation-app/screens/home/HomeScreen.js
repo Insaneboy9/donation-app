@@ -34,8 +34,7 @@ const HomeScreen = () => {
     "test",
     callApi.test
   );
-  console.log(testData);
-
+  console.log(testData)
   const navigation = useNavigation();
 
   const logout = () => {
