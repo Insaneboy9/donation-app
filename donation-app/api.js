@@ -11,7 +11,7 @@ export const callApi = {
       response.json()
     ),
   test: () =>
-    fetch(`localhost:8080/hawkers`).then((response) => {
+    fetch(`192.168.1.4:8080/hawkers`).then((response) => {
       console.log(response);
       return response.json();
     }),
