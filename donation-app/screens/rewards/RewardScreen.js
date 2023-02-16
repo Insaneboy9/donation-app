@@ -21,16 +21,26 @@ const RewardScreen = () => {
             style={styles.bg}
             source={require("../../assets/rewards_bg.jpg")}
           />
-          <View style={styles.title}>
+          <View style={styles.header}>
             <Ionicons
               style={styles.logo}
               name="logo-twitch"
-              size={50}
+              size={40}
               color="black"
             />
-            <Text style={styles.subTitle}>Rewards</Text>
+            <Text style={styles.title}>Rewards</Text>
           </View>
-          <Text>Everybody loves a good gift</Text>
+          <Text style={styles.subTitle}>Everybody loves a good rewards</Text>
+        </View>
+        <View style={styles.pointCard}>
+          <Text style={styles.available}>Available Points</Text>
+          <View style={styles.pointsView}>
+            <Image
+              style={styles.pointLogo}
+              source={require("../../assets/point_logo.png")}
+            />
+            <Text style={styles.points}>4000</Text>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -67,14 +77,47 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  title: {
+  header: {
     paddingLeft: 20,
     paddingTop: 20,
     flexDirection: "row",
     // justifyContent: "center",
     alignItems: "center",
   },
+  title: {
+    fontSize: 26,
+    fontWeight: "bold",
+  },
   subTitle: {
     paddingLeft: 20,
+  },
+  pointCard: {
+    backgroundColor: "white",
+    marginHorizontal: 20,
+    borderRadius: 10,
+    height: 100,
+    marginTop: -30,
+    shadowOffset: { width: -2, height: 40 },
+    shadowColor: "#171717",
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    padding: 15,
+  },
+  pointLogo: {
+    width: 40,
+    height: 40,
+    marginRight: 10,
+  },
+  pointsView: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  available: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  points: {
+    fontSize: 20,
+    fontWeight: "bold",
   },
 });
