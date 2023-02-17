@@ -30,11 +30,7 @@ const HomeScreen = () => {
     "community",
     callApi.community
   );
-  const { isLoading: testLoading, data: testData } = useQuery(
-    "test",
-    callApi.test
-  );
-  console.log(testData)
+
   const navigation = useNavigation();
 
   const logout = () => {
@@ -88,10 +84,10 @@ const HomeScreen = () => {
           </LinearGradient>
         </View>
         {isLoading ? <Loader /> : null}
-        {hawkerData && <HList title="Hawker" data={hawkerData.results} />}
-        {communityData && (
+        {hawkerData && <HList title="Hawker" data={hawkerData} />}
+        {/* {communityData && (
           <HList title="Community" data={communityData.results} />
-        )}
+        )} */}
       </ScrollView>
     </SafeAreaView>
   );

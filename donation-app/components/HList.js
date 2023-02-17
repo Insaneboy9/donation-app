@@ -15,8 +15,9 @@ const HList = ({ title, data }) => {
         ItemSeparatorComponent={<View style={{ width: 20 }} />}
         renderItem={({ item }) => (
           <Slide
-            posterPath={item.poster_path || ""} // URL to default image if none
-            originalTitle={item.original_title ?? item.original_name}
+            posterPath={item.posterUrl || ""} // URL to default image if none
+            originalTitle={item.name ?? item.original_name}
+            category={item.foodType}
             fullData={item}
           />
         )}

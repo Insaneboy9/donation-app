@@ -9,9 +9,8 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import colors from "../colors";
-import { imagePath } from "../util";
 
-const Slide = ({ posterPath, originalTitle }) => {
+const Slide = ({ posterPath, originalTitle, category }) => {
   const navigation = useNavigation();
   const toDetail = () => {
     // //@ts-ignore
@@ -26,12 +25,12 @@ const Slide = ({ posterPath, originalTitle }) => {
   return (
     <TouchableOpacity onPress={toDetail}>
       <View style={styles.container}>
-        <Image style={styles.poster} source={{ uri: imagePath(posterPath) }} />
+        <Image style={styles.poster} source={{ uri: posterPath }} />
         <Text style={styles.title}>
           {originalTitle.slice(0, 12)}
           {originalTitle.length > 12 && "..."}
         </Text>
-        <Text style={styles.category}>Health</Text>
+        <Text style={styles.category}>{category}</Text>
       </View>
     </TouchableOpacity>
   );
