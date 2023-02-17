@@ -10,6 +10,7 @@ const Stack = () => {
     <NativeStack.Navigator
       screenOptions={{
         animation: "fade",
+
         headerStyle: { backgroundColor: "white" },
         headerTitleStyle: { color: colors.text },
         headerTintColor: colors.text,

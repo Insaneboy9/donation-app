@@ -26,12 +26,13 @@ const HomeScreen = () => {
     "hawker",
     callApi.hawker
   );
-  const { isLoading: communityLoading, data: communityData } = useQuery(
-    "community",
-    callApi.community
+  const { isLoading: organizationLoading, data: organizationData } = useQuery(
+    "organization",
+    callApi.organization
   );
 
-  const navigation = useNavigation();
+  // console.log(hawkerData);
+  console.log("data" + organizationData);
 
   const logout = () => {
     signOut(auth)
@@ -44,7 +45,7 @@ const HomeScreen = () => {
     // navigation.navigate("LoginScreen");
   };
 
-  const isLoading = hawkerLoading || communityLoading;
+  const isLoading = hawkerLoading || organizationLoading;
 
   return (
     <SafeAreaView style={styles.wrapper}>
@@ -85,8 +86,8 @@ const HomeScreen = () => {
         </View>
         {isLoading ? <Loader /> : null}
         {hawkerData && <HList title="Hawker" data={hawkerData} />}
-        {/* {communityData && (
-          <HList title="Community" data={communityData.results} />
+        {/* {organizationData && (
+          <HList title="Organization" data={organizationData.results} />
         )} */}
       </ScrollView>
     </SafeAreaView>

@@ -10,16 +10,16 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import colors from "../colors";
 
-const Slide = ({ posterPath, originalTitle, category }) => {
+const Slide = ({ posterPath, originalTitle, category, fullData }) => {
   const navigation = useNavigation();
   const toDetail = () => {
-    // //@ts-ignore
-    // navigation.navigate("Stack", {
-    //   screen: "Detail",
-    //   params: {
-    //     ...fullData,
-    //   },
-    // });
+    //@ts-ignore
+    navigation.navigate("Stack", {
+      screen: "Detail",
+      params: {
+        ...fullData,
+      },
+    });
   };
 
   return (

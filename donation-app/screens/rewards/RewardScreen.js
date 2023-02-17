@@ -9,10 +9,14 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
+import { useQuery } from "react-query";
+import { callApi } from "../../api";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const RewardScreen = () => {
+  const { isLoading, data } = useQuery("rewards", callApi.rewards);
+  console.log("data" + data);
   return (
     <SafeAreaView style={styles.wrapper}>
       <ScrollView style={styles.container}>
@@ -42,6 +46,9 @@ const RewardScreen = () => {
             <Text style={styles.points}>4000</Text>
           </View>
         </View>
+        <View>
+          <Text style={styles.rewardHeader}>All Rewards</Text>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -70,9 +77,6 @@ const styles = StyleSheet.create({
     height: SCREEN_HEIGHT / 5,
   },
   bg: {
-    // flex: 1,
-    // width: "100%",
-    // position: "absolute",
     position: "absolute",
     width: "100%",
     height: "100%",
@@ -81,7 +85,6 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingTop: 20,
     flexDirection: "row",
-    // justifyContent: "center",
     alignItems: "center",
   },
   title: {
@@ -92,15 +95,22 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   pointCard: {
+    marginBottom: 20,
     backgroundColor: "white",
     marginHorizontal: 20,
     borderRadius: 10,
     height: 100,
     marginTop: -30,
-    shadowOffset: { width: -2, height: 40 },
+
+    // ios
     shadowColor: "#171717",
+    shadowOffset: { width: -2, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
+
+    // android
+    elevation: 20,
+    shadowColor: "#52006A",
     padding: 15,
   },
   pointLogo: {
@@ -119,5 +129,10 @@ const styles = StyleSheet.create({
   points: {
     fontSize: 20,
     fontWeight: "bold",
+  },
+  rewardHeader: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginLeft: 20,
   },
 });
