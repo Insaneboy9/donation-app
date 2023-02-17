@@ -43,7 +43,7 @@ const DetailScreen = ({ navigation: { setOptions }, route: { params } }) => {
 
   useEffect(() => {
     setOptions({
-      title: "foodType" in params ? "Hawker" : "Organization",
+      title: "country" in params ? "Organization" : "Hawker",
       headerRight: () => <ShareButton />,
     });
   }, []);
@@ -63,7 +63,7 @@ const DetailScreen = ({ navigation: { setOptions }, route: { params } }) => {
           <Image style={styles.poster} source={{ uri: params.posterUrl }} />
           <View style={styles.posterDescription}>
             <Text style={styles.name}>{params.name}</Text>
-            <Text style={styles.category}>{params.foodType}</Text>
+            <Text style={styles.category}>{params.type}</Text>
           </View>
         </View>
       </View>

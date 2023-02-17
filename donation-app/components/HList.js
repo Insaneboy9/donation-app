@@ -17,7 +17,7 @@ const HList = ({ title, data }) => {
           <Slide
             posterPath={item.posterUrl || ""} // URL to default image if none
             originalTitle={item.name ?? item.original_name}
-            category={item.foodType}
+            category={item.type}
             fullData={item}
           />
         )}

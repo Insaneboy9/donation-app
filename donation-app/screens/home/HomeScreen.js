@@ -31,8 +31,7 @@ const HomeScreen = () => {
     callApi.organization
   );
 
-  // console.log(hawkerData);
-  console.log("data" + organizationData);
+  console.log(organizationData);
 
   const logout = () => {
     signOut(auth)
@@ -86,9 +85,9 @@ const HomeScreen = () => {
         </View>
         {isLoading ? <Loader /> : null}
         {hawkerData && <HList title="Hawker" data={hawkerData} />}
-        {/* {organizationData && (
-          <HList title="Organization" data={organizationData.results} />
-        )} */}
+        {organizationData && (
+          <HList title="Organization" data={organizationData} />
+        )}
       </ScrollView>
     </SafeAreaView>
   );
