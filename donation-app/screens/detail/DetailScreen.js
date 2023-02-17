@@ -17,8 +17,6 @@ import React, { useEffect } from "react";
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const DetailScreen = ({ navigation: { setOptions }, route: { params } }) => {
-  console.log(params);
-
   const shareMedia = async () => {
     const isAndroid = Platform.OS === "android";
     if (isAndroid) {
@@ -69,8 +67,18 @@ const DetailScreen = ({ navigation: { setOptions }, route: { params } }) => {
       </View>
       <Text style={styles.header}>Overview</Text>
       <Text style={styles.content}>{params.description}</Text>
-      <Text style={styles.header}>Address</Text>
-      <Text style={styles.content}>{params.address}</Text>
+      {"country" in params ? (
+        <>
+          <Text style={styles.header}>Country</Text>
+          <Text style={styles.content}>{params.country}</Text>
+        </>
+      ) : (
+        <>
+          <Text style={styles.header}>Address</Text>
+          <Text style={styles.content}>{params.address}</Text>
+        </>
+      )}
+
       <TouchableOpacity style={styles.dropButton}>
         <Text style={styles.buttonText}>DROP NOW</Text>
       </TouchableOpacity>

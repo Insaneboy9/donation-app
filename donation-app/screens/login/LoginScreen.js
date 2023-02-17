@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import React from "react";
-import { Ionicons } from "@expo/vector-icons";
 import colors from "../../colors";
 import { auth } from "../../firebase/firebaseConfig";
 
@@ -51,11 +50,9 @@ const LoginScreen = () => {
           source={require("../../assets/login-bg.jpg")}
           blurRadius={20}
         />
-        <Ionicons
+        <Image
           style={styles.logo}
-          name="logo-twitch"
-          size={50}
-          color="black"
+          source={require("../../assets/logo_x150.png")}
         />
         <View style={styles.card}>
           <Text style={styles.title}>Log in to PaiDrop</Text>
@@ -68,6 +65,7 @@ const LoginScreen = () => {
           <TextInput
             style={styles.input}
             onChangeText={(text) => setValue({ ...value, password: text })}
+            secureTextEntry={true}
             placeholder="Password"
           />
           <TouchableOpacity style={styles.button} onPress={signIn}>
@@ -98,6 +96,8 @@ const styles = StyleSheet.create({
   },
   logo: {
     marginTop: -30,
+    width: 150,
+    height: 150,
   },
   card: {
     justifyContent: "center",
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   button: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#9b59b6",
+    backgroundColor: "#ff4757",
     width: "50%",
     padding: 10,
     borderRadius: 10,

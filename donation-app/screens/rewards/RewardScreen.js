@@ -2,54 +2,83 @@ import {
   SafeAreaView,
   Text,
   StyleSheet,
-  ScrollView,
   View,
   Image,
   Dimensions,
+  FlatList,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { useQuery } from "react-query";
 import { callApi } from "../../api";
+import Loader from "../../components/Loader";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const RewardScreen = () => {
   const { isLoading, data } = useQuery("rewards", callApi.rewards);
-  console.log("data" + data);
-  return (
+  console.log(data);
+
+  return isLoading ? (
+    <Loader />
+  ) : (
     <SafeAreaView style={styles.wrapper}>
-      <ScrollView style={styles.container}>
-        <View style={styles.top}>
-          <Image
-            style={styles.bg}
-            source={require("../../assets/rewards_bg.jpg")}
-          />
-          <View style={styles.header}>
-            <Ionicons
-              style={styles.logo}
-              name="logo-twitch"
-              size={40}
-              color="black"
-            />
-            <Text style={styles.title}>Rewards</Text>
+      <FlatList
+        style={styles.container}
+        ListHeaderComponent={
+          <>
+            <View style={styles.top}>
+              <Image
+                style={styles.bg}
+                source={require("../../assets/rewards_bg.jpg")}
+              />
+              <View style={styles.header}>
+                <View style={styles.logo}>
+                  <Image
+                    style={StyleSheet.absoluteFill}
+                    source={require("../../assets/logo_black_x60.png")}
+                  />
+                </View>
+                <Text style={styles.title}>Rewards</Text>
+              </View>
+              <Text style={styles.subTitle}>Everyone loves good rewards</Text>
+            </View>
+            <View style={styles.pointCard}>
+              <Text style={styles.available}>Available Points</Text>
+              <View style={styles.pointsView}>
+                <Image
+                  style={styles.pointLogo}
+                  source={require("../../assets/point_logo.png")}
+                />
+                <Text style={styles.points}>4000</Text>
+              </View>
+            </View>
+            <View>
+              <Text style={styles.rewardHeader}>All Rewards</Text>
+            </View>
+          </>
+        }
+        data={data}
+        showsHorizontalScrollIndicator={false}
+        ItemSeparatorComponent={<View style={{ width: 20 }} />}
+        renderItem={({ item }) => (
+          <View style={styles.rewardCard}>
+            <View style={styles.rewardImage}>
+              <Image
+                style={StyleSheet.absoluteFill}
+                source={{ uri: item.imagelUrl }}
+              />
+            </View>
+            <View>
+              <Text style={styles.name}>{item.name}</Text>
+              <Text style={styles.brand}>{item.brand}</Text>
+              <View style={{ flexDirection: "row", marginTop: 20 }}>
+                <Text style={styles.cost}>{item.points}</Text>
+                <Text style={styles.brand}>points</Text>
+              </View>
+            </View>
           </View>
-          <Text style={styles.subTitle}>Everybody loves a good rewards</Text>
-        </View>
-        <View style={styles.pointCard}>
-          <Text style={styles.available}>Available Points</Text>
-          <View style={styles.pointsView}>
-            <Image
-              style={styles.pointLogo}
-              source={require("../../assets/point_logo.png")}
-            />
-            <Text style={styles.points}>4000</Text>
-          </View>
-        </View>
-        <View>
-          <Text style={styles.rewardHeader}>All Rewards</Text>
-        </View>
-      </ScrollView>
+        )}
+      />
     </SafeAreaView>
   );
 };
@@ -62,8 +91,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    width: "100%",
-    height: "100%",
   },
   title: {
     fontSize: 22,
@@ -84,6 +111,7 @@ const styles = StyleSheet.create({
   header: {
     paddingLeft: 20,
     paddingTop: 20,
+    marginBottom: 10,
     flexDirection: "row",
     alignItems: "center",
   },
@@ -131,8 +159,41 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   rewardHeader: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
     marginLeft: 20,
+    marginBottom: 10,
+  },
+  logo: {
+    marginLeft: -20,
+    marginRight: 30,
+    height: 60,
+    width: 60,
+  },
+  rewardCard: {
+    marginHorizontal: 20,
+    marginBottom: 20,
+    flexDirection: "row",
+  },
+  rewardImage: {
+    width: 150,
+    height: 100,
+    marginRight: 10,
+    borderRadius: 20,
+    overflow: "hidden",
+  },
+  name: {
+    fontWeight: "bold",
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  brand: {
+    fontSize: 14,
+    color: "#808e9b",
+  },
+  cost: {
+    color: "#1e90ff",
+    fontWeight: "bold",
+    marginRight: 5,
   },
 });

@@ -11,6 +11,9 @@ import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import styled from "styled-components/native";
+import Loader from "../../components/Loader";
+import { useQuery } from "react-query";
+import { callApi } from "../../api";
 
 const Card = styled.View`
   margin-horizontal: 20px;
@@ -60,6 +63,8 @@ const NormalRank = styled.View`
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const LeaderboardScreen = () => {
+  const { isLoading, data } = useQuery("rewards", callApi.rewards);
+
   const users = [
     {
       name: "Reagan",
@@ -113,7 +118,9 @@ const LeaderboardScreen = () => {
     },
   ];
   users.sort((a, b) => b.points - a.points);
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <SafeAreaView style={styles.wrapper}>
       <ScrollView style={styles.container}>
         <Text style={styles.title}>Leaderboard</Text>

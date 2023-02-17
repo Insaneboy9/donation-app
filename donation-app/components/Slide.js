@@ -1,11 +1,4 @@
-import {
-  SafeAreaView,
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import colors from "../colors";
@@ -50,7 +43,7 @@ const styles = StyleSheet.create({
   },
   category: {},
   poster: {
-    width: 100,
+    width: 150,
     height: 160,
     borderRadius: 5,
     backgroundColor: "grey",

@@ -6,6 +6,7 @@ import {
   Dimensions,
   TouchableOpacity,
   ScrollView,
+  Image,
 } from "react-native";
 import React from "react";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
@@ -16,7 +17,6 @@ import { signOut } from "firebase/auth";
 import { callApi } from "../../api";
 import Loader from "../../components/Loader";
 import HList from "../../components/HList";
-import { useNavigation } from "@react-navigation/native";
 import { auth } from "../../firebase/firebaseConfig";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
@@ -31,8 +31,6 @@ const HomeScreen = () => {
     callApi.organization
   );
 
-  console.log(organizationData);
-
   const logout = () => {
     signOut(auth)
       .then(() => {
@@ -46,11 +44,18 @@ const HomeScreen = () => {
 
   const isLoading = hawkerLoading || organizationLoading;
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <SafeAreaView style={styles.wrapper}>
       <ScrollView style={styles.container}>
         <View style={styles.header}>
-          <Ionicons name="logo-twitch" size={24} color="black" />
+          <View style={styles.logo}>
+            <Image
+              style={StyleSheet.absoluteFill}
+              source={require("../../assets/logo_x60.png")}
+            />
+          </View>
           <View style={styles.welcomeView}>
             <Text style={{ lineHeight: 24 }}>Welcome, </Text>
             <Text style={styles.username}>Insaneboy9</Text>
@@ -108,6 +113,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flexDirection: "row",
     justifyContent: "space-around",
+    alignItems: "center",
   },
   welcomeView: {
     flexDirection: "row",
@@ -154,5 +160,10 @@ const styles = StyleSheet.create({
   actionText: {
     marginTop: 10,
     color: "white",
+  },
+  logo: {
+    marginLeft: -30,
+    height: 60,
+    width: 60,
   },
 });
