@@ -12,7 +12,7 @@ app.use(cors())
 
 app.listen(8080, () => console.log("Up and Running 8080"))
 
-
+//Handle GET request for hawkers
 app.get("/hawkers", async (req,res) => {
     const snapshot = await getDocs(collection(db, "hawkers"));
     const list = snapshot.docs.map(async (doc) => {
@@ -30,6 +30,7 @@ app.get("/hawkers", async (req,res) => {
       res.send(results);
 });
 
+//Handle GET request for organizations
 app.get("/organizations", async (req,res) => {
   const snapshot = await getDocs(collection(db, "organizations"));
   const list = snapshot.docs.map(async (doc) => {
@@ -47,6 +48,7 @@ app.get("/organizations", async (req,res) => {
     res.send(results);
 });
 
+//Handle GET request for rewards
 app.get("/rewards", async (req,res) => {
   const snapshot = await getDocs(collection(db, "rewards"));
   const list = snapshot.docs.map(async (doc) => {
@@ -60,6 +62,17 @@ app.get("/rewards", async (req,res) => {
     });
     const results = await Promise.all(list); // wait for all the URLs to resolve
     res.send(results);
+});
+
+// Handle POST request for transactions
+app.post('/transactions', (req, res) => {
+  // Retrieve data from request body
+  const data = req.body;
+
+  // Do something with the data
+
+  // Send response
+  res.send('Data received');
 });
 
 app.get("/", async (req,res) => {
