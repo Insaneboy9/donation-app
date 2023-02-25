@@ -49,19 +49,21 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
                 placeholder={placeholderText}
               />
             </View>
-            <View style={styles.item}>
-              <View style={styles.icon}>
-                <MaterialIcons
-                  name="account-balance"
-                  size={36}
-                  color="#2d3436"
-                />
+            {params.type !== "Redeem" && (
+              <View style={styles.item}>
+                <View style={styles.icon}>
+                  <MaterialIcons
+                    name="account-balance"
+                    size={36}
+                    color="#2d3436"
+                  />
+                </View>
+                <View>
+                  <Text style={{ fontSize: 18 }}>POSB eSavings Account</Text>
+                  <Text style={{ fontSize: 18 }}>XXXXX2679</Text>
+                </View>
               </View>
-              <View>
-                <Text style={{ fontSize: 18 }}>POSB eSavings Account</Text>
-                <Text style={{ fontSize: 18 }}>XXXXX2679</Text>
-              </View>
-            </View>
+            )}
           </View>
         </View>
         <View style={styles.buttonContainer}>
@@ -104,7 +106,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   textInput: {
-    width: SCREEN_WIDTH / 1.5,
+    width: SCREEN_WIDTH,
     fontSize: 18,
     paddingTop: 20,
     paddingBottom: 20,

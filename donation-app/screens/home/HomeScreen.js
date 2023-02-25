@@ -187,7 +187,6 @@ const styles = StyleSheet.create({
     color: "white",
   },
   logo: {
-    marginLeft: -30,
     height: 60,
     width: 60,
   },
