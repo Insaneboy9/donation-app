@@ -6,6 +6,7 @@ import Tabs from "./Tabs";
 import Stack from "./Stack";
 import LoginScreen from "../screens/login/LoginScreen";
 
+
 const Nav = createNativeStackNavigator();
 
 const Root = () => {

@@ -39,7 +39,6 @@ const LoginScreen = () => {
         error: error.message,
       });
     }
-    console.log(value);
   }
 
   return (
