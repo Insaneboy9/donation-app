@@ -2,11 +2,11 @@ import { Text, View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import colors from "../colors";
+import Poster from "./Poster";
 
 const Slide = ({ posterPath, originalTitle, category, fullData }) => {
   const navigation = useNavigation();
   const toDetail = () => {
-    //@ts-ignore
     navigation.navigate("Stack", {
       screen: "Detail",
       params: {
@@ -14,11 +14,12 @@ const Slide = ({ posterPath, originalTitle, category, fullData }) => {
       },
     });
   };
+  // console.log(fullData);
 
   return (
     <TouchableOpacity onPress={toDetail}>
       <View style={styles.container}>
-        <Image style={styles.poster} source={{ uri: posterPath }} />
+        <Poster posterPath={posterPath} />
         <Text style={styles.title}>
           {originalTitle.slice(0, 12)}
           {originalTitle.length > 12 && "..."}
@@ -41,11 +42,8 @@ const styles = StyleSheet.create({
     marginTop: 7,
     marginBottom: 5,
   },
-  category: {},
-  poster: {
-    width: 150,
-    height: 160,
-    borderRadius: 5,
-    backgroundColor: "grey",
+  category: {
+    fontSize: 13,
+    color: "#636e72",
   },
 });

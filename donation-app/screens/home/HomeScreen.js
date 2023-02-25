@@ -9,15 +9,16 @@ import {
   Image,
 } from "react-native";
 import React from "react";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons, FontAwesome } from "@expo/vector-icons";
 import colors from "../../colors";
 import { LinearGradient } from "expo-linear-gradient";
 import { useQuery } from "react-query";
 import { signOut } from "firebase/auth";
 import { callApi } from "../../api";
 import Loader from "../../components/Loader";
-import HList from "../../components/HList";
+import HorizontalList from "../../components/HorizontalList";
 import { auth } from "../../firebase/firebaseConfig";
+import { useNavigation } from "@react-navigation/native";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -30,6 +31,18 @@ const HomeScreen = () => {
     "organization",
     callApi.organization
   );
+  const navigation = useNavigation();
+  const toAccount = (type) => {
+    navigation.navigate("Stack", {
+      screen: "Account",
+      params: { type },
+    });
+  };
+  const toScan = () => {
+    navigation.navigate("Stack", {
+      screen: "Scan QR Code",
+    });
+  };
 
   const logout = () => {
     signOut(auth)
@@ -73,15 +86,28 @@ const HomeScreen = () => {
               <Text style={styles.balance}>SGD 0.00</Text>
             </View>
             <View style={styles.actionHolder}>
-              <TouchableOpacity style={styles.action}>
+              <TouchableOpacity
+                onPress={() => toAccount("Pay")}
+                style={styles.action}
+              >
+                <FontAwesome name="paper-plane-o" size={36} color="white" />
+                <Text style={styles.actionText}>Pay</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={toScan} style={styles.action}>
                 <Ionicons name="scan" size={36} color="white" />
                 <Text style={styles.actionText}>Scan</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.action}>
+              <TouchableOpacity
+                onPress={() => toAccount("Top Up")}
+                style={styles.action}
+              >
                 <Ionicons name="wallet-outline" size={36} color="white" />
                 <Text style={styles.actionText}>Top Up</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.action}>
+              <TouchableOpacity
+                onPress={() => toAccount("Withdraw")}
+                style={styles.action}
+              >
                 <MaterialIcons name="account-balance" size={36} color="white" />
                 <Text style={styles.actionText}>Withdraw</Text>
               </TouchableOpacity>
@@ -89,9 +115,9 @@ const HomeScreen = () => {
           </LinearGradient>
         </View>
         {isLoading ? <Loader /> : null}
-        {hawkerData && <HList title="Hawker" data={hawkerData} />}
+        {hawkerData && <HorizontalList title="Hawker" data={hawkerData} />}
         {organizationData && (
-          <HList title="Organization" data={organizationData} />
+          <HorizontalList title="Organization" data={organizationData} />
         )}
       </ScrollView>
     </SafeAreaView>
@@ -133,7 +159,6 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     height: SCREEN_HEIGHT / 4,
     width: "90%",
-    marginHorizontal: 20,
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
@@ -149,7 +174,7 @@ const styles = StyleSheet.create({
   },
   actionHolder: {
     flexDirection: "row",
-    width: "80%",
+    width: "100%",
     justifyContent: "space-around",
   },
   action: {

@@ -78,10 +78,13 @@ const DetailScreen = ({ navigation: { setOptions }, route: { params } }) => {
           <Text style={styles.content}>{params.address}</Text>
         </>
       )}
-
-      <TouchableOpacity style={styles.dropButton}>
-        <Text style={styles.buttonText}>DROP NOW</Text>
-      </TouchableOpacity>
+      {"country" in params && (
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.dropButton}>
+            <Text style={styles.buttonText}>DROP NOW</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -140,15 +143,20 @@ const styles = StyleSheet.create({
   dropButton: {
     marginTop: 40,
     backgroundColor: colors.accentColor,
-    marginHorizontal: 60,
+    marginHorizontal: 20,
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
-    borderRadius: 20,
+    borderRadius: 10,
   },
   buttonText: {
     color: "white",
     fontWeight: "bold",
     fontSize: 18,
+  },
+  buttonContainer: {
+    flex: 1,
+    marginBottom: 20,
+    justifyContent: "flex-end",
   },
 });

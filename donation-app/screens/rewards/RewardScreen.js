@@ -16,7 +16,6 @@ const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const RewardScreen = () => {
   const { isLoading, data } = useQuery("rewards", callApi.rewards);
-  console.log(data);
 
   return isLoading ? (
     <Loader />

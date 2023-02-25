@@ -63,8 +63,8 @@ const NormalRank = styled.View`
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const LeaderboardScreen = () => {
-  const { isLoading, data } = useQuery("rewards", callApi.rewards);
-
+  // const { isLoading, data } = useQuery("rewards", callApi.rewards);
+  const isLoading = false;
   const users = [
     {
       name: "Reagan",
