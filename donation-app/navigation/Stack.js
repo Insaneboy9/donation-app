@@ -6,6 +6,7 @@ import ShowAllScreen from "../screens/showAll/ShowAllScreen";
 
 import colors from "../colors";
 import CameraScreen from "../screens/camera/CameraScreen";
+import RewardDetailScreen from "../screens/rewards/RewardDetailScreen";
 
 const NativeStack = createNativeStackNavigator();
 
@@ -25,6 +26,7 @@ const Stack = () => {
       <NativeStack.Screen name="Account" component={AccountScreen} />
       <NativeStack.Screen name="ShowAll" component={ShowAllScreen} />
       <NativeStack.Screen name="Scan QR Code" component={CameraScreen} />
+      <NativeStack.Screen name="Rewards" component={RewardDetailScreen} />
     </NativeStack.Navigator>
   );
 };

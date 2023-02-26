@@ -6,16 +6,26 @@ import {
   Image,
   Dimensions,
   FlatList,
+  TouchableOpacity,
 } from "react-native";
 import React from "react";
 import { useQuery } from "react-query";
 import { callApi } from "../../api";
 import Loader from "../../components/Loader";
+import { useNavigation } from "@react-navigation/native";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const RewardScreen = () => {
   const { isLoading, data } = useQuery("rewards", callApi.rewards);
+
+  const navigation = useNavigation();
+  const toRewardDetail = (data) => {
+    navigation.navigate("Stack", {
+      screen: "Rewards",
+      params: { ...data },
+    });
+  };
 
   return isLoading ? (
     <Loader />
@@ -60,7 +70,10 @@ const RewardScreen = () => {
         showsHorizontalScrollIndicator={false}
         ItemSeparatorComponent={<View style={{ width: 20 }} />}
         renderItem={({ item }) => (
-          <View style={styles.rewardCard}>
+          <TouchableOpacity
+            onPress={() => toRewardDetail(item)}
+            style={styles.rewardCard}
+          >
             <View style={styles.rewardImage}>
               <Image
                 style={StyleSheet.absoluteFill}
@@ -75,7 +88,7 @@ const RewardScreen = () => {
                 <Text style={styles.brand}>points</Text>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </SafeAreaView>
