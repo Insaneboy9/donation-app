@@ -27,8 +27,8 @@ const Root = () => {
     <Nav.Navigator
       screenOptions={{ headerShown: false, presentation: "modal" }}
     >
-      <Nav.Screen name="Tabs" component={Tabs} />
-      <Nav.Screen name="Stack" component={Stack} />
+      <Nav.Screen name="Tabs" component={Tabs} initialParams={{ user: user }} />
+      <Nav.Screen name="Stack" component={Stack} initialParams={{ user: user }} />
     </Nav.Navigator>
   );
 };

@@ -10,7 +10,7 @@ import RewardDetailScreen from "../screens/rewards/RewardDetailScreen";
 
 const NativeStack = createNativeStackNavigator();
 
-const Stack = () => {
+const Stack = ({route}) => {
   return (
     <NativeStack.Navigator
       screenOptions={{
