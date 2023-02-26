@@ -15,10 +15,23 @@ import { callApi } from "../../api";
 import Loader from "../../components/Loader";
 import { MaterialIcons } from "@expo/vector-icons";
 import colors from "../../colors";
+import styled from "styled-components/native";
+
+const Button = styled.TouchableOpacity`
+  background-color: ${(props) =>
+    props.disabled === true ? "grey" : colors.accentColor};
+  margin-horizontal: 20px;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+`;
 
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
 
 const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
+  const [disable, setDisable] = useState(true);
   const [amount, setAmount] = useState();
   const placeholderText = `${params.type} Amount`;
 
@@ -31,6 +44,14 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
       title: params.type,
     });
   }, []);
+
+  useEffect(() => {
+    if (amount) {
+      setDisable(false);
+    } else {
+      setDisable(true);
+    }
+  }, [amount]);
 
   return (
     <SafeAreaView style={styles.wrapper}>
@@ -67,9 +88,9 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
           </View>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={onTransfer} style={styles.submitBtn}>
+          <Button disabled={disable} onPress={onTransfer}>
             <Text style={styles.btnText}>SUBMIT</Text>
-          </TouchableOpacity>
+          </Button>
         </View>
       </View>
     </SafeAreaView>
@@ -118,7 +139,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   submitBtn: {
-    marginTop: 40,
     backgroundColor: colors.accentColor,
     marginHorizontal: 20,
     justifyContent: "center",

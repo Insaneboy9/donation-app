@@ -10,7 +10,7 @@ import RewardDetailScreen from "../screens/rewards/RewardDetailScreen";
 
 const NativeStack = createNativeStackNavigator();
 
-const Stack = ({route}) => {
+const Stack = ({ route }) => {
   return (
     <NativeStack.Navigator
       screenOptions={{
@@ -26,7 +26,11 @@ const Stack = ({route}) => {
       <NativeStack.Screen name="Account" component={AccountScreen} />
       <NativeStack.Screen name="ShowAll" component={ShowAllScreen} />
       <NativeStack.Screen name="Scan QR Code" component={CameraScreen} />
-      <NativeStack.Screen name="Rewards" component={RewardDetailScreen} />
+      <NativeStack.Screen
+        initialParams={{ user: route.params.user }}
+        name="Rewards"
+        component={RewardDetailScreen}
+      />
     </NativeStack.Navigator>
   );
 };

@@ -16,14 +16,6 @@ const Button = styled.TouchableOpacity`
   border-radius: 20px;
 `;
 
-const ConditionText = styled.Text`
-  &:before {
-    height: 10px;
-    width: 10px;
-    background-color: "black";
-  }
-`;
-
 const ConditionView = styled.View`
   flex-direction: row;
   width: 90%;
@@ -35,14 +27,13 @@ export default function RewardDetailScreen({
 }) {
   const [isChecked, setIsChecked] = useState(false);
   const [disable, setDisable] = useState(true);
-  const myPoints = 4000;
+  const userPoints = params.user.points;
 
   const toggleChecked = () => {
     setIsChecked((prev) => !prev);
     setDisable((prev) => !prev);
   };
 
-  console.log(myPoints - params.points);
   return (
     <View style={styles.container}>
       <View style={styles.top}>
@@ -59,47 +50,45 @@ export default function RewardDetailScreen({
       <View style={styles.center}>
         <View style={styles.myPoint}>
           <Text style={styles.pointText}>My points</Text>
-          <Text style={styles.pointText}>4000</Text>
+          <Text style={styles.pointText}>{userPoints}</Text>
         </View>
         <ScrollView style={styles.conditions}>
           <ConditionView>
             <Entypo name="dot-single" size={24} color="black" />
-            <ConditionText>
+            <Text>
               This promotion is open to all users who have registered for
               PaiDrop and installed the same on their compatible devices.
-            </ConditionText>
+            </Text>
           </ConditionView>
           <ConditionView>
             <Entypo name="dot-single" size={24} color="black" />
-            <ConditionText>
+            <Text>
               To redeem this reward, you need {params.points} PaiDrop rewards
               Points.
-            </ConditionText>
+            </Text>
           </ConditionView>
           <ConditionView>
             <Entypo name="dot-single" size={24} color="black" />
-            <ConditionText>
-              PaiDrop Rewards Points used are non-refundable.
-            </ConditionText>
+            <Text>PaiDrop Rewards Points used are non-refundable.</Text>
           </ConditionView>
           <ConditionView>
             <Entypo name="dot-single" size={24} color="black" />
-            <ConditionText>
+            <Text>
               This voucher entitles you to one (1) pc of {params.name}.
-            </ConditionText>
+            </Text>
           </ConditionView>
           <ConditionView>
             <Entypo name="dot-single" size={24} color="black" />
-            <ConditionText>
+            <Text>
               PaiDrop Rewards Points and vouchers are non-transferrable.
-            </ConditionText>
+            </Text>
           </ConditionView>
         </ScrollView>
       </View>
       <View style={styles.bottom}>
         <View style={styles.terms}>
           <Checkbox
-            disabled={myPoints - params.points < 0 ? true : false}
+            disabled={userPoints - params.points < 0 ? true : false}
             style={styles.checkbox}
             value={isChecked}
             onValueChange={toggleChecked}
@@ -107,9 +96,9 @@ export default function RewardDetailScreen({
           />
           <Text>I agree to the full-terms and conditions</Text>
         </View>
-        <Button style={styles.submitBtn} disabled={disable}>
+        <Button disabled={disable}>
           <Text style={styles.btnText}>
-            {myPoints - params.points < 0
+            {userPoints - params.points < 0
               ? "INSUFFICIENT POINTS"
               : "USE POINTS"}
           </Text>
@@ -200,6 +189,6 @@ const styles = StyleSheet.create({
   conditions: {
     marginTop: 10,
     flex: 1,
-    paddingLeft: 10,
+    paddingHorizontal: 20,
   },
 });
