@@ -9,7 +9,7 @@ import CameraScreen from "../screens/camera/CameraScreen";
 
 const NativeStack = createNativeStackNavigator();
 
-const Stack = () => {
+const Stack = ({route}) => {
   return (
     <NativeStack.Navigator
       screenOptions={{

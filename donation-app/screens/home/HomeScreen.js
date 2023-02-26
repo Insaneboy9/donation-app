@@ -22,7 +22,8 @@ import { useNavigation } from "@react-navigation/native";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-const HomeScreen = () => {
+const HomeScreen = ({route}) => {
+  const user = route.params.user
   const { isLoading: hawkerLoading, data: hawkerData } = useQuery(
     "hawker",
     callApi.hawker
@@ -71,7 +72,7 @@ const HomeScreen = () => {
           </View>
           <View style={styles.welcomeView}>
             <Text style={{ lineHeight: 24 }}>Welcome, </Text>
-            <Text style={styles.username}>Insaneboy9</Text>
+            <Text style={styles.username}>{user.name}</Text>
           </View>
           <TouchableOpacity onPress={logout}>
             <Ionicons name="log-out-outline" size={24} color="black" />
@@ -83,7 +84,7 @@ const HomeScreen = () => {
             style={styles.card}
           >
             <View style={styles.cardHeader}>
-              <Text style={styles.balance}>SGD 0.00</Text>
+              <Text style={styles.balance}>SGD {user.cash}</Text>
             </View>
             <View style={styles.actionHolder}>
               <TouchableOpacity

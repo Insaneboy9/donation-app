@@ -14,7 +14,8 @@ import Loader from "../../components/Loader";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-const RewardScreen = () => {
+const RewardScreen = ({route}) => {
+  const user = route.params.user
   const { isLoading, data } = useQuery("rewards", callApi.rewards);
 
   return isLoading ? (
@@ -48,7 +49,7 @@ const RewardScreen = () => {
                   style={styles.pointLogo}
                   source={require("../../assets/point_logo.png")}
                 />
-                <Text style={styles.points}>4000</Text>
+                <Text style={styles.points}>{user.points}</Text>
               </View>
             </View>
             <View>

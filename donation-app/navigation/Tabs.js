@@ -8,7 +8,7 @@ import RewardScreen from "../screens/rewards/RewardScreen";
 
 const Tab = createBottomTabNavigator();
 
-const Tabs = () => {
+const Tabs = ({route}) => {
   return (
     <Tab.Navigator
       sceneContainerStyle={{
@@ -26,6 +26,7 @@ const Tabs = () => {
       <Tab.Screen
         name="Home"
         component={HomeScreen}
+        initialParams={{ user: route.params.user }}
         options={{
           tabBarIcon: ({ color, size }) => {
             return <Ionicons name="home" size={size} color={color} />;
@@ -46,6 +47,7 @@ const Tabs = () => {
       <Tab.Screen
         name="Rewards"
         component={RewardScreen}
+        initialParams={{ user: route.params.user }}
         options={{
           tabBarIcon: ({ color, size }) => {
             return <Ionicons name="gift" size={size} color={color} />;
