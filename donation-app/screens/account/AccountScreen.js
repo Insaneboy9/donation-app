@@ -16,6 +16,7 @@ import Loader from "../../components/Loader";
 import { MaterialIcons } from "@expo/vector-icons";
 import colors from "../../colors";
 import styled from "styled-components/native";
+import axios from "axios";
 
 const Button = styled.TouchableOpacity`
   background-color: ${(props) =>
@@ -35,8 +36,30 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
   const [amount, setAmount] = useState();
   const placeholderText = `${params.type} Amount`;
 
-  const onTransfer = () => {
-    console.log(amount);
+  console.log(params.type);
+  const onTransfer = async () => {
+    if (params.type === "Pay") {
+      const data = {
+        amount: amount,
+        type: "donation",
+        userId: params.user.email,
+      };
+      try {
+        const response = await axios.post(
+          "http://10.0.2.2:8080/transactions",
+          data,
+          {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   useEffect(() => {
@@ -81,7 +104,7 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
                 </View>
                 <View>
                   <Text style={{ fontSize: 18 }}>POSB eSavings Account</Text>
-                  <Text style={{ fontSize: 18 }}>XXXXX2679</Text>
+                  <Text style={{ fontSize: 18 }}>{params.user.bankNum}</Text>
                 </View>
               </View>
             )}

@@ -23,7 +23,11 @@ const Stack = ({ route }) => {
       }}
     >
       <NativeStack.Screen name="Detail" component={DetailScreen} />
-      <NativeStack.Screen name="Account" component={AccountScreen} />
+      <NativeStack.Screen
+        initialParams={{ user: route.params.user }}
+        name="Account"
+        component={AccountScreen}
+      />
       <NativeStack.Screen name="ShowAll" component={ShowAllScreen} />
       <NativeStack.Screen name="Scan QR Code" component={CameraScreen} />
       <NativeStack.Screen
