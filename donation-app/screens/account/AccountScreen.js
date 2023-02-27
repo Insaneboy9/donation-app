@@ -42,7 +42,7 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
       const data = {
         amount: amount,
         type: "donation",
-        userId: params.user.email,
+        email: params.user.email,
       };
       try {
         const response = await axios.post(

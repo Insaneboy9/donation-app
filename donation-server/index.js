@@ -3,6 +3,8 @@ import cors from "cors";
 import { db, storage } from "./firebaseConfig.js";
 import { collection, getDocs } from "firebase/firestore";
 import { ref, getDownloadURL } from "firebase/storage";
+import { createDocument } from "./controllers/functions.js";
+import { subtractUserCash } from "./controllers/usersconn.js";
 
 const app = express();
 app.use(express.json());
@@ -63,14 +65,13 @@ app.get("/rewards", async (req, res) => {
 });
 
 // Handle POST request for transactions
-app.post("/transactions", (req, res) => {
+app.post("/transactions", async (req, res) => {
   // Retrieve data from request body
   const data = req.body;
-
-  // Do something with the data
-  console.log("data received");
-
-  // Send response
+  // Create transaction data in firestore
+  await createDocument("transactions", data)
+  // Deduct user's cash in account
+  await subtractUserCash("users", "email", data.email, "cash", data.amount);
   res.send("Data received");
 });
 
