@@ -79,6 +79,10 @@ export default function RewardDetailScreen({
           </ConditionView>
           <ConditionView>
             <Entypo name="dot-single" size={24} color="black" />
+            <Text>Voucher is for one-time redemption only.</Text>
+          </ConditionView>
+          <ConditionView>
+            <Entypo name="dot-single" size={24} color="black" />
             <Text>
               PaiDrop Rewards Points and vouchers are non-transferrable.
             </Text>

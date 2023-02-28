@@ -3,7 +3,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import DetailScreen from "../screens/detail/DetailScreen";
 import AccountScreen from "../screens/account/AccountScreen";
 import ShowAllScreen from "../screens/showAll/ShowAllScreen";
-
 import colors from "../colors";
 import CameraScreen from "../screens/camera/CameraScreen";
 import RewardDetailScreen from "../screens/rewards/RewardDetailScreen";
