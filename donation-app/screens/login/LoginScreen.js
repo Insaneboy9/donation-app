@@ -6,11 +6,10 @@ import {
   Dimensions,
   TextInput,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import React from "react";
-import { Ionicons } from "@expo/vector-icons";
-
 import colors from "../../colors";
 import { auth } from "../../firebase/firebaseConfig";
 
@@ -40,47 +39,50 @@ const LoginScreen = () => {
         error: error.message,
       });
     }
-    console.log(value)
   }
 
   return (
-    <View style={styles.container}>
-      <Image
-        style={styles.bg}
-        source={require("../../assets/login-bg.jpg")}
-        blurRadius={20}
-      />
-      <Ionicons
-        style={styles.logo}
-        name="logo-twitch"
-        size={50}
-        color="black"
-      />
-      <View style={styles.card}>
-        <Text style={styles.title}>Log in to PaiDrop</Text>
-        <TextInput
-          style={styles.input}
-          value={value.email}
-          onChangeText={(text) => setValue({ ...value, email: text })}
-          placeholder="Username"
+    <SafeAreaView style={styles.wrapper}>
+      <View style={styles.container}>
+        <Image
+          style={styles.bg}
+          source={require("../../assets/login-bg.jpg")}
+          blurRadius={20}
         />
-        <TextInput
-          style={styles.input}
-          onChangeText={(text) => setValue({ ...value, password: text })}
-          placeholder="Password"
+        <Image
+          style={styles.logo}
+          source={require("../../assets/logo_x150.png")}
         />
-        <TouchableOpacity style={styles.button} onPress={signIn}>
-          {/* <TouchableOpacity style={styles.button} > */}
-          <Text style={styles.buttonText}>Log in</Text>
-        </TouchableOpacity>
+        <View style={styles.card}>
+          <Text style={styles.title}>Log in to PaiDrop</Text>
+          <TextInput
+            style={styles.input}
+            value={value.email}
+            onChangeText={(text) => setValue({ ...value, email: text })}
+            placeholder="Username"
+          />
+          <TextInput
+            style={styles.input}
+            onChangeText={(text) => setValue({ ...value, password: text })}
+            secureTextEntry={true}
+            placeholder="Password"
+          />
+          <TouchableOpacity style={styles.button} onPress={signIn}>
+            {/* <TouchableOpacity style={styles.button} > */}
+            <Text style={styles.buttonText}>Log in</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default LoginScreen;
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     justifyContent: "center",
@@ -93,6 +95,8 @@ const styles = StyleSheet.create({
   },
   logo: {
     marginTop: -30,
+    width: 150,
+    height: 150,
   },
   card: {
     justifyContent: "center",
@@ -119,7 +123,7 @@ const styles = StyleSheet.create({
   button: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#9b59b6",
+    backgroundColor: "#ff4757",
     width: "50%",
     padding: 10,
     borderRadius: 10,

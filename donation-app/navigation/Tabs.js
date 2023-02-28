@@ -1,14 +1,14 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import colors from "../colors";
-import { Ionicons } from "@expo/vector-icons/";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons/";
 import HomeScreen from "../screens/home/HomeScreen";
-import HawkerScreen from "../screens/hawker/HawkerScreen";
+import LeaderboardScreen from "../screens/leaderboard/LeaderboardScreen";
 import RewardScreen from "../screens/rewards/RewardScreen";
 
 const Tab = createBottomTabNavigator();
 
-const Tabs = () => {
+const Tabs = ({route}) => {
   return (
     <Tab.Navigator
       sceneContainerStyle={{
@@ -26,6 +26,7 @@ const Tabs = () => {
       <Tab.Screen
         name="Home"
         component={HomeScreen}
+        initialParams={{ user: route.params.user }}
         options={{
           tabBarIcon: ({ color, size }) => {
             return <Ionicons name="home" size={size} color={color} />;
@@ -33,17 +34,20 @@ const Tabs = () => {
         }}
       />
       <Tab.Screen
-        name="Hawker"
-        component={HawkerScreen}
+        name="Leaderboard"
+        component={LeaderboardScreen}
         options={{
           tabBarIcon: ({ color, size }) => {
-            return <Ionicons name="restaurant" size={size} color={color} />;
+            return (
+              <MaterialIcons name="leaderboard" size={size} color={color} />
+            );
           },
         }}
       />
       <Tab.Screen
         name="Rewards"
         component={RewardScreen}
+        initialParams={{ user: route.params.user }}
         options={{
           tabBarIcon: ({ color, size }) => {
             return <Ionicons name="gift" size={size} color={color} />;

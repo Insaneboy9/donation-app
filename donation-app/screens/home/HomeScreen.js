@@ -5,95 +5,132 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
-  FlatList,
   ScrollView,
+  Image,
 } from "react-native";
 import React from "react";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons, FontAwesome } from "@expo/vector-icons";
 import colors from "../../colors";
 import { LinearGradient } from "expo-linear-gradient";
 import { useQuery } from "react-query";
 import { signOut } from "firebase/auth";
-
-
 import { callApi } from "../../api";
 import Loader from "../../components/Loader";
-import HList from "../../components/HList";
-import { useNavigation } from "@react-navigation/native";
+import HorizontalList from "../../components/HorizontalList";
 import { auth } from "../../firebase/firebaseConfig";
+import { useNavigation } from "@react-navigation/native";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-const HomeScreen = () => {
+const HomeScreen = ({route}) => {
+  const user = route.params.user
   const { isLoading: hawkerLoading, data: hawkerData } = useQuery(
     "hawker",
     callApi.hawker
   );
-  const { isLoading: communityLoading, data: communityData } = useQuery(
-    "community",
-    callApi.community
+  const { isLoading: organizationLoading, data: organizationData } = useQuery(
+    "organization",
+    callApi.organization
   );
   const navigation = useNavigation();
+  const toAccount = (type) => {
+    navigation.navigate("Stack", {
+      screen: "Account",
+      params: { type },
+    });
+  };
+  const toScan = () => {
+    navigation.navigate("Stack", {
+      screen: "Scan QR Code",
+    });
+  };
 
   const logout = () => {
-    signOut(auth).then(() => {
-      // Sign-out successful.
-    }).catch((error) => {
-      // An error happened.
-    });
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+      })
+      .catch((error) => {
+        // An error happened.
+      });
     // navigation.navigate("LoginScreen");
   };
 
-  const isLoading = hawkerLoading || communityLoading;
+  const isLoading = hawkerLoading || organizationLoading;
 
-  return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Ionicons name="logo-twitch" size={24} color="black" />
-        <View style={styles.welcomeView}>
-          <Text style={{ lineHeight: 24 }}>Welcome, </Text>
-          <Text style={styles.username}>Insaneboy9</Text>
+  return isLoading ? (
+    <Loader />
+  ) : (
+    <SafeAreaView style={styles.wrapper}>
+      <ScrollView style={styles.container}>
+        <View style={styles.header}>
+          <View style={styles.logo}>
+            <Image
+              style={StyleSheet.absoluteFill}
+              source={require("../../assets/logo_x60.png")}
+            />
+          </View>
+          <View style={styles.welcomeView}>
+            <Text style={{ lineHeight: 24 }}>Welcome, </Text>
+            <Text style={styles.username}>{user.name}</Text>
+          </View>
+          <TouchableOpacity onPress={logout}>
+            <Ionicons name="log-out-outline" size={24} color="black" />
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={logout}>
-          <Ionicons name="log-out-outline" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.cardHolder}>
-        <LinearGradient
-          colors={[colors.card, colors.accentColor]}
-          style={styles.card}
-        >
-          <View style={styles.cardHeader}>
-            <Text style={styles.balance}>SGD 0.00</Text>
-          </View>
-          <View style={styles.actionHolder}>
-            <TouchableOpacity style={styles.action}>
-              <Ionicons name="scan" size={36} color="white" />
-              <Text style={styles.actionText}>Scan</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.action}>
-              <Ionicons name="wallet-outline" size={36} color="white" />
-              <Text style={styles.actionText}>Top Up</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.action}>
-              <MaterialIcons name="account-balance" size={36} color="white" />
-              <Text style={styles.actionText}>Withdraw</Text>
-            </TouchableOpacity>
-          </View>
-        </LinearGradient>
-      </View>
-      {isLoading ? <Loader /> : null}
-      {hawkerData && <HList title="Hawker" data={hawkerData.results} />}
-      {communityData && (
-        <HList title="Community" data={communityData.results} />
-      )}
-    </ScrollView>
+        <View style={styles.cardHolder}>
+          <LinearGradient
+            colors={[colors.card, colors.accentColor]}
+            style={styles.card}
+          >
+            <View style={styles.cardHeader}>
+              <Text style={styles.balance}>SGD {user.cash}</Text>
+            </View>
+            <View style={styles.actionHolder}>
+              <TouchableOpacity
+                onPress={() => toAccount("Pay")}
+                style={styles.action}
+              >
+                <FontAwesome name="paper-plane-o" size={36} color="white" />
+                <Text style={styles.actionText}>Pay</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={toScan} style={styles.action}>
+                <Ionicons name="scan" size={36} color="white" />
+                <Text style={styles.actionText}>Scan</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => toAccount("Top Up")}
+                style={styles.action}
+              >
+                <Ionicons name="wallet-outline" size={36} color="white" />
+                <Text style={styles.actionText}>Top Up</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => toAccount("Withdraw")}
+                style={styles.action}
+              >
+                <MaterialIcons name="account-balance" size={36} color="white" />
+                <Text style={styles.actionText}>Withdraw</Text>
+              </TouchableOpacity>
+            </View>
+          </LinearGradient>
+        </View>
+        {isLoading ? <Loader /> : null}
+        {hawkerData && <HorizontalList title="Hawker" data={hawkerData} />}
+        {organizationData && (
+          <HorizontalList title="Organization" data={organizationData} />
+        )}
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 export default HomeScreen;
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     width: "100%",
@@ -103,6 +140,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flexDirection: "row",
     justifyContent: "space-around",
+    alignItems: "center",
   },
   welcomeView: {
     flexDirection: "row",
@@ -122,7 +160,6 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     height: SCREEN_HEIGHT / 4,
     width: "90%",
-    marginHorizontal: 20,
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
@@ -138,7 +175,7 @@ const styles = StyleSheet.create({
   },
   actionHolder: {
     flexDirection: "row",
-    width: "80%",
+    width: "100%",
     justifyContent: "space-around",
   },
   action: {
@@ -149,5 +186,9 @@ const styles = StyleSheet.create({
   actionText: {
     marginTop: 10,
     color: "white",
+  },
+  logo: {
+    height: 60,
+    width: 60,
   },
 });

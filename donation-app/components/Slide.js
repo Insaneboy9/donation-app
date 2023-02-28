@@ -1,37 +1,30 @@
-import {
-  SafeAreaView,
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import colors from "../colors";
-import { imagePath } from "../util";
+import Poster from "./Poster";
 
-const Slide = ({ posterPath, originalTitle }) => {
+const Slide = ({ posterPath, originalTitle, category, fullData }) => {
   const navigation = useNavigation();
   const toDetail = () => {
-    // //@ts-ignore
-    // navigation.navigate("Stack", {
-    //   screen: "Detail",
-    //   params: {
-    //     ...fullData,
-    //   },
-    // });
+    navigation.navigate("Stack", {
+      screen: "Detail",
+      params: {
+        ...fullData,
+      },
+    });
   };
+  // console.log(fullData);
 
   return (
     <TouchableOpacity onPress={toDetail}>
       <View style={styles.container}>
-        <Image style={styles.poster} source={{ uri: imagePath(posterPath) }} />
+        <Poster posterPath={posterPath} />
         <Text style={styles.title}>
           {originalTitle.slice(0, 12)}
           {originalTitle.length > 12 && "..."}
         </Text>
-        <Text style={styles.category}>Health</Text>
+        <Text style={styles.category}>{category}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -49,11 +42,8 @@ const styles = StyleSheet.create({
     marginTop: 7,
     marginBottom: 5,
   },
-  category: {},
-  poster: {
-    width: 100,
-    height: 160,
-    borderRadius: 5,
-    backgroundColor: "grey",
+  category: {
+    fontSize: 13,
+    color: "#636e72",
   },
 });

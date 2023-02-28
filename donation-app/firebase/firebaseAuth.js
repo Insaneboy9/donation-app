@@ -1,23 +1,22 @@
-import React, { useEffect,useState} from "react";
+import React, { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-
+import {db} from "../firebase/firebaseConfig.js";
+import { getDoc, doc } from "firebase/firestore";
 
 export function useAuth() {
-  const [user, setUser] = useState(false)
-  const auth = getAuth()
+  const [user, setUser] = useState(false);
+  const auth = getAuth();
 
   useEffect(() => {
-    const unsubscribeFromAuthStateChanged = onAuthStateChanged(auth, (user) => {
+    const unsubscribeFromAuthStateChanged = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        setUser(true);
+          const snapshot = await getDoc(doc(db, "users", user.uid));
+          const userData =  snapshot.data()
+          setUser(userData);
       } else {
-        // User is signed out
         setUser(false);
       }
     });
-
     return unsubscribeFromAuthStateChanged;
   }, []);
 
