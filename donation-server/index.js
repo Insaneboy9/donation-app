@@ -5,6 +5,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { ref, getDownloadURL } from "firebase/storage";
 import { createDocument } from "./controllers/functions.js";
 import { subtractUserCash } from "./controllers/usersconn.js";
+import { addTimeBc } from "./controllers/transactionsconn.js";
 
 const app = express();
 app.use(express.json());
@@ -67,7 +68,10 @@ app.get("/rewards", async (req, res) => {
 // Handle POST request for transactions
 app.post("/transactions", async (req, res) => {
   // Retrieve data from request body
-  const data = req.body;
+  var data = req.body;
+  // Add timestamp and blockchain id to data object
+  data = addTimeBc(data);
+  console.log(data)
   // Create transaction data in firestore
   await createDocument("transactions", data)
   // Deduct user's cash in account

@@ -18,7 +18,7 @@ const firebaseConfig = {
   storageBucket: "donation-app-8de49.appspot.com",
   messagingSenderId: "160131275402",
   appId: "1:160131275402:web:a229e0612168fc701feb73",
-  measurementId: "G-BZSV92Z7QW",
+  measurementId: "G-BZSV92Z7QW"
 };
 
 // Initialize Firebase
@@ -28,6 +28,7 @@ const app = initializeApp(firebaseConfig);
 const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(AsyncStorage),
 });
-const db = getFirestore(app);
+// const db = getFirestore(app);
+const db = getFirestore(app)
 
 export { auth, db};

@@ -40,6 +40,7 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
   const onTransfer = async () => {
     if (params.type === "Pay") {
       const data = {
+        userId: params.user.userId,
         amount: amount,
         type: "donation",
         email: params.user.email,

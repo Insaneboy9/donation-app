@@ -12,6 +12,7 @@ export function useAuth() {
       if (user) {
           const snapshot = await getDoc(doc(db, "users", user.uid));
           const userData =  snapshot.data()
+          userData.userId = snapshot.id;
           setUser(userData);
       } else {
         setUser(false);
