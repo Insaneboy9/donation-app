@@ -1,15 +1,4 @@
-import {
-  SafeAreaView,
-  Text,
-  StyleSheet,
-  View,
-  Image,
-  Dimensions,
-  FlatList,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import { SafeAreaView, Text, StyleSheet, View, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { callApi } from "../../api";
@@ -19,9 +8,22 @@ import colors from "../../colors";
 import styled from "styled-components/native";
 import axios from "axios";
 
-const CardContainer = styled.View``;
-
-const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
+const Card = styled.View`
+  width: 90%;
+  background-color: white;
+  margin-horizontal: 20px;
+  padding: 15px;
+  border-color: #dfe6e9;
+  border-top-left-radius: ${(props) =>
+    props.firstIndex == 0 ? "10px" : "0px"};
+  border-top-right-radius: ${(props) =>
+    props.firstIndex == 0 ? "10px" : "0px"};
+  border-bottom-left-radius: ${(props) =>
+    props.lastIndex == true ? "10px" : "0px"};
+  border-bottom-right-radius: ${(props) =>
+    props.lastIndex == true ? "10px" : "0px"};
+  border-width: 1px;
+`;
 
 const TransactionScreen = () => {
   const transactionHistory = [
@@ -61,17 +63,21 @@ const TransactionScreen = () => {
       <ScrollView style={styles.container}>
         <Text style={styles.title}>Transactions</Text>
         <Text style={styles.subTitle}>PaiDrop</Text>
-        {transactionHistory.map((history) => (
-          <View style={{ marginTop: 20 }}>
+        {transactionHistory.map((history, index) => (
+          <View key={index} style={{ marginTop: 20 }}>
             <Text style={styles.date}>{history.date}</Text>
-            {history.history.map((h) => (
-              <View style={styles.card}>
+            {history.history.map((h, index) => (
+              <Card
+                key={index}
+                firstIndex={index}
+                lastIndex={index === history.history.length - 1 ? true : false}
+              >
                 <Text style={styles.to}>{h.to}</Text>
                 <View style={styles.wrapper}>
                   <Text style={{ color: "#808e9b" }}>SGD</Text>
                   <Text style={styles.amount}>{h.amount}</Text>
                 </View>
-              </View>
+              </Card>
             ))}
           </View>
         ))}
@@ -107,23 +113,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     fontSize: 18,
     fontWeight: "bold",
-  },
-  card: {
-    width: "90%",
-    backgroundColor: "white",
-    marginHorizontal: 20,
-    // ios
-    shadowColor: "#171717",
-    shadowOffset: { width: -2, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-
-    // android
-    // elevation: 20,
-    // shadowColor: "#52006A",
-    padding: 15,
-    borderColor: "#dfe6e9",
-    borderWidth: 1,
   },
   wrapper: {
     flexDirection: "row",
