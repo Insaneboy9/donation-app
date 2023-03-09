@@ -5,10 +5,11 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons/";
 import HomeScreen from "../screens/home/HomeScreen";
 import LeaderboardScreen from "../screens/leaderboard/LeaderboardScreen";
 import RewardScreen from "../screens/rewards/RewardScreen";
+import TransactionScreen from "../screens/transaction/TransactionScreen";
 
 const Tab = createBottomTabNavigator();
 
-const Tabs = ({route}) => {
+const Tabs = ({ route }) => {
   return (
     <Tab.Navigator
       sceneContainerStyle={{
@@ -19,7 +20,6 @@ const Tabs = ({route}) => {
         tabBarActiveTintColor: colors.iconFillColor,
         tabBarInactiveTintColor: colors.iconColor,
         tabBarLabelStyle: { fontSize: 12, fontWeight: "600", marginTop: -5 },
-
         headerShown: false,
       }}
     >
@@ -30,6 +30,15 @@ const Tabs = ({route}) => {
         options={{
           tabBarIcon: ({ color, size }) => {
             return <Ionicons name="home" size={size} color={color} />;
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Transaction"
+        component={TransactionScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => {
+            return <Ionicons name="receipt" size={size} color={color} />;
           },
         }}
       />
