@@ -6,6 +6,7 @@ import { ref, getDownloadURL } from "firebase/storage";
 import { createDocument } from "./controllers/functions.js";
 import { subtractUserCash } from "./controllers/usersconn.js";
 import { addTimeBc } from "./controllers/transactionsconn.js";
+import { getUserTransactionHistory } from "./controllers/usersconn.js";
 
 const app = express();
 app.use(express.json());
@@ -71,12 +72,24 @@ app.post("/transactions", async (req, res) => {
   var data = req.body;
   // Add timestamp and blockchain id to data object
   data = addTimeBc(data);
-  console.log(data)
   // Create transaction data in firestore
   await createDocument("transactions", data)
   // Deduct user's cash in account
-  await subtractUserCash("users", "email", data.email, "cash", data.amount);
+  await subtractUserCash("email", data.email, data.amount, data.type);
   res.send("Data received");
+});
+
+//Handle GET request for history
+app.get("/history", async (req, res) => {
+  try {
+    const { userId } = req.body;
+    // Get transaction history for user
+    const result = await getUserTransactionHistory(userId);
+    res.status(200).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
 });
 
 app.get("/", async (req, res) => {
