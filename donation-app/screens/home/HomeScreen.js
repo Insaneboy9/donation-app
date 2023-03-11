@@ -53,7 +53,6 @@ const HomeScreen = ({ route }) => {
       .catch((error) => {
         // An error happened.
       });
-    // navigation.navigate("LoginScreen");
   };
 
   useEffect(() => {}, []);
@@ -94,7 +93,7 @@ const HomeScreen = ({ route }) => {
                 style={styles.action}
               >
                 <FontAwesome name="paper-plane-o" size={36} color="white" />
-                <Text style={styles.actionText}>Pay</Text>
+                <Text style={styles.actionText}>Donate</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={toScan} style={styles.action}>
                 <Ionicons name="scan" size={36} color="white" />
