@@ -4,7 +4,7 @@ import { db, storage } from "./firebaseConfig.js";
 import { collection, getDocs } from "firebase/firestore";
 import { ref, getDownloadURL } from "firebase/storage";
 import { createDocument } from "./controllers/functions.js";
-import { subtractUserCash } from "./controllers/usersconn.js";
+import { userOperation } from "./controllers/usersconn.js";
 import { addTimeBc } from "./controllers/transactionsconn.js";
 import { getUserTransactionHistory } from "./controllers/usersconn.js";
 
@@ -75,7 +75,7 @@ app.post("/transactions", async (req, res) => {
   // Create transaction data in firestore
   await createDocument("transactions", data)
   // Deduct user's cash in account
-  await subtractUserCash("email", data.email, data.amount, data.type);
+  await userOperation("email", data.email, data.amount, data.type);
   res.send("Data received");
 });
 
@@ -91,6 +91,7 @@ app.get("/history", async (req, res) => {
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 });
+
 
 app.get("/", async (req, res) => {
   console.log("Server is up and running");

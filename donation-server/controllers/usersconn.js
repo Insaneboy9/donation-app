@@ -8,13 +8,12 @@ import {
   doc,
 } from "firebase/firestore";
 import { db } from "../firebaseConfig.js";
-import { readDocumentById } from "./functions.js";
 
 // Update documents based on a field value
-export const subtractUserCash = async (
+export const userOperation = async (
   fieldName,
   fieldValue,
-  subtractValue,
+  value,
   type
 ) => {
   const collectionRef = collection(db, "users");
@@ -28,14 +27,22 @@ export const subtractUserCash = async (
       const currentPointValue = doc.data()["points"];
       if (type == "donation") {
         await updateDoc(docRef, {
-          ["cash"]: currentCashValue - subtractValue,
-          ["points"]: currentPointValue + 0.01 * subtractValue,
+          ["cash"]: currentCashValue - value,
+          ["points"]: currentPointValue + 0.01 * value,
         });
-      } else {
+      } else if (type == "redemption" || type == "withdraw") {
         await updateDoc(docRef, {
-          ["cash"]: currentCashValue - subtractValue,
+          ["cash"]: currentCashValue - value,
         });
-      }
+      } else if (type == "rewards") {
+        await updateDoc(docRef, {
+          ["points"]: currentPointValue - value,
+        });
+      } else if (type == "deposit") {
+        await updateDoc(docRef, {
+          ["cash"]: currentCashValue + value,
+        });
+      } 
       console.log(
         `Document with ${fieldName}=${fieldValue} successfully updated!`
       );
@@ -59,7 +66,7 @@ export const getUserTransactionHistory = async (userId) => {
 
     //Sort the filtered transactions by timestamp in descending order
     userTransactions.sort((a, b) => b.timestamp - a.timestamp);
-    console.log(userTransactions)
+    console.log(userTransactions);
     //Group the sorted transactions by date (ignoring the time component)
     const groupedTransactions = {};
     userTransactions.forEach((transaction) => {
