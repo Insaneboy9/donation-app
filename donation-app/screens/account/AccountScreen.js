@@ -3,19 +3,15 @@ import {
   Text,
   StyleSheet,
   View,
-  Image,
   Dimensions,
-  FlatList,
   TextInput,
-  TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { useQuery } from "react-query";
-import { callApi } from "../../api";
-import Loader from "../../components/Loader";
 import { MaterialIcons } from "@expo/vector-icons";
 import colors from "../../colors";
 import styled from "styled-components/native";
+import { callApi } from "../../api";
+import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 
 const Button = styled.TouchableOpacity`
@@ -35,31 +31,31 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
   const [disable, setDisable] = useState(true);
   const [amount, setAmount] = useState();
   const placeholderText = `${params.type} Amount`;
+  const navigation = useNavigation();
 
   console.log(params.type);
+
   const onTransfer = async () => {
+    const data = {
+      userId: params.user.userId,
+      amount: amount,
+      type: "",
+      email: params.user.email,
+    };
     if (params.type === "Pay") {
-      const data = {
-        userId: params.user.userId,
-        amount: amount,
-        type: "donation",
-        email: params.user.email,
-      };
-      try {
-        const response = await axios.post(
-          "http://10.0.2.2:8080/transactions",
-          data,
-          {
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        console.log(response);
-      } catch (error) {
-        console.log(error);
-      }
+      data.type = "donation";
+      callApi.onTransaction(data);
+      navigation.navigate("Home");
+    } else if (params.type == "Redeem") {
+      data.type = "redeem";
+      callApi.onTransaction(data);
+      navigation.navigate("Home");
+    } else if (params.type == "Top Up") {
+      // handle put api for top up
+      navigation.navigate("Home");
+    } else if (params.type == "Withdraw") {
+      // handle put api for withdraw
+      navigation.navigate("Home");
     }
   };
 

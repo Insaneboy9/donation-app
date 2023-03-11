@@ -16,14 +16,14 @@ import { useNavigation } from "@react-navigation/native";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-const RewardScreen = ({route}) => {
-  const user = route.params.user
+const RewardScreen = ({ route }) => {
+  const user = route.params.user;
   const { isLoading, data } = useQuery("rewards", callApi.rewards);
 
   const navigation = useNavigation();
   const toRewardDetail = (data) => {
     navigation.navigate("Stack", {
-      screen: "Rewards",
+      screen: "RewardDetail",
       params: { ...data },
     });
   };

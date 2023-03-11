@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const BASE_URL = "http://10.0.2.2:8080";
 
 export const callApi = {
@@ -13,4 +15,17 @@ export const callApi = {
     fetch(`${BASE_URL}/rewards`).then((response) => {
       return response.json();
     }),
+  onTransaction: async (data) => {
+    try {
+      const response = await axios.post(`${BASE_URL}/transactions`, data, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };

@@ -25,6 +25,7 @@ export default function RewardDetailScreen({
   navigation: { setOptions },
   route: { params },
 }) {
+  const navigation = useNavigation();
   const [isChecked, setIsChecked] = useState(false);
   const [disable, setDisable] = useState(true);
   const userPoints = params.user.points;
@@ -32,6 +33,10 @@ export default function RewardDetailScreen({
   const toggleChecked = () => {
     setIsChecked((prev) => !prev);
     setDisable((prev) => !prev);
+  };
+  const onSubmit = () => {
+    // handle put api for rewards
+    navigation.navigate("Rewards");
   };
 
   return (
@@ -100,7 +105,7 @@ export default function RewardDetailScreen({
           />
           <Text>I agree to the full-terms and conditions</Text>
         </View>
-        <Button disabled={disable}>
+        <Button disabled={disable} onPress={onSubmit}>
           <Text style={styles.btnText}>
             {userPoints - params.points < 0
               ? "INSUFFICIENT POINTS"

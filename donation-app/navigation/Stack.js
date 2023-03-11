@@ -14,7 +14,6 @@ const Stack = ({ route }) => {
     <NativeStack.Navigator
       screenOptions={{
         animation: "fade",
-
         headerStyle: { backgroundColor: "white" },
         headerTitleStyle: { color: colors.text },
         headerTintColor: colors.text,
@@ -31,7 +30,7 @@ const Stack = ({ route }) => {
       <NativeStack.Screen name="Scan QR Code" component={CameraScreen} />
       <NativeStack.Screen
         initialParams={{ user: route.params.user }}
-        name="Rewards"
+        name="RewardDetail"
         component={RewardDetailScreen}
       />
     </NativeStack.Navigator>

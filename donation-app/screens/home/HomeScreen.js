@@ -8,7 +8,7 @@ import {
   ScrollView,
   Image,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { Ionicons, MaterialIcons, FontAwesome } from "@expo/vector-icons";
 import colors from "../../colors";
 import { LinearGradient } from "expo-linear-gradient";
@@ -22,8 +22,8 @@ import { useNavigation } from "@react-navigation/native";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-const HomeScreen = ({route}) => {
-  const user = route.params.user
+const HomeScreen = ({ route }) => {
+  const user = route.params.user;
   const { isLoading: hawkerLoading, data: hawkerData } = useQuery(
     "hawker",
     callApi.hawker
@@ -55,6 +55,8 @@ const HomeScreen = ({route}) => {
       });
     // navigation.navigate("LoginScreen");
   };
+
+  useEffect(() => {}, []);
 
   const isLoading = hawkerLoading || organizationLoading;
 
