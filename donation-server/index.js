@@ -74,7 +74,7 @@ app.post("/transactions", async (req, res) => {
   data = addTimeBc(data);
   // Create transaction data in firestore
   await createDocument("transactions", data);
-  // Deduct user's cash in account
+  // Handle user's cash in account
   await userOperation("email", data.email, data.amount, data.type);
   res.send("Data received");
 });

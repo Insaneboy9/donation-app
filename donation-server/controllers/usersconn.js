@@ -22,21 +22,21 @@ export const userOperation = async (fieldName, fieldValue, value, type) => {
       const currentPointValue = doc.data()["points"];
       if (type == "donation") {
         await updateDoc(docRef, {
-          ["cash"]: currentCashValue - value,
+          ["cash"]: Number(currentCashValue) - Number(value),
           // ["points"]: currentPointValue + 0.01 * value,
-          ["points"]: currentPointValue + 1 * value,
+          ["points"]: Number(currentPointValue) + 1 * Number(value),
         });
       } else if (type == "redemption" || type == "withdraw") {
         await updateDoc(docRef, {
-          ["cash"]: currentCashValue - value,
+          ["cash"]: Number(currentCashValue) - Number(value),
         });
       } else if (type == "rewards") {
         await updateDoc(docRef, {
-          ["points"]: currentPointValue - value,
+          ["points"]: Number(currentPointValue) - Number(value),
         });
       } else if (type == "deposit") {
         await updateDoc(docRef, {
-          ["cash"]: currentCashValue + value,
+          ["cash"]: Number(currentCashValue) + Number(value),
         });
       }
       console.log(

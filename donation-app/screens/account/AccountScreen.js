@@ -29,11 +29,9 @@ const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
 
 const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
   const [disable, setDisable] = useState(true);
-  const [amount, setAmount] = useState();
+  const [amount, setAmount] = useState(0);
   const placeholderText = `${params.type} Amount`;
   const navigation = useNavigation();
-
-  console.log(params.type);
 
   const onTransfer = async () => {
     const data = {
@@ -47,7 +45,7 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
       callApi.onTransaction(data);
       navigation.navigate("Home");
     } else if (params.type == "Redeem") {
-      data.type = "redeem";
+      data.type = "redemption";
       callApi.onTransaction(data);
       navigation.navigate("Home");
     } else if (params.type == "Top Up") {
