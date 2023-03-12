@@ -84,7 +84,7 @@ app.get("/history/:id", async (req, res) => {
   try {
     // const { userId } = req.body;
     // console.log(req.body);
-    const userId = req.params;
+    const userId = req.params.id;
     console.log(userId);
     // Get transaction history for user
     const result = await getUserTransactionHistory(userId);

@@ -96,7 +96,7 @@ export const getUserTransactionHistory = async (userId) => {
       }
     );
 
-    return { success: true, data: transactionHistory };
+    return transactionHistory;
   } catch (error) {
     console.error(error);
     return { success: false, error: "Internal Server Error" };
