@@ -80,12 +80,15 @@ app.post("/transactions", async (req, res) => {
 });
 
 //Handle GET request for history
-app.get("/history", async (req, res) => {
+app.get("/history/:id", async (req, res) => {
   try {
-    const { userId } = req.body;
-    console.log(req.body);
+    // const { userId } = req.body;
+    // console.log(req.body);
+    const userId = req.params;
+    console.log(userId);
     // Get transaction history for user
     const result = await getUserTransactionHistory(userId);
+    console.log(result);
     res.status(200).json(result);
   } catch (error) {
     console.error(error);
