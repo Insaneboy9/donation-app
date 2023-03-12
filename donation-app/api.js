@@ -18,7 +18,7 @@ export const callApi = {
   history: async (data) => {
     try {
       const response = await axios.get(`${BASE_URL}/history/${data}`);
-      console.log(response);
+      return response.data;
     } catch (error) {
       console.log(error);
     }

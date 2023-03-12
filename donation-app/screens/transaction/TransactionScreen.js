@@ -1,12 +1,9 @@
 import { SafeAreaView, Text, StyleSheet, View, ScrollView } from "react-native";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useQuery } from "react-query";
 import { callApi } from "../../api";
 import Loader from "../../components/Loader";
-import { MaterialIcons } from "@expo/vector-icons";
-import colors from "../../colors";
 import styled from "styled-components/native";
-import axios from "axios";
 
 const Card = styled.View`
   width: 90%;
@@ -27,47 +24,18 @@ const Card = styled.View`
 
 const TransactionScreen = ({ route }) => {
   const userId = route.params.user.userId;
-  const { isLoading, data } = useQuery("history", callApi.history(userId));
+  const { isLoading, data } = useQuery("history", () =>
+    callApi.history(userId)
+  );
 
-  const transactionHistory = [
-    {
-      date: "08 March",
-      history: [
-        { to: "Chicken Rice", amount: 5.65 },
-        { to: "UNICEF", amount: 20 },
-        { to: "Chicken Rice", amount: 5.65 },
-        { to: "Chicken Rice", amount: 5.65 },
-        { to: "Chicken Rice", amount: 5.65 },
-      ],
-    },
-    {
-      date: "07 March",
-      history: [
-        { to: "Chicken Rice", amount: 5.65 },
-        { to: "UNICEF", amount: 20 },
-        { to: "Chicken Rice", amount: 5.65 },
-        { to: "Chicken Rice", amount: 5.65 },
-        { to: "Chicken Rice", amount: 5.65 },
-      ],
-    },
-    {
-      date: "06 March",
-      history: [
-        { to: "Chicken Rice", amount: 5.65 },
-        { to: "UNICEF", amount: 20 },
-        { to: "Chicken Rice", amount: 5.65 },
-        { to: "Chicken Rice", amount: 5.65 },
-        { to: "Chicken Rice", amount: 5.65 },
-      ],
-    },
-  ];
-  console.log(data);
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <SafeAreaView style={styles.wrapper}>
       <ScrollView style={styles.container}>
         <Text style={styles.title}>Transactions</Text>
         <Text style={styles.subTitle}>PaiDrop</Text>
-        {transactionHistory.map((history, index) => (
+        {data.map((history, index) => (
           <View key={index} style={{ marginTop: 20 }}>
             <Text style={styles.date}>{history.date}</Text>
             {history.history.map((h, index) => (
