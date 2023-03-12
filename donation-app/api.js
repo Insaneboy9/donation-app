@@ -36,4 +36,8 @@ export const callApi = {
       console.log(error);
     }
   },
+  leaderboard: () =>
+    fetch(`${BASE_URL}/leaderboard`).then((response) => {
+      return response.json();
+    }),
 };

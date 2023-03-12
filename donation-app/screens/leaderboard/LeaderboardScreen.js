@@ -63,61 +63,9 @@ const NormalRank = styled.View`
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const LeaderboardScreen = () => {
-  // const { isLoading, data } = useQuery("rewards", callApi.rewards);
-  const isLoading = false;
-  const users = [
-    {
-      name: "Reagan",
-      points: 2000,
-    },
-    ,
-    {
-      name: "Daryl",
-      points: 3000,
-    },
-    {
-      name: "Xueli",
-      points: 4000,
-    },
-    {
-      name: "Zhizhan",
-      points: 5000,
-    },
-    {
-      name: "Weibing",
-      points: 6000,
-    },
-    {
-      name: "Beomjun",
-      points: 7000,
-    },
-    {
-      name: "Reagan",
-      points: 8000,
-    },
-    ,
-    {
-      name: "Daryl",
-      points: 9000,
-    },
-    {
-      name: "Xueli",
-      points: 10000,
-    },
-    {
-      name: "Zhizhan",
-      points: 11000,
-    },
-    {
-      name: "Weibing",
-      points: 12000,
-    },
-    {
-      name: "Beomjun",
-      points: 13000,
-    },
-  ];
-  users.sort((a, b) => b.points - a.points);
+  const { isLoading, data } = useQuery("leaderboard", callApi.leaderboard);
+  const users = data
+  users?.sort((a, b) => b.points - a.points);
   return isLoading ? (
     <Loader />
   ) : (
