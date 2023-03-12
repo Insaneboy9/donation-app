@@ -73,7 +73,7 @@ app.post("/transactions", async (req, res) => {
   // Add timestamp and blockchain id to data object
   data = addTimeBc(data);
   // Create transaction data in firestore
-  await createDocument("transactions", data)
+  await createDocument("transactions", data);
   // Deduct user's cash in account
   await userOperation("email", data.email, data.amount, data.type);
   res.send("Data received");
@@ -83,6 +83,7 @@ app.post("/transactions", async (req, res) => {
 app.get("/history", async (req, res) => {
   try {
     const { userId } = req.body;
+    console.log(req.body);
     // Get transaction history for user
     const result = await getUserTransactionHistory(userId);
     res.status(200).json(result);
@@ -91,7 +92,6 @@ app.get("/history", async (req, res) => {
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 });
-
 
 app.get("/", async (req, res) => {
   console.log("Server is up and running");

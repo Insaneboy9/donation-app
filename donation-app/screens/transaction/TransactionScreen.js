@@ -25,7 +25,10 @@ const Card = styled.View`
   border-width: 1px;
 `;
 
-const TransactionScreen = () => {
+const TransactionScreen = ({ route }) => {
+  const userId = route.params.user.userId;
+  const { isLoading, data } = useQuery("history", callApi.history(userId));
+
   const transactionHistory = [
     {
       date: "08 March",
@@ -58,6 +61,7 @@ const TransactionScreen = () => {
       ],
     },
   ];
+  console.log(data);
   return (
     <SafeAreaView style={styles.wrapper}>
       <ScrollView style={styles.container}>

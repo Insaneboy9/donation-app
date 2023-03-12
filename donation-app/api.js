@@ -15,6 +15,23 @@ export const callApi = {
     fetch(`${BASE_URL}/rewards`).then((response) => {
       return response.json();
     }),
+  history: async (data) => {
+    const formattedData = {
+      userId: data,
+    };
+    console.log(formattedData);
+    try {
+      const response = await axios.get(`${BASE_URL}/history`, formattedData, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  },
   onTransaction: async (data) => {
     try {
       const response = await axios.post(`${BASE_URL}/transactions`, data, {

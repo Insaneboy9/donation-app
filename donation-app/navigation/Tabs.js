@@ -36,6 +36,7 @@ const Tabs = ({ route }) => {
       <Tab.Screen
         name="Transaction"
         component={TransactionScreen}
+        initialParams={{ user: route.params.user }}
         options={{
           tabBarIcon: ({ color, size }) => {
             return <Ionicons name="receipt" size={size} color={color} />;

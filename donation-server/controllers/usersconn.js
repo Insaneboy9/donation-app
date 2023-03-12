@@ -10,12 +10,7 @@ import {
 import { db } from "../firebaseConfig.js";
 
 // Update documents based on a field value
-export const userOperation = async (
-  fieldName,
-  fieldValue,
-  value,
-  type
-) => {
+export const userOperation = async (fieldName, fieldValue, value, type) => {
   const collectionRef = collection(db, "users");
   const q = query(collectionRef, where(fieldName, "==", fieldValue));
   const querySnapshot = await getDocs(q);
@@ -28,7 +23,8 @@ export const userOperation = async (
       if (type == "donation") {
         await updateDoc(docRef, {
           ["cash"]: currentCashValue - value,
-          ["points"]: currentPointValue + 0.01 * value,
+          // ["points"]: currentPointValue + 0.01 * value,
+          ["points"]: currentPointValue + 1 * value,
         });
       } else if (type == "redemption" || type == "withdraw") {
         await updateDoc(docRef, {
@@ -42,7 +38,7 @@ export const userOperation = async (
         await updateDoc(docRef, {
           ["cash"]: currentCashValue + value,
         });
-      } 
+      }
       console.log(
         `Document with ${fieldName}=${fieldValue} successfully updated!`
       );

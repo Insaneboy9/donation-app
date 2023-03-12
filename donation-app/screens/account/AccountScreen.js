@@ -42,7 +42,7 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
       type: "",
       email: params.user.email,
     };
-    if (params.type === "Pay") {
+    if (params.type === "Donate") {
       data.type = "donation";
       callApi.onTransaction(data);
       navigation.navigate("Home");
@@ -51,10 +51,12 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
       callApi.onTransaction(data);
       navigation.navigate("Home");
     } else if (params.type == "Top Up") {
-      // handle put api for top up
+      data.type = "deposit";
+      callApi.onTransaction(data);
       navigation.navigate("Home");
     } else if (params.type == "Withdraw") {
-      // handle put api for withdraw
+      data.type = "withdraw";
+      callApi.onTransaction(data);
       navigation.navigate("Home");
     }
   };

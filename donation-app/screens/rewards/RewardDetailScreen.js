@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import colors from "../../colors";
 import styled from "styled-components/native";
 import { Entypo } from "@expo/vector-icons";
+import { callApi } from "../../api";
 
 const Button = styled.TouchableOpacity`
   margin-horizontal: 60px;
@@ -35,9 +36,21 @@ export default function RewardDetailScreen({
     setDisable((prev) => !prev);
   };
   const onSubmit = () => {
-    // handle put api for rewards
+    const data = {
+      userId: params.user.userId,
+      amount: params.points,
+      type: "rewards",
+      email: params.user.email,
+    };
+    callApi.onTransaction(data);
     navigation.navigate("Rewards");
   };
+
+  useEffect(() => {
+    setOptions({
+      title: params.brand,
+    });
+  }, []);
 
   return (
     <View style={styles.container}>

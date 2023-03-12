@@ -89,7 +89,7 @@ const HomeScreen = ({ route }) => {
             </View>
             <View style={styles.actionHolder}>
               <TouchableOpacity
-                onPress={() => toAccount("Pay")}
+                onPress={() => toAccount("Donate")}
                 style={styles.action}
               >
                 <FontAwesome name="paper-plane-o" size={36} color="white" />
