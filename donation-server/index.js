@@ -82,10 +82,7 @@ app.post("/transactions", async (req, res) => {
 //Handle GET request for history
 app.get("/history/:id", async (req, res) => {
   try {
-    // const { userId } = req.body;
-    // console.log(req.body);
     const userId = req.params.id;
-    console.log(userId);
     // Get transaction history for user
     const result = await getUserTransactionHistory(userId);
     console.log(result);
@@ -94,6 +91,20 @@ app.get("/history/:id", async (req, res) => {
     console.error(error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
+});
+
+//Handle GET request for leaderboard
+app.get("/leaderboard", async (req, res) => {
+  const snapshot = await getDocs(collection(db, "users"));
+  const list = snapshot.docs.map(async (doc) => {
+    const data = doc.data();
+    return {
+      name: data.name,
+      points: data.points
+    };
+  });
+  const results = await Promise.all(list); // wait for all the URLs to resolve
+  res.send(results);
 });
 
 app.get("/", async (req, res) => {

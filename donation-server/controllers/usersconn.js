@@ -78,14 +78,35 @@ export const getUserTransactionHistory = async (userId) => {
     //Create an array of objects representing the transaction history for each date
     const transactionHistory = Object.entries(groupedTransactions).map(
       ([date, transactions]) => {
-        // Step 5: Map the grouped transactions to an array of objects in the desired format
-        const history = transactions.map((transaction) => ({
-          to:
-            transaction.type === "donation"
-              ? transaction.email
-              : "Chicken Rice", // We dont have a stall name in transaction history
-          amount: parseFloat(transaction.amount),
-        }));
+        // Map the grouped transactions to an array of objects in the desired format
+        // const history = transactions.map((transaction) => ({
+        //   to:
+        //     transaction.type === "donation"
+        //       ? transaction.email
+        //       : "Chicken Rice", // We dont have a stall name in transaction history
+        //   amount: parseFloat(transaction.amount),
+        // }));
+        const history = transactions.map((transaction) => {
+          let to;
+          switch (transaction.type) {
+            case "donation":
+              to = "Donation to UNICEF";
+              break;
+            case "withdraw":
+              to = "Bank Transfer";
+              break;
+            case "deposit":
+              to = "Top-up to wallet";
+              break;
+            default:
+              to = "Chicken Rice";
+              break;
+          }
+          return {
+            to: to,
+            amount: parseFloat(transaction.amount),
+          };
+        });
         return {
           date: new Date(date).toLocaleDateString("en-US", {
             month: "short",
