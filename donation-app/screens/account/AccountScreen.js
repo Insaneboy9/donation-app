@@ -29,7 +29,9 @@ const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
 const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
   const [disable, setDisable] = useState(true);
   const [amount, setAmount] = useState(0);
-  const placeholderText = `${params.type} Amount`;
+  const placeholderText = `${
+    params.type.length > 13 ? params.type.slice(0, 13) + "..." : params.type
+  } Amount`;
   const navigation = useNavigation();
   // post transaction data to backend
   const onTransfer = async () => {
@@ -64,7 +66,10 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
 
   useEffect(() => {
     setOptions({
-      title: params.type,
+      title:
+        params.type.length > 20
+          ? params.type.slice(0, 20) + "..."
+          : params.type,
     });
   }, []);
 
