@@ -23,8 +23,7 @@ export const userOperation = async (fieldName, fieldValue, value, type) => {
       if (type == "donation") {
         await updateDoc(docRef, {
           ["cash"]: Number(currentCashValue) - Number(value),
-          // ["points"]: currentPointValue + 0.01 * value,
-          ["points"]: Number(currentPointValue) + 1 * Number(value),
+          ["points"]: Number(currentPointValue) + (0.1 * Number(value)),
         });
       } else if (type == "redemption" || type == "withdraw") {
         await updateDoc(docRef, {

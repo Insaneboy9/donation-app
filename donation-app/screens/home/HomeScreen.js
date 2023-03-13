@@ -19,11 +19,12 @@ import Loader from "../../components/Loader";
 import HorizontalList from "../../components/HorizontalList";
 import { auth } from "../../firebase/firebaseConfig";
 import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../../firebase/firebaseAuth"
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const HomeScreen = ({ route }) => {
-  const user = route.params.user;
+  const { user } = useAuth();
   const { isLoading: hawkerLoading, data: hawkerData } = useQuery(
     "hawker",
     callApi.hawker

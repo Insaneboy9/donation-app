@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import { callApi } from "../../api";
 import Loader from "../../components/Loader";
 import styled from "styled-components/native";
+import { useAuth } from "../../firebase/firebaseAuth";
 
 const Card = styled.View`
   width: 90%;
@@ -23,8 +24,11 @@ const Card = styled.View`
 `;
 
 const TransactionScreen = ({ route }) => {
-  const userId = route.params.user.userId;
-  const { isLoading, data } = useQuery("history", () =>
+  const { user } = useAuth();
+  const userId = user?.userId;
+
+  //dependency to check when userId changed
+  const { isLoading, data } = useQuery(["history", userId], () =>
     callApi.history(userId)
   );
 

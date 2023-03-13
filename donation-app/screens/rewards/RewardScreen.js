@@ -13,11 +13,12 @@ import { useQuery } from "react-query";
 import { callApi } from "../../api";
 import Loader from "../../components/Loader";
 import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../../firebase/firebaseAuth"
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const RewardScreen = ({ route }) => {
-  const user = route.params.user;
+  const { user } = useAuth();
   const { isLoading, data } = useQuery("rewards", callApi.rewards);
 
   const navigation = useNavigation();
