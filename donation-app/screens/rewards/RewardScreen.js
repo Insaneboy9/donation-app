@@ -15,7 +15,8 @@ import Loader from "../../components/Loader";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../../firebase/firebaseAuth";
 
-const { height: SCREEN_HEIGHT } = Dimensions.get("window");
+const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
+console.log(SCREEN_WIDTH);
 
 const RewardScreen = () => {
   const { user } = useAuth();
@@ -84,7 +85,12 @@ const RewardScreen = () => {
                 source={{ uri: item.imagelUrl }}
               />
             </View>
-            <View>
+            <View
+              style={{
+                width:
+                  SCREEN_WIDTH <= 350 ? SCREEN_WIDTH / 2.5 : SCREEN_WIDTH / 2,
+              }}
+            >
               <Text style={styles.name}>{item.name}</Text>
               <Text style={styles.brand}>{item.brand}</Text>
               <View style={{ flexDirection: "row", marginTop: 20 }}>

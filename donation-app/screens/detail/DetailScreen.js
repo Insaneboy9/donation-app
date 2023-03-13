@@ -15,7 +15,7 @@ import colors from "../../colors";
 import React, { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 
-const { height: SCREEN_HEIGHT } = Dimensions.get("window");
+const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
 
 const DetailScreen = ({ navigation: { setOptions }, route: { params } }) => {
   const navigation = useNavigation();
@@ -31,12 +31,16 @@ const DetailScreen = ({ navigation: { setOptions }, route: { params } }) => {
     const isAndroid = Platform.OS === "android";
     if (isAndroid) {
       await Share.share({
-        message: `${params.description}\nCheck it out: ${params.address} \n`,
+        message: `${params.description}\nCheck it out: ${
+          "country" in params ? params.country : params.address
+        } \n`,
         title: params.name,
       });
     } else {
       await Share.share({
-        message: `${params.description}\nCheck it out: ${params.address} \n`,
+        message: `${params.description}\nCheck it out: ${
+          "country" in params ? params.country : params.address
+        } \n`,
         url: params.thumbnailUrl + "",
         title: params.address,
       });
@@ -142,6 +146,7 @@ const styles = StyleSheet.create({
   },
   posterDescription: {
     marginLeft: 20,
+    width: SCREEN_WIDTH <= 350 ? SCREEN_WIDTH / 2 : SCREEN_WIDTH / 1.6,
     alignSelf: "flex-end",
   },
   name: {
