@@ -13,15 +13,17 @@ import { useQuery } from "react-query";
 import { callApi } from "../../api";
 import Loader from "../../components/Loader";
 import { useNavigation } from "@react-navigation/native";
-import { useAuth } from "../../firebase/firebaseAuth"
+import { useAuth } from "../../firebase/firebaseAuth";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-const RewardScreen = ({ route }) => {
+const RewardScreen = () => {
   const { user } = useAuth();
+  // fetching rewards data
   const { isLoading, data } = useQuery("rewards", callApi.rewards);
 
   const navigation = useNavigation();
+  // navigate to reward detail page
   const toRewardDetail = (data) => {
     navigation.navigate("Stack", {
       screen: "RewardDetail",

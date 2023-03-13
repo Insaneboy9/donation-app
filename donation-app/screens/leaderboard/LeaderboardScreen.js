@@ -63,8 +63,10 @@ const NormalRank = styled.View`
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const LeaderboardScreen = () => {
+  // fetching users data
   const { isLoading, data } = useQuery("leaderboard", callApi.leaderboard);
-  const users = data
+  const users = data;
+  // sort the users in descending order
   users?.sort((a, b) => b.points - a.points);
   return isLoading ? (
     <Loader />
@@ -82,7 +84,7 @@ const LeaderboardScreen = () => {
             style={styles.prizeLogo}
             source={require("../../assets/prize.png")}
           />
-          <Text style={styles.header}>WIN $10!</Text>
+          <Text style={styles.header}>WIN 1000 POINTS!</Text>
           <Text style={styles.content}>This week's highest point wins!</Text>
           <Text style={styles.timer}>Contest ends in 48 : 32 : 16</Text>
         </LinearGradient>

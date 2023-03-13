@@ -68,7 +68,6 @@ const LoginScreen = () => {
             placeholder="Password"
           />
           <TouchableOpacity style={styles.button} onPress={signIn}>
-            {/* <TouchableOpacity style={styles.button} > */}
             <Text style={styles.buttonText}>Log in</Text>
           </TouchableOpacity>
         </View>

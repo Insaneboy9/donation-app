@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const ShowAllScreen = ({ navigation: { setOptions }, route: { params } }) => {
   const navigation = useNavigation();
+  // navigate to detail page
   const toDetail = (data) => {
     navigation.navigate("Stack", {
       screen: "Detail",
@@ -19,7 +20,7 @@ const ShowAllScreen = ({ navigation: { setOptions }, route: { params } }) => {
       },
     });
   };
-
+  // render the title according to the category
   useEffect(() => {
     setOptions({
       title: "country" in params.data[0] ? "All Organizations" : "All Hawkers",

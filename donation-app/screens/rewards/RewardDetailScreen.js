@@ -35,6 +35,7 @@ export default function RewardDetailScreen({
     setIsChecked((prev) => !prev);
     setDisable((prev) => !prev);
   };
+  // post data to backend and navigate back to rewards screen
   const onSubmit = () => {
     const data = {
       userId: params.user.userId,
@@ -45,7 +46,7 @@ export default function RewardDetailScreen({
     callApi.onTransaction(data);
     navigation.navigate("Rewards");
   };
-
+  // render title as reward brand
   useEffect(() => {
     setOptions({
       title: params.brand,

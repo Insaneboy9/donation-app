@@ -26,7 +26,6 @@ const Tabs = ({ route }) => {
       <Tab.Screen
         name="Home"
         component={HomeScreen}
-        initialParams={{ user: route.params.user }}
         options={{
           tabBarIcon: ({ color, size }) => {
             return <Ionicons name="home" size={size} color={color} />;
@@ -36,7 +35,6 @@ const Tabs = ({ route }) => {
       <Tab.Screen
         name="Transaction"
         component={TransactionScreen}
-        initialParams={{ user: route.params.user }}
         options={{
           tabBarIcon: ({ color, size }) => {
             return <Ionicons name="receipt" size={size} color={color} />;
@@ -57,7 +55,6 @@ const Tabs = ({ route }) => {
       <Tab.Screen
         name="Rewards"
         component={RewardScreen}
-        initialParams={{ user: route.params.user }}
         options={{
           tabBarIcon: ({ color, size }) => {
             return <Ionicons name="gift" size={size} color={color} />;

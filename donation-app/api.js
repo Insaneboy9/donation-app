@@ -2,6 +2,7 @@ import axios from "axios";
 
 const BASE_URL = "http://10.0.2.2:8080";
 
+// api calls to backend
 export const callApi = {
   hawker: () =>
     fetch(`${BASE_URL}/hawkers`).then((response) => {
@@ -31,7 +32,6 @@ export const callApi = {
           "Content-Type": "application/json",
         },
       });
-      console.log(response);
     } catch (error) {
       console.log(error);
     }

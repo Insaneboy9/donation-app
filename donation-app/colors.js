@@ -1,3 +1,4 @@
+// set of color codes for donation app
 const colors = {
   card: "#ff6b81",
   bg: "#f1f2f6",

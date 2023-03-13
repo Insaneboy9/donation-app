@@ -7,6 +7,7 @@ export default function CameraScreen() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
 
+  // navigate to account page
   const navigation = useNavigation();
   const toAccount = (type) => {
     navigation.navigate("Stack", {

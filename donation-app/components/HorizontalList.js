@@ -13,6 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const HorizontalList = ({ title, data }) => {
   const navigation = useNavigation();
+  // navigate to showAll page
   const toShowAll = () => {
     navigation.navigate("Stack", {
       screen: "ShowAll",

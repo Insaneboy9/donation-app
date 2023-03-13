@@ -6,6 +6,7 @@ import Poster from "./Poster";
 
 const Slide = ({ posterPath, originalTitle, category, fullData }) => {
   const navigation = useNavigation();
+  // navigate to detail page
   const toDetail = () => {
     navigation.navigate("Stack", {
       screen: "Detail",
@@ -14,7 +15,6 @@ const Slide = ({ posterPath, originalTitle, category, fullData }) => {
       },
     });
   };
-  // console.log(fullData);
 
   return (
     <TouchableOpacity onPress={toDetail}>

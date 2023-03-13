@@ -19,12 +19,13 @@ import Loader from "../../components/Loader";
 import HorizontalList from "../../components/HorizontalList";
 import { auth } from "../../firebase/firebaseConfig";
 import { useNavigation } from "@react-navigation/native";
-import { useAuth } from "../../firebase/firebaseAuth"
+import { useAuth } from "../../firebase/firebaseAuth";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-const HomeScreen = ({ route }) => {
+const HomeScreen = () => {
   const { user } = useAuth();
+  // fetching hawker and organization data
   const { isLoading: hawkerLoading, data: hawkerData } = useQuery(
     "hawker",
     callApi.hawker
@@ -34,12 +35,14 @@ const HomeScreen = ({ route }) => {
     callApi.organization
   );
   const navigation = useNavigation();
+  // navigate to account page
   const toAccount = (type) => {
     navigation.navigate("Stack", {
       screen: "Account",
       params: { type },
     });
   };
+  // navigate to scan page
   const toScan = () => {
     navigation.navigate("Stack", {
       screen: "Scan QR Code",

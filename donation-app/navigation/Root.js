@@ -9,7 +9,6 @@ const Nav = createNativeStackNavigator();
 
 const Root = () => {
   const { user } = useAuth();
-  console.log(user);
 
   return !user ? (
     <Nav.Navigator

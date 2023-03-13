@@ -12,7 +12,6 @@ import colors from "../../colors";
 import styled from "styled-components/native";
 import { callApi } from "../../api";
 import { useNavigation } from "@react-navigation/native";
-import axios from "axios";
 
 const Button = styled.TouchableOpacity`
   background-color: ${(props) =>
@@ -32,7 +31,7 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
   const [amount, setAmount] = useState(0);
   const placeholderText = `${params.type} Amount`;
   const navigation = useNavigation();
-
+  // post transaction data to backend
   const onTransfer = async () => {
     const data = {
       userId: params.user.userId,
@@ -54,6 +53,10 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
       navigation.navigate("Home");
     } else if (params.type == "Withdraw") {
       data.type = "withdraw";
+      callApi.onTransaction(data);
+      navigation.navigate("Home");
+    } else {
+      data.type = params.type;
       callApi.onTransaction(data);
       navigation.navigate("Home");
     }

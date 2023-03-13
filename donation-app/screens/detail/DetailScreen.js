@@ -13,10 +13,20 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import colors from "../../colors";
 import React, { useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const DetailScreen = ({ navigation: { setOptions }, route: { params } }) => {
+  const navigation = useNavigation();
+  // navigate to account page
+  const toAccount = (type) => {
+    navigation.navigate("Stack", {
+      screen: "Account",
+      params: { type },
+    });
+  };
+  // share selected hawker / organization data to others
   const shareMedia = async () => {
     const isAndroid = Platform.OS === "android";
     if (isAndroid) {
@@ -38,7 +48,7 @@ const DetailScreen = ({ navigation: { setOptions }, route: { params } }) => {
       <Ionicons name="share" size={24} color={"black"} />
     </TouchableOpacity>
   );
-
+  // render title based on category
   useEffect(() => {
     setOptions({
       title: "country" in params ? "Organization" : "Hawker",
@@ -78,13 +88,23 @@ const DetailScreen = ({ navigation: { setOptions }, route: { params } }) => {
           <Text style={styles.content}>{params.address}</Text>
         </>
       )}
-      {"country" in params && (
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.dropButton}>
+      <View style={styles.buttonContainer}>
+        {"country" in params ? (
+          <TouchableOpacity
+            style={styles.dropButton}
+            onPress={() => toAccount(params.name)}
+          >
             <Text style={styles.buttonText}>DROP NOW</Text>
           </TouchableOpacity>
-        </View>
-      )}
+        ) : (
+          <TouchableOpacity
+            style={styles.dropButton}
+            onPress={() => toAccount("Donate")}
+          >
+            <Text style={styles.buttonText}>DROP NOW</Text>
+          </TouchableOpacity>
+        )}
+      </View>
     </SafeAreaView>
   );
 };

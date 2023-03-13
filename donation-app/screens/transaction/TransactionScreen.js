@@ -23,7 +23,7 @@ const Card = styled.View`
   border-width: 1px;
 `;
 
-const TransactionScreen = ({ route }) => {
+const TransactionScreen = () => {
   const { user } = useAuth();
   const userId = user?.userId;
 
