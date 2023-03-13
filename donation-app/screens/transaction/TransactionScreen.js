@@ -1,5 +1,5 @@
 import { SafeAreaView, Text, StyleSheet, View, ScrollView } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { callApi } from "../../api";
 import Loader from "../../components/Loader";
@@ -27,10 +27,14 @@ const TransactionScreen = () => {
   const { user } = useAuth();
   const userId = user?.userId;
 
-  //dependency to check when userId changed
-  const { isLoading, data } = useQuery(["history", userId], () =>
+  // dependency to check when userId changed
+  const { isLoading, data, refetch } = useQuery(["history", userId], () =>
     callApi.history(userId)
   );
+  // rerender when transaction made
+  useEffect(() => {
+    refetch();
+  }, [user]);
 
   return isLoading ? (
     <Loader />
