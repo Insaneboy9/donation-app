@@ -16,7 +16,6 @@ import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../../firebase/firebaseAuth";
 
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
-console.log(SCREEN_WIDTH);
 
 const RewardScreen = () => {
   const { user } = useAuth();

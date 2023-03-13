@@ -20,12 +20,7 @@ export const userOperation = async (fieldName, fieldValue, value, type) => {
       const doc = await getDoc(docRef);
       const currentCashValue = doc.data()["cash"];
       const currentPointValue = doc.data()["points"];
-      if (type == "donation") {
-        await updateDoc(docRef, {
-          ["cash"]: Number(currentCashValue) - Number(value),
-          ["points"]: Number(currentPointValue) + (0.1 * Number(value)),
-        });
-      } else if (type == "redemption" || type == "withdraw") {
+      if (type == "redemption" || type == "withdraw") {
         await updateDoc(docRef, {
           ["cash"]: Number(currentCashValue) - Number(value),
         });
@@ -36,6 +31,11 @@ export const userOperation = async (fieldName, fieldValue, value, type) => {
       } else if (type == "deposit") {
         await updateDoc(docRef, {
           ["cash"]: Number(currentCashValue) + Number(value),
+        });
+      } else {
+        await updateDoc(docRef, {
+          ["cash"]: Number(currentCashValue) - Number(value),
+          ["points"]: Number(currentPointValue) + 0.1 * Number(value),
         });
       }
       console.log(
@@ -77,19 +77,11 @@ export const getUserTransactionHistory = async (userId) => {
     //Create an array of objects representing the transaction history for each date
     const transactionHistory = Object.entries(groupedTransactions).map(
       ([date, transactions]) => {
-        // Map the grouped transactions to an array of objects in the desired format
-        // const history = transactions.map((transaction) => ({
-        //   to:
-        //     transaction.type === "donation"
-        //       ? transaction.email
-        //       : "Chicken Rice", // We dont have a stall name in transaction history
-        //   amount: parseFloat(transaction.amount),
-        // }));
         const history = transactions.map((transaction) => {
           let to;
           switch (transaction.type) {
             case "donation":
-              to = "Donation to UNICEF";
+              to = "Donation to Hawker Pool";
               break;
             case "withdraw":
               to = "Bank Transfer";
@@ -97,8 +89,14 @@ export const getUserTransactionHistory = async (userId) => {
             case "deposit":
               to = "Top-up to wallet";
               break;
+            case "rewards":
+              to = "Gift shop purchase";
+              break;
+            case "redemption":
+              to = "Purchase Chicken Rice";
+              break;
             default:
-              to = "Chicken Rice";
+              to = `Donation to ${transaction.type}`;
               break;
           }
           return {
