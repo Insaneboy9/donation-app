@@ -1,7 +1,11 @@
+import * as dotenv from 'dotenv'
 import { applicationDefault, initializeApp } from 'firebase-admin/app'
 import { getFirestore } from 'firebase-admin/firestore'
 import Web3 from 'web3'
 import { abi } from './abi'
+
+// load environment variables
+dotenv.config()
 
 // Blockchain constants
 const rpcURL = `https://arb-goerli.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`
@@ -59,6 +63,17 @@ Promise.resolve().then(async () => {
 
       if (!snapshot.empty) {
         const doc = snapshot.docs[0]
+        const docData = doc.data()
+
+        // check if the document is a donation or redemption
+        if (docData.type !== 'donation' && docData.type !== 'redemption') {
+
+          // if not, set the transaction hash to NULL
+          await doc.ref.update({ blockchainTxnId: 'NULL' })
+          console.log(`Transaction hash: not a donation or redemption`)
+          continue
+        }
+
         const result = await updateContract(doc.data(), doc.id)
         if (result) {
           // update the document with the transaction hash
