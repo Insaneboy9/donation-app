@@ -15,7 +15,6 @@ const contract = new web3.eth.Contract(abi, address)
 const account = web3.eth.accounts.privateKeyToAccount(
   process.env.OWNER_PRIVATE_KEY as string
 )
-const baseBlockFee = 106320000
 
 // Firebase constants
 const app = initializeApp({ credential: applicationDefault() })
@@ -33,12 +32,17 @@ async function updateContract(data: any, txnId: string) {
       amount * 100,
       type === 'donation',
     ])
-    const gas = await transaction.estimateGas({ from: account.address })
+
+    const gas = await transaction.estimateGas({
+      from: account.address,
+      to: address,
+      data: transaction.encodeABI(),
+    })
     const signed = await account.signTransaction({
       nonce: await web3.eth.getTransactionCount(account.address, 'pending'),
       to: address,
       data: transaction.encodeABI(),
-      gas: gas > baseBlockFee ? gas : baseBlockFee,
+      gas: gas * 3, // ensure that the transaction is not rejected due to insufficient gas
       gasPrice: await web3.eth.getGasPrice(),
     })
     if (signed.rawTransaction == null) return null
@@ -67,7 +71,6 @@ Promise.resolve().then(async () => {
 
         // check if the document is a donation or redemption
         if (docData.type !== 'donation' && docData.type !== 'redemption') {
-
           // if not, set the transaction hash to NULL
           await doc.ref.update({ blockchainTxnId: 'NULL' })
           console.log(`Transaction hash: not a donation or redemption`)
