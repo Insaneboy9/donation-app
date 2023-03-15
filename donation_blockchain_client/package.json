@@ -4,13 +4,13 @@
   "description": "",
   "scripts": {
     "start": "npm run build && node build/main.js",
-    "write": "npm run build && node build/writeDummy.js",
     "start:dev": "npm run env && npx nodemon",
     "build": "rimraf ./build && tsc"
   },
   "keywords": [],
   "author": "",
   "dependencies": {
+    "dotenv": "^16.0.3",
     "firebase-admin": "^11.5.0",
     "web3": "^1.8.1"
   },

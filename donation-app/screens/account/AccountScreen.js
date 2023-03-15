@@ -43,25 +43,17 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
     };
     if (params.type === "Donate") {
       data.type = "donation";
-      callApi.onTransaction(data);
-      navigation.navigate("Home");
     } else if (params.type == "Redeem") {
       data.type = "redemption";
-      callApi.onTransaction(data);
-      navigation.navigate("Home");
     } else if (params.type == "Top Up") {
       data.type = "deposit";
-      callApi.onTransaction(data);
-      navigation.navigate("Home");
     } else if (params.type == "Withdraw") {
       data.type = "withdraw";
-      callApi.onTransaction(data);
-      navigation.navigate("Home");
     } else {
       data.type = params.type;
-      callApi.onTransaction(data);
-      navigation.navigate("Home");
     }
+    callApi.onTransaction(data);
+    navigation.navigate("Home");
   };
 
   useEffect(() => {
@@ -72,7 +64,7 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
           : params.type,
     });
   }, []);
-
+  // enable button when amount is inputed
   useEffect(() => {
     if (amount) {
       setDisable(false);

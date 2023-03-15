@@ -7,13 +7,14 @@ import {
   Dimensions,
   Image,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import styled from "styled-components/native";
 import Loader from "../../components/Loader";
 import { useQuery } from "react-query";
 import { callApi } from "../../api";
+import { useAuth } from "../../firebase/firebaseAuth";
 
 const Card = styled.View`
   margin-horizontal: 20px;
@@ -62,14 +63,20 @@ const NormalRank = styled.View`
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-
-
 const LeaderboardScreen = () => {
+  const { user } = useAuth();
   // fetching users data
-  const { isLoading, data } = useQuery("leaderboard", callApi.leaderboard);
+  const { isLoading, data, refetch } = useQuery(
+    "leaderboard",
+    callApi.leaderboard
+  );
   const users = data;
   // sort the users in descending order
   users?.sort((a, b) => b.points - a.points);
+  // rerender when the points increase
+  useEffect(() => {
+    refetch();
+  }, [user]);
   return isLoading ? (
     <Loader />
   ) : (
