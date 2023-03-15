@@ -53,6 +53,7 @@ const TransactionScreen = () => {
                 lastIndex={index === history.history.length - 1 ? true : false}
               >
                 <Text style={styles.to}>{h.to}</Text>
+                <Text style={styles.bcId}>{h.bcId}</Text>
                 <View style={styles.wrapper}>
                   <Text style={{ color: "#808e9b" }}>SGD</Text>
                   <Text style={styles.amount}>{h.amount}</Text>
@@ -81,6 +82,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  bcId:{
+    marginTop: 5,
+    fontSize: 12,
+    color: "#c0c0c0"
   },
   subTitle: {
     fontSize: 16,

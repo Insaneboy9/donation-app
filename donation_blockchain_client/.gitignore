@@ -1,5 +1,6 @@
 build/
 node_modules/
 .env
+env
 env.sh
 firebase-service-account.json

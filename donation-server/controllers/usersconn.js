@@ -79,9 +79,11 @@ export const getUserTransactionHistory = async (userId) => {
       ([date, transactions]) => {
         const history = transactions.map((transaction) => {
           let to;
+          let bcId = "";
           switch (transaction.type) {
             case "donation":
               to = "Donation to Hawker Pool";
+              bcId = transaction.blockchainTxnId
               break;
             case "withdraw":
               to = "Bank Transfer";
@@ -94,6 +96,7 @@ export const getUserTransactionHistory = async (userId) => {
               break;
             case "redemption":
               to = "Purchase Chicken Rice";
+              bcId = transaction.blockchainTxnId
               break;
             default:
               to = `Donation to ${transaction.type}`;
@@ -102,6 +105,7 @@ export const getUserTransactionHistory = async (userId) => {
           return {
             to: to,
             amount: parseFloat(transaction.amount),
+            bcId : bcId
           };
         });
         return {
