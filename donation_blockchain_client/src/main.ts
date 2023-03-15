@@ -38,12 +38,17 @@ async function updateContract(data: any, txnId: string) {
       to: address,
       data: transaction.encodeABI(),
     })
+
+    const gasPrice = await web3.eth.getGasPrice()
+    // multiply by 1.2 to ensure that the transaction is not rejected due to low gas price
+    const gasPrice1_2 = Number(gasPrice) * 1.2
+
     const signed = await account.signTransaction({
       nonce: await web3.eth.getTransactionCount(account.address, 'pending'),
       to: address,
       data: transaction.encodeABI(),
-      gas: gas * 3, // ensure that the transaction is not rejected due to insufficient gas
-      gasPrice: await web3.eth.getGasPrice(),
+      gas: gas * 2, // ensure that the transaction is not rejected due to insufficient gas
+      gasPrice: gasPrice1_2,
     })
     if (signed.rawTransaction == null) return null
 
