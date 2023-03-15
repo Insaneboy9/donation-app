@@ -32,8 +32,14 @@ const TransactionScreen = () => {
     callApi.history(userId)
   );
   // rerender when transaction made
+  // useEffect(() => {
+  //   refetch();
+  // }, [user]);
   useEffect(() => {
-    refetch();
+    const timer = setTimeout(() => {
+      refetch();
+    }, 5000);
+    return () => clearTimeout(timer);
   }, [user]);
 
   return isLoading ? (
