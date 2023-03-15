@@ -5,6 +5,7 @@ import {
   View,
   Dimensions,
   TextInput,
+  Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -54,6 +55,7 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
     }
     callApi.onTransaction(data);
     navigation.navigate("Home");
+    Alert.alert("Transaction Successful")
   };
 
   useEffect(() => {
