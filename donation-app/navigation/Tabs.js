@@ -6,6 +6,7 @@ import HomeScreen from "../screens/home/HomeScreen";
 import LeaderboardScreen from "../screens/leaderboard/LeaderboardScreen";
 import RewardScreen from "../screens/rewards/RewardScreen";
 import TransactionScreen from "../screens/transaction/TransactionScreen";
+import MapScreen from "../screens/map/MapScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -29,6 +30,15 @@ const Tabs = ({ route }) => {
         options={{
           tabBarIcon: ({ color, size }) => {
             return <Ionicons name="home" size={size} color={color} />;
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Map"
+        component={MapScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => {
+            return <Ionicons name="navigate-circle-outline" size={size} color={color} />;
           },
         }}
       />
