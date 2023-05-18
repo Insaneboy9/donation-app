@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from "react";
 import MapView, { Marker } from "react-native-maps";
-import { Button, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import * as Location from "expo-location";
+import { useQuery } from "react-query";
+
+import { callApi } from "../../api";
 
 const MapScreen = () => {
-  const [mapRegion, setMapRegion] = useState({
-    latitude: 1.29027,
+  const [mapRegion, setMapRegion] = useState({  //set initial region as sg
+    latitude: 1.29027, 
     longitude: 103.851959,
     latitudeDelta: 0.06,
     longitudeDelta: 0.03,
   });
+
+  const { isLoading: hawkerLoading, data: hawkerData } = useQuery(
+    "hawker",
+    callApi.hawker
+  );
 
   const userLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -39,13 +47,22 @@ const MapScreen = () => {
         showsUserLocation={true}
         followsUserLocation={true}
       >
-        <Marker
-          coordinate={{
-            latitude: 1.3507,
-            longitude: 103.8488,
-          }}
-          title="Marker"
-        />
+        {hawkerData &&
+          hawkerData.map((hawker) => (
+            <Marker
+            image = {require("../../assets/hawkerMarker.png")}
+              key={hawker.id}
+              coordinate={{
+                latitude: parseFloat(hawker.latitude),
+                longitude: parseFloat(hawker.longitude),
+              }}
+              title={hawker.name}
+              style={{
+                width: 3,
+                height: 3,
+              }}
+            />
+          ))}
       </MapView>
     </View>
   );
