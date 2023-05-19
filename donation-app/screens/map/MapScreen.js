@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import MapView, { Marker } from "react-native-maps";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, FlatList, Text } from "react-native";
 import * as Location from "expo-location";
 import { useQuery } from "react-query";
 
 import { callApi } from "../../api";
+import HawkerItem from "../../components/HawkerItem";
 
 const MapScreen = () => {
-  const [mapRegion, setMapRegion] = useState({  //set initial region as sg
-    latitude: 1.29027, 
+  const [mapRegion, setMapRegion] = useState({//set initial region as sg
+    latitude: 1.29027,
     longitude: 103.851959,
     latitudeDelta: 0.06,
     longitudeDelta: 0.03,
@@ -46,11 +47,13 @@ const MapScreen = () => {
         region={mapRegion}
         showsUserLocation={true}
         followsUserLocation={true}
+        showsBuildings={false}
+        showsPointsOfInterest={false}
       >
         {hawkerData &&
           hawkerData.map((hawker) => (
             <Marker
-            image = {require("../../assets/hawkerMarker.png")}
+              image={require("../../assets/hawkerMarker.png")}
               key={hawker.id}
               coordinate={{
                 latitude: parseFloat(hawker.latitude),
@@ -64,6 +67,14 @@ const MapScreen = () => {
             />
           ))}
       </MapView>
+      <View style={styles.hawkerHeader}>
+        <Text style={styles.headerText}>Nearby</Text>
+      </View>
+      <FlatList
+        data={hawkerData}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => <HawkerItem hawker={item} userLocation={mapRegion} />}
+      />
     </View>
   );
 };
@@ -74,7 +85,15 @@ const styles = StyleSheet.create({
   },
   map: {
     width: "100%",
-    height: "100%",
+    height: "65%",
+  },
+  hawkerHeader: {
+    backgroundColor: "white",
+    padding: 10,
+  },
+  headerText: {
+    fontWeight: 'bold',
+    fontSize: 18,
   },
 });
 
