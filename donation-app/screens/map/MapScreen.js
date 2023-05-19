@@ -3,11 +3,14 @@ import MapView, { Marker } from "react-native-maps";
 import { StyleSheet, View, FlatList, Text } from "react-native";
 import * as Location from "expo-location";
 import { useQuery } from "react-query";
+import * as geolib from 'geolib';
 
 import { callApi } from "../../api";
 import HawkerItem from "../../components/HawkerItem";
 
 const MapScreen = () => {
+  const mapRef = useRef(null);
+
   const [mapRegion, setMapRegion] = useState({
     //set initial region as sg
     latitude: 1.29027,
@@ -37,7 +40,20 @@ const MapScreen = () => {
     });
   };
 
-  const mapRef = useRef(null);
+const hawkersWithDistance = hawkerData.map((hawker) => {
+  const hawkerLocation = {
+    latitude: parseFloat(hawker.latitude),
+    longitude: parseFloat(hawker.longitude),
+  };
+
+  const distance = geolib.getDistance(mapRegion, hawkerLocation);
+  const distanceInKm = geolib.convertDistance(distance, 'km');
+
+  return {
+    ...hawker,
+    distance: distanceInKm,
+  };
+});
 
 
   useEffect(() => {
@@ -76,10 +92,10 @@ const MapScreen = () => {
         <Text style={styles.headerText}>Nearby</Text>
       </View>
       <FlatList
-        data={hawkerData}
+        data={hawkersWithDistance.sort((a, b) => a.distance - b.distance)}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <HawkerItem hawker={item} userLocation={mapRegion} mapRef={mapRef} />
+          <HawkerItem hawker={item}  mapRef={mapRef} />
         )}
       />
     </View>
