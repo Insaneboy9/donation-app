@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import MapView, { Marker } from "react-native-maps";
 import { StyleSheet, View, FlatList, Text } from "react-native";
 import * as Location from "expo-location";
@@ -8,7 +8,8 @@ import { callApi } from "../../api";
 import HawkerItem from "../../components/HawkerItem";
 
 const MapScreen = () => {
-  const [mapRegion, setMapRegion] = useState({//set initial region as sg
+  const [mapRegion, setMapRegion] = useState({
+    //set initial region as sg
     latitude: 1.29027,
     longitude: 103.851959,
     latitudeDelta: 0.06,
@@ -36,6 +37,9 @@ const MapScreen = () => {
     });
   };
 
+  const mapRef = useRef(null);
+
+
   useEffect(() => {
     userLocation();
   }, []);
@@ -43,6 +47,7 @@ const MapScreen = () => {
   return (
     <View style={styles.container}>
       <MapView
+        ref={mapRef}
         style={styles.map}
         region={mapRegion}
         showsUserLocation={true}
@@ -73,7 +78,9 @@ const MapScreen = () => {
       <FlatList
         data={hawkerData}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <HawkerItem hawker={item} userLocation={mapRegion} />}
+        renderItem={({ item }) => (
+          <HawkerItem hawker={item} userLocation={mapRegion} mapRef={mapRef} />
+        )}
       />
     </View>
   );
@@ -92,7 +99,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   headerText: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 18,
   },
 });

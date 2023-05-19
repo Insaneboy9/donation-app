@@ -1,7 +1,7 @@
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import * as geolib from 'geolib';
 
-const HawkerItem = ({ hawker, userLocation }) => {
+const HawkerItem = ({ hawker, userLocation, mapRef  }) => {
   const hawkerLocation = {
     latitude: parseFloat(hawker.latitude),
     longitude: parseFloat(hawker.longitude),
@@ -10,12 +10,21 @@ const HawkerItem = ({ hawker, userLocation }) => {
   const distance = geolib.getDistance(userLocation, hawkerLocation);
   const distanceInKm = geolib.convertDistance(distance, 'km');
 
+  const handlePress = () => {
+    mapRef.current?.animateToRegion({
+      latitude: hawkerLocation.latitude,
+      longitude: hawkerLocation.longitude,
+      latitudeDelta: 0.06,
+      longitudeDelta: 0.03,
+    });
+  };
+
   return (
-    <View style={styles.hawkerItem}>
+    <TouchableOpacity onPress={handlePress} style={styles.hawkerItem}>
       <Text style={styles.boldText}>{hawker.name}</Text>
       <Text>{hawker.address}</Text>
       <Text>- {distanceInKm}km away</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
