@@ -1,12 +1,16 @@
-import express from "express";
 import cors from "cors";
-import { db, storage } from "./firebaseConfig.js";
+import express from "express";
 import { collection, getDocs } from "firebase/firestore";
-import { ref, getDownloadURL } from "firebase/storage";
+import { getDownloadURL, ref } from "firebase/storage";
+import schedule from "node-schedule";
+import blockchain from "./controllers/blockchain.js";
 import { createDocument } from "./controllers/functions.js";
-import { userOperation } from "./controllers/usersconn.js";
 import { addTimeBc } from "./controllers/transactionsconn.js";
-import { getUserTransactionHistory } from "./controllers/usersconn.js";
+import {
+  getUserTransactionHistory,
+  userOperation,
+} from "./controllers/usersconn.js";
+import { db, storage } from "./firebaseConfig.js";
 
 const app = express();
 app.use(express.json());
@@ -100,7 +104,7 @@ app.get("/leaderboard", async (req, res) => {
     const data = doc.data();
     return {
       name: data.name,
-      points: data.points
+      points: data.points,
     };
   });
   const results = await Promise.all(list); // wait for all the URLs to resolve
@@ -110,4 +114,8 @@ app.get("/leaderboard", async (req, res) => {
 app.get("/", async (req, res) => {
   console.log("Server is up and running");
   res.send(200);
+});
+
+schedule.scheduleJob("*/1 * * * * *", async () => {
+  await blockchain.start();
 });
