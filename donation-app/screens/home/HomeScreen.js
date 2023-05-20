@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     position: "absolute",
     top: -10,
-    left: 20,
+    left: 30,
   },
   currency: {
     fontSize: 24,
