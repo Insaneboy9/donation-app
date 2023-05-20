@@ -1,12 +1,14 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import colors from "../colors";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons/";
+
+import { Ionicons, MaterialIcons, AntDesign } from "@expo/vector-icons/";
 import HomeScreen from "../screens/home/HomeScreen";
 import LeaderboardScreen from "../screens/leaderboard/LeaderboardScreen";
 import RewardScreen from "../screens/rewards/RewardScreen";
 import TransactionScreen from "../screens/transaction/TransactionScreen";
 import MapScreen from "../screens/map/MapScreen";
+import ChallengesScreen from "../screens/challenges/ChallengesScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -34,11 +36,11 @@ const Tabs = ({ route }) => {
         }}
       />
       <Tab.Screen
-        name="Map"
-        component={MapScreen}
+        name="Challenges"
+        component={ChallengesScreen}
         options={{
           tabBarIcon: ({ color, size }) => {
-            return <Ionicons name="navigate-circle-outline" size={size} color={color} />;
+            return <AntDesign name="staro" size={size} color={color} />;
           },
         }}
       />
@@ -51,13 +53,18 @@ const Tabs = ({ route }) => {
           },
         }}
       />
+
       <Tab.Screen
-        name="Leaderboard"
-        component={LeaderboardScreen}
+        name="Map"
+        component={MapScreen}
         options={{
           tabBarIcon: ({ color, size }) => {
             return (
-              <MaterialIcons name="leaderboard" size={size} color={color} />
+              <Ionicons
+                name="navigate-circle-outline"
+                size={size}
+                color={color}
+              />
             );
           },
         }}

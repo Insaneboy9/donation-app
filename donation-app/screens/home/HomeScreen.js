@@ -49,6 +49,12 @@ const HomeScreen = () => {
     });
   };
 
+  const toLeaderboard = () => {
+    navigation.navigate("Stack", {
+      screen: "Leaderboard",
+    });
+  };
+
   const logout = () => {
     signOut(auth)
       .then(() => {
@@ -88,8 +94,14 @@ const HomeScreen = () => {
             colors={[colors.card, colors.accentColor]}
             style={styles.card}
           >
-            <View style={styles.cardHeader}>
-              <Text style={styles.balance}>SGD {user.cash}</Text>
+            <View style={styles.cardTop}>
+              <View style={styles.cardHeader}>
+                <Text style={styles.currency}>SGD </Text>
+                <Text style={styles.balance}>{user.cash}</Text>
+              </View>
+              <TouchableOpacity style={styles.rankBtn} onPress={toLeaderboard}>
+                <Text style={styles.rankText}>Leaderboard</Text>
+              </TouchableOpacity>
             </View>
             <View style={styles.actionHolder}>
               <TouchableOpacity
@@ -170,10 +182,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   cardHeader: {
+    alignItems: "center",
     flexDirection: "row",
+    position: "absolute",
+    top: -10,
+    left: 20,
+  },
+  currency: {
+    fontSize: 24,
+    color: "white",
+    marginBottom: 30,
   },
   balance: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: "bold",
     color: "white",
     marginBottom: 30,
@@ -195,5 +216,26 @@ const styles = StyleSheet.create({
   logo: {
     height: 60,
     width: 60,
+  },
+  cardTop: {
+    width: "100%",
+    height: "30%",
+    flexDirection: "row",
+    alignItems: "center",
+    position: "relative",
+    justifyContent: "space-around",
+  },
+  rankBtn: {
+    position: "absolute",
+    top: -20,
+    right: 10,
+    padding: 10,
+    borderRadius: 20,
+    border: "solid",
+    borderWidth: 2,
+    borderColor: "white",
+  },
+  rankText: {
+    color: "white",
   },
 });
