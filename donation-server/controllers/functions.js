@@ -1,8 +1,15 @@
-import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc} from "firebase/firestore";
-import { db } from "../firebaseConfig.js";
+const {
+  collection,
+  addDoc,
+  getDocs,
+  doc,
+  updateDoc,
+  deleteDoc,
+} = require("firebase/firestore");
+const { db } = require("../firebaseConfig.js");
 
 // Create a new document in a collection
-export const createDocument = async (collectionName, data) => {
+const createDocument = async (collectionName, data) => {
   try {
     const docRef = await addDoc(collection(db, collectionName), data);
     console.log("Document written with ID: ", docRef.id);
@@ -12,7 +19,7 @@ export const createDocument = async (collectionName, data) => {
 };
 
 // Get all documents in a collection
-export const readDocuments = async (collectionName) => {
+const readDocuments = async (collectionName) => {
   const querySnapshot = await getDocs(collection(db, collectionName));
   querySnapshot.forEach((doc) => {
     console.log(doc.id, " => ", doc.data());
@@ -20,7 +27,7 @@ export const readDocuments = async (collectionName) => {
 };
 
 // Get a single document by ID
-export const readDocumentById = async (collectionName, documentId) => {
+const readDocumentById = async (collectionName, documentId) => {
   const docRef = doc(db, collectionName, documentId);
   const docSnapshot = await getDoc(docRef);
   if (docSnapshot.exists()) {
@@ -31,7 +38,7 @@ export const readDocumentById = async (collectionName, documentId) => {
 };
 
 // Update a document by ID
-export const updateDocumentById = async (collectionName, documentId, data) => {
+const updateDocumentById = async (collectionName, documentId, data) => {
   const docRef = doc(db, collectionName, documentId);
   try {
     await updateDoc(docRef, data);
@@ -41,9 +48,8 @@ export const updateDocumentById = async (collectionName, documentId, data) => {
   }
 };
 
-
 // Delete a document by ID
-export const deleteDocumentById = async (collectionName, documentId) => {
+const deleteDocumentById = async (collectionName, documentId) => {
   const docRef = doc(db, collectionName, documentId);
   try {
     await deleteDoc(docRef);
@@ -53,3 +59,10 @@ export const deleteDocumentById = async (collectionName, documentId) => {
   }
 };
 
+module.exports = {
+  createDocument,
+  readDocuments,
+  readDocumentById,
+  updateDocumentById,
+  deleteDocumentById,
+};

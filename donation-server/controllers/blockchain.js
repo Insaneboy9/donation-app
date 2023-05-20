@@ -1,17 +1,17 @@
-import * as dotenv from "dotenv";
-import { applicationDefault, initializeApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
-import Web3 from "web3";
-import { abi } from "./abi.js";
-
-dotenv.config();
+const { applicationDefault, initializeApp } = require("firebase-admin/app");
+const { getFirestore } = require("firebase-admin/firestore");
+const Web3 = require("web3");
+const { abi } = require("./abi");
+const { log, error } = require("firebase-functions/logger");
+const { createDocument } = require("./functions.js");
 
 const rpcURL = `https://arb-goerli.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`;
 const web3 = new Web3(rpcURL);
 const address = process.env.CONTRACT_ADDRESS;
 const contract = new web3.eth.Contract(abi, address);
 const account = web3.eth.accounts.privateKeyToAccount(
-  process.env.OWNER_PRIVATE_KEY
+  process.env.OWNER_PRIVATE_KEY ||
+    "0x64b96f1a3b48bc3e9cf725f04ccefd93440f0fcf8c823103a6075e5230db9312"
 );
 
 // Firebase constants
@@ -52,8 +52,8 @@ async function updateContract(data, txnId) {
 
     // send the transaction
     return web3.eth.sendSignedTransaction(signed.rawTransaction);
-  } catch (error) {
-    console.error(error.message);
+  } catch (e) {
+    error(e.message);
     return null;
   }
 }
@@ -75,19 +75,24 @@ async function start() {
       if (docData.type !== "donation" && docData.type !== "redemption") {
         // if not, set the transaction hash to NULL
         await doc.ref.update({ blockchainTxnId: "NULL" });
-        console.log(`Transaction hash: not a donation or redemption`);
+        log(`Transaction hash: not a donation or redemption`);
       }
 
       const result = await updateContract(doc.data(), doc.id);
       if (result) {
         // update the document with the transaction hash
         await doc.ref.update({ blockchainTxnId: result.transactionHash });
-        console.log(`Transaction hash: ${result.transactionHash}`);
+        log(`Transaction hash: ${result.transactionHash}`);
+        return `Transaction hash: ${result.transactionHash}`;
       }
+    } else {
+      log("No transactions to update");
+      return "No transactions to update";
     }
-  } catch (error) {
-    console.error(error.message);
+  } catch (e) {
+    error(e.message);
+    return "An error occurred";
   }
 }
 
-export default { start };
+module.exports = { start };

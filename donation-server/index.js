@@ -1,22 +1,20 @@
-import cors from "cors";
-import express from "express";
-import { collection, getDocs } from "firebase/firestore";
-import { getDownloadURL, ref } from "firebase/storage";
-import schedule from "node-schedule";
-import blockchain from "./controllers/blockchain.js";
-import { createDocument } from "./controllers/functions.js";
-import { addTimeBc } from "./controllers/transactionsconn.js";
-import {
+const { onRequest } = require("firebase-functions/v2/https");
+const cors = require("cors");
+const { db, storage } = require("./firebaseConfig");
+const { getDownloadURL, ref } = require("firebase/storage");
+const { collection, getDocs } = require("firebase/firestore");
+const blockchain = require("./controllers/blockchain.js");
+const { createDocument } = require("./controllers/functions.js");
+const { addTimeBc } = require("./controllers/transactionsconn.js");
+const {
   getUserTransactionHistory,
   userOperation,
-} from "./controllers/usersconn.js";
-import { db, storage } from "./firebaseConfig.js";
+} = require("./controllers/usersconn.js");
+const express = require("express");
 
 const app = express();
 app.use(express.json());
 app.use(cors());
-
-app.listen(8080, () => console.log("Up and Running 8080"));
 
 //Handle GET request for hawkers
 app.get("/hawkers", async (req, res) => {
@@ -111,11 +109,20 @@ app.get("/leaderboard", async (req, res) => {
   res.send(results);
 });
 
-app.get("/", async (req, res) => {
-  console.log("Server is up and running");
-  res.send(200);
+app.get("/blockchain", async (req, res) => {
+  const result = await blockchain.start();
+  res.status(200).json({
+    message: result,
+  });
 });
 
-schedule.scheduleJob("*/1 * * * * *", async () => {
-  await blockchain.start();
+app.get("/", async (req, res) => {
+  // send 200 status code with success message as json response
+  res.status(200).json({
+    success: true,
+    message: "Server is up and running",
+    serverTime: new Date(),
+  });
 });
+
+exports.app = onRequest({ timeoutSeconds: 30 }, app);

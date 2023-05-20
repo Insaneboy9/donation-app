@@ -32,15 +32,15 @@ cd donation-server
 
 1. Node.js
 
-2. [gcloud CLI](https://cloud.google.com/sdk/docs/install)
+2. Firebase Tools - `npm install -g firebase-tools`
 
-Initialize gcloud CLI
+Run `firebase login`
 
-```bash
-gcloud init
-```
+Run `firebase use donation-app-8de49`
 
-### Start Server
+### Start Server locally
+
+cd to `donation-server` directory 
 
 Install packages
 
@@ -53,13 +53,11 @@ Download `.env` and `firebase-service-account.json` files from Google Drive and 
 Start server
 
 ```bash
-npm start
+npm run serve
 ```
 
-### Deploy App Engine
+### Deploy Server
 
-TODO
+Delete `package-lock.json` file in `donation-server` directory.
 
-## Blockchain client
-
-cd donation_blockchain_client
+Run `firebase deploy --only functions` on the root directory of the repo folder.
