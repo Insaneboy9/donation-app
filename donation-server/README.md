@@ -4,6 +4,8 @@ Node.js Firebase Function API server for our donation mobile application.
 
 ## Set up
 
+Set up an account at [Alchemy Platform](https://www.alchemy.com/) to get access to Arbitrum RPC Node.
+
 ### Installation
 
 1. Node.js

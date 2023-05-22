@@ -20,7 +20,7 @@ A cross platform mobile application that ensures transparency and effectiveness 
    
 2. `donation-server` - Node.js Firebase Functions  
    
-3. `smart-contract` - Donation Solidity Smart Contract   
+3. `smart-contract` - Solidity Smart Contract 
 
 
 ## Project Demonstration
