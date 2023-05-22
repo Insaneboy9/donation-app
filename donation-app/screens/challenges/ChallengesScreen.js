@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
   View,
   Text,
-  Dimensions,
+  UIManager,
   TouchableOpacity,
+  LayoutAnimation,
+  Animated,
   FlatList,
 } from "react-native";
 import {
@@ -23,6 +25,8 @@ import styled from "styled-components/native";
 const Header = styled.View`
   padding: 10px;
 `;
+
+const AnimatedHeader = Animated.createAnimatedComponent(Header);
 
 const TextHeader = styled.Text`
   font-size: 22px;
@@ -70,6 +74,7 @@ const ChallengeBtn = styled.TouchableOpacity`
 `;
 
 const OngoingChallenge = styled.View`
+  margin-bottom: 50px;
   margin-horizontal: 10px;
 `;
 const ChallengeBox = styled.TouchableOpacity`
@@ -82,9 +87,26 @@ const ChallengeBox = styled.TouchableOpacity`
   border-color: #808e9b;
 `;
 
-const { height: SCREEN_HEIGHT } = Dimensions.get("window");
+const BoxDetail = styled.View`
+  justify-content: center;
+  align-items: center;
+`;
+
+if (Platform.OS === "android") {
+  if (UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
+}
 
 const ChallengesScreen = () => {
+  const offset = useRef(new Animated.Value(0)).current;
+
+  const bgColor = offset.interpolate({
+    inputRange: [0, 150],
+    outputRange: ["rgb(241,242,246)", "rgb(255, 255, 255)"],
+    extrapolate: "clamp",
+  });
+
   const Divisor = () => (
     <View
       style={{
@@ -95,6 +117,39 @@ const ChallengesScreen = () => {
     />
   );
   const challenges = [
+    {
+      title: "Donate 3 times to win $10 Goole-Play voucher",
+      logo: (
+        <Entypo
+          style={{ marginVertical: 10 }}
+          name="google-play"
+          size={24}
+          color="black"
+        />
+      ),
+    },
+    {
+      title: "Donate 3 times to win $10 Goole-Play voucher",
+      logo: (
+        <Entypo
+          style={{ marginVertical: 10 }}
+          name="google-play"
+          size={24}
+          color="black"
+        />
+      ),
+    },
+    {
+      title: "Donate 3 times to win $10 Goole-Play voucher",
+      logo: (
+        <Entypo
+          style={{ marginVertical: 10 }}
+          name="google-play"
+          size={24}
+          color="black"
+        />
+      ),
+    },
     {
       title: "Donate 3 times to win $10 Goole-Play voucher",
       logo: (
@@ -144,10 +199,20 @@ const ChallengesScreen = () => {
   ];
   return (
     <SafeAreaView style={styles.wrapper}>
-      <Header>
+      <AnimatedHeader
+        style={{
+          backgroundColor: bgColor,
+        }}
+      >
         <TextHeader>Donate more</TextHeader>
-      </Header>
-      <View style={styles.container}>
+      </AnimatedHeader>
+      <ScrollView
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: offset } } }],
+          { useNativeDriver: false }
+        )}
+        style={styles.container}
+      >
         <View style={styles.top}>
           <Box>
             <FontAwesome5
@@ -193,14 +258,14 @@ const ChallengesScreen = () => {
             {challenges.map((c, index) => (
               <Challenge key={index}>
                 <ChallengeTitle>
-                  <Text>
+                  <Text style={{ marginRight: 5 }}>
                     {c.title.length > 40
                       ? c.title.slice(0, 40) + "..."
                       : c.title}
                   </Text>
-                  <TouchableOpacity>
+                  <View>
                     <AntDesign name="rightcircle" size={18} color="#b2bec3" />
-                  </TouchableOpacity>
+                  </View>
                 </ChallengeTitle>
                 {c.logo}
                 <ChallengeBtn>
@@ -225,21 +290,25 @@ const ChallengesScreen = () => {
                 renderItem={({ item }) => (
                   <ChallengeBox>
                     {item.logo}
-                    <View>
-                      <Text style={{ marginLeft: 10 }}>
+                    <BoxDetail>
+                      <Text style={{ marginLeft: 10, marginBottom: 10 }}>
                         {item.title.length > 30
                           ? item.title.slice(0, 30) + "..."
                           : item.title}
                       </Text>
                       <Progress.Bar progress={0.3} width={200} />
-                    </View>
+                      <View style={styles.moreInfo}>
+                        <Text style={styles.seeMore}>See more</Text>
+                        <Text style={styles.expiry}>Left 13 days</Text>
+                      </View>
+                    </BoxDetail>
                   </ChallengeBox>
                 )}
               />
             </OngoingChallenge>
           )}
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -274,7 +343,7 @@ const styles = StyleSheet.create({
   },
   bottom: {
     backgroundColor: "white",
-    height: SCREEN_HEIGHT,
+    height: "100%",
     borderTopEndRadius: 20,
     borderTopStartRadius: 20,
     padding: 10,
@@ -282,11 +351,26 @@ const styles = StyleSheet.create({
   },
   AvailableChallengesText: {
     fontWeight: "bold",
-    fontSize: 16,
-    marginBottom: 10,
+    fontSize: 18,
+    marginBottom: 15,
   },
   btnText: {
     fontWeight: "bold",
     color: "blue",
+  },
+  moreInfo: {
+    position: "relative",
+    width: "100%",
+    marginTop: 10,
+    flexDirection: "row",
+  },
+  expiry: {
+    color: "#808e9b",
+    position: "absolute",
+    right: 0,
+  },
+  seeMore: {
+    color: "#0984e3",
+    fontWeight: "bold",
   },
 });
