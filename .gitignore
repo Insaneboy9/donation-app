@@ -12,3 +12,8 @@ web-build/
 
 # macOS
 .DS_Store
+
+**.env
+**firebase-service-account.json
+**firebase-debug.*
+**firebase-ui.*

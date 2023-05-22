@@ -1,16 +1,16 @@
-import {
+const {
   collection,
   query,
   where,
-  getDoc,
   getDocs,
+  getDoc,
   updateDoc,
   doc,
-} from "firebase/firestore";
-import { db } from "../firebaseConfig.js";
+} = require("firebase/firestore");
+const { db } = require("../firebaseConfig.js");
 
 // Update documents based on a field value
-export const userOperation = async (fieldName, fieldValue, value, type) => {
+const userOperation = async (fieldName, fieldValue, value, type) => {
   const collectionRef = collection(db, "users");
   const q = query(collectionRef, where(fieldName, "==", fieldValue));
   const querySnapshot = await getDocs(q);
@@ -50,7 +50,7 @@ export const userOperation = async (fieldName, fieldValue, value, type) => {
   });
 };
 
-export const getUserTransactionHistory = async (userId) => {
+const getUserTransactionHistory = async (userId) => {
   try {
     const collectionRef = collection(db, "transactions");
     const q = query(collectionRef, where("userId", "==", userId));
@@ -83,7 +83,7 @@ export const getUserTransactionHistory = async (userId) => {
           switch (transaction.type) {
             case "donation":
               to = "Donation to Hawker Pool";
-              bcId = transaction.blockchainTxnId
+              bcId = transaction.blockchainTxnId;
               break;
             case "withdraw":
               to = "Bank Transfer";
@@ -96,7 +96,7 @@ export const getUserTransactionHistory = async (userId) => {
               break;
             case "redemption":
               to = "Purchase Chicken Rice";
-              bcId = transaction.blockchainTxnId
+              bcId = transaction.blockchainTxnId;
               break;
             default:
               to = `Donation to ${transaction.type}`;
@@ -105,7 +105,7 @@ export const getUserTransactionHistory = async (userId) => {
           return {
             to: to,
             amount: parseFloat(transaction.amount),
-            bcId : bcId
+            bcId: bcId,
           };
         });
         return {
@@ -123,4 +123,9 @@ export const getUserTransactionHistory = async (userId) => {
     console.error(error);
     return { success: false, error: "Internal Server Error" };
   }
+};
+
+module.exports = {
+  userOperation,
+  getUserTransactionHistory,
 };
