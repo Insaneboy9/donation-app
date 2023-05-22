@@ -1,63 +1,30 @@
-# Donation Application
+# PaidDrop 
 
-Team Project Coded with React Native
+A cross platform mobile application that ensures transparency and effectiveness of the pay-it-forward efforts.
 
-## Navigating Directory
+## Technologies 
 
-Screens are found in /donation-app
-Backend APIs are found in /donation-server
-Basic Program Commands
+- React Native
 
-## Client
+- Node.js
+  
+- Firebase (Authentication, Firestore, Storage, Functions)
 
-cd donation-app
+- Google Cloud (Scheduler, Maps)
 
-### Install Dependencies
+- Arbitrum Blockchain (Ethereum Layer 2)
 
-npm install
+## Directories
 
-### Build & compile program
+1. `donation-app` - React Native Mobile Application
+   
+2. `donation-server` - Node.js Firebase Functions  
+   
+3. `smart-contract` - Donation Solidity Smart Contract   
 
-npm run build
 
-### Running on Android Emulator
+## Project Demonstration
 
-npm run android
+You are only required to setup the `donation-app` for the project demostration.
 
-## Server
-
-cd donation-server
-
-### Installation
-
-1. Node.js
-
-2. Firebase Tools - `npm install -g firebase-tools`
-
-Run `firebase login`
-
-Run `firebase use donation-app-8de49`
-
-### Start Server locally
-
-cd to `donation-server` directory 
-
-Install packages
-
-```bash
-npm install
-```
-
-Download `.env` and `firebase-service-account.json` files from Google Drive and place them at the `donation-server` root directory.
-
-Start server
-
-```bash
-npm run serve
-```
-
-### Deploy Server
-
-Delete `package-lock.json` file in `donation-server` directory.
-
-Run `firebase deploy --only functions` on the root directory of the repo folder.
+Please take a look at the `README.md` in the `donation-app` directory to find out how.
