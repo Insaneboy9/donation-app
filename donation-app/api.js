@@ -42,4 +42,8 @@ export const callApi = {
     fetch(`${BASE_URL}/leaderboard`).then((response) => {
       return response.json();
     }),
+  challenge: () =>
+    fetch(`${BASE_URL}/challenge`).then((response) => {
+      return response.json();
+    }),
 };

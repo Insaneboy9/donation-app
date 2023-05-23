@@ -109,6 +109,21 @@ app.get("/leaderboard", async (req, res) => {
   res.send(results);
 });
 
+//Handle GET request for challenge
+app.get("/challenge", async (req, res) => {
+  const snapshot = await getDocs(collection(db, "challenge"));
+  const logoUrl = await getDownloadURL(ref(storage, data.logo)); // get poster URL
+  const list = snapshot.docs.map(async (doc) => {
+    const data = doc.data();
+    return {
+      title: data.title,
+      logoUrl,
+    };
+  });
+  const results = await Promise.all(list); // wait for all the URLs to resolve
+  res.send(results);
+});
+
 app.get("/blockchain", async (req, res) => {
   const result = await blockchain.start();
   res.status(200).json({

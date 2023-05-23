@@ -11,6 +11,7 @@ import {
   Animated,
   FlatList,
 } from "react-native";
+import { useQuery } from "react-query";
 import {
   FontAwesome5,
   Entypo,
@@ -21,6 +22,7 @@ import {
 import * as Progress from "react-native-progress";
 
 import styled from "styled-components/native";
+import { callApi } from "../../api";
 
 const Header = styled.View`
   padding: 10px;
@@ -99,6 +101,10 @@ if (Platform.OS === "android") {
 }
 
 const ChallengesScreen = () => {
+  const { isLoading, data, refetch } = useQuery("challenge", callApi.challenge);
+
+  console.log(data);
+
   const offset = useRef(new Animated.Value(0)).current;
 
   const bgColor = offset.interpolate({
