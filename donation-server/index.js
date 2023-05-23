@@ -112,15 +112,16 @@ app.get("/leaderboard", async (req, res) => {
 //Handle GET request for challenge
 app.get("/challenge", async (req, res) => {
   const snapshot = await getDocs(collection(db, "challenge"));
-  const logoUrl = await getDownloadURL(ref(storage, data.logo)); // get poster URL
   const list = snapshot.docs.map(async (doc) => {
     const data = doc.data();
+    const logoUrl = await getDownloadURL(ref(storage, data.logo)); // get poster URL
     return {
       title: data.title,
       logoUrl,
     };
   });
   const results = await Promise.all(list); // wait for all the URLs to resolve
+  console.log(results);
   res.send(results);
 });
 
