@@ -7,6 +7,7 @@ import colors from "../colors";
 import CameraScreen from "../screens/camera/CameraScreen";
 import RewardDetailScreen from "../screens/rewards/RewardDetailScreen";
 import LeaderboardScreen from "../screens/leaderboard/LeaderboardScreen";
+import ChallengeDetailScreen from "../screens/challenges/ChallengeDetailScreen";
 
 const NativeStack = createNativeStackNavigator();
 
@@ -38,6 +39,11 @@ const Stack = ({ route }) => {
         // initialParams={{ user: route.params.user }}
         name="Leaderboard"
         component={LeaderboardScreen}
+      />
+      <NativeStack.Screen
+        name="Challenge Detail"
+        options={{ headerShown: false }}
+        component={ChallengeDetailScreen}
       />
     </NativeStack.Navigator>
   );

@@ -1,28 +1,27 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
+  ActivityIndicator,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   View,
   Text,
-  UIManager,
   TouchableOpacity,
-  LayoutAnimation,
   Animated,
   FlatList,
+  Image,
 } from "react-native";
 import { useQuery } from "react-query";
-import {
-  FontAwesome5,
-  Entypo,
-  FontAwesome,
-  AntDesign,
-} from "@expo/vector-icons";
+import { FontAwesome5, AntDesign, Entypo } from "@expo/vector-icons";
 
+import axios from "axios";
 import * as Progress from "react-native-progress";
 
 import styled from "styled-components/native";
 import { callApi } from "../../api";
+import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../../firebase/firebaseAuth";
+import Loader from "../../components/Loader";
 
 const Header = styled.View`
   padding: 10px;
@@ -94,16 +93,16 @@ const BoxDetail = styled.View`
   align-items: center;
 `;
 
-if (Platform.OS === "android") {
-  if (UIManager.setLayoutAnimationEnabledExperimental) {
-    UIManager.setLayoutAnimationEnabledExperimental(true);
-  }
-}
-
 const ChallengesScreen = () => {
-  const { isLoading, data, refetch } = useQuery("challenge", callApi.challenge);
+  const { user } = useAuth();
+  const userId = user?.userId;
+  const navigation = useNavigation();
 
-  console.log(data);
+  const [loading, setLoading] = useState(false);
+
+  const { isLoading, data, refetch } = useQuery(["challenges", userId], () =>
+    callApi.challenges(userId)
+  );
 
   const offset = useRef(new Animated.Value(0)).current;
 
@@ -112,6 +111,39 @@ const ChallengesScreen = () => {
     outputRange: ["rgb(241,242,246)", "rgb(255, 255, 255)"],
     extrapolate: "clamp",
   });
+
+  const toDetail = (data) => {
+    navigation.navigate("Stack", {
+      screen: "Challenge Detail",
+      params: { data },
+    });
+  };
+
+  const getLeftDays = (expiry) => {
+    var currentTime = new Date().getTime();
+    var timeDiff = expiry * 1000 - currentTime;
+
+    return Math.ceil(timeDiff / 1000 / 60 / 60 / 24);
+  };
+
+  const onParticipate = async (challengeId) => {
+    setLoading(true);
+    try {
+      const data = {
+        challengeId: challengeId,
+        userId: userId,
+      };
+      await axios.post(
+        `http://10.0.2.2:5001/donation-app-8de49/us-central1/app/challenges`,
+        data
+      );
+      refetch();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const Divisor = () => (
     <View
@@ -122,87 +154,7 @@ const ChallengesScreen = () => {
       }}
     />
   );
-  const challenges = [
-    {
-      title: "Donate 3 times to win $10 Goole-Play voucher",
-      logo: (
-        <Entypo
-          style={{ marginVertical: 10 }}
-          name="google-play"
-          size={24}
-          color="black"
-        />
-      ),
-    },
-    {
-      title: "Donate 3 times to win $10 Goole-Play voucher",
-      logo: (
-        <Entypo
-          style={{ marginVertical: 10 }}
-          name="google-play"
-          size={24}
-          color="black"
-        />
-      ),
-    },
-    {
-      title: "Donate 3 times to win $10 Goole-Play voucher",
-      logo: (
-        <Entypo
-          style={{ marginVertical: 10 }}
-          name="google-play"
-          size={24}
-          color="black"
-        />
-      ),
-    },
-    {
-      title: "Donate 3 times to win $10 Goole-Play voucher",
-      logo: (
-        <Entypo
-          style={{ marginVertical: 10 }}
-          name="google-play"
-          size={24}
-          color="black"
-        />
-      ),
-    },
-    {
-      title: "Donate minimum of $20 to win $10 Apple vouchers",
-      logo: (
-        <FontAwesome
-          style={{ marginVertical: 10 }}
-          name="apple"
-          size={24}
-          color="black"
-        />
-      ),
-    },
-  ];
-  const ongoingChallenges = [
-    {
-      title: "Donate 3 times to win $10 Goole-Play voucher",
-      logo: (
-        <Entypo
-          style={{ marginVertical: 10 }}
-          name="google-play"
-          size={24}
-          color="black"
-        />
-      ),
-    },
-    {
-      title: "Donate 3 times to win $10 Goole-Play voucher",
-      logo: (
-        <Entypo
-          style={{ marginVertical: 10 }}
-          name="google-play"
-          size={24}
-          color="black"
-        />
-      ),
-    },
-  ];
+
   return (
     <SafeAreaView style={styles.wrapper}>
       <AnimatedHeader
@@ -212,109 +164,138 @@ const ChallengesScreen = () => {
       >
         <TextHeader>Donate more</TextHeader>
       </AnimatedHeader>
-      <ScrollView
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: offset } } }],
-          { useNativeDriver: false }
-        )}
-        style={styles.container}
-      >
-        <View style={styles.top}>
-          <Box>
-            <FontAwesome5
-              style={styles.boxLogo}
-              name="running"
-              size={24}
-              color="#808e9b"
-            />
-            <Text style={styles.boxTitle}>Ongoing</Text>
-            <Text style={styles.boxQuantity}>3</Text>
-          </Box>
-          <Box>
-            <FontAwesome5
-              style={styles.boxLogo}
-              name="gift"
-              size={24}
-              color="#808e9b"
-            />
-            <Text style={styles.boxTitle}>Prize</Text>
-            <Text style={styles.boxQuantity}>0</Text>
-          </Box>
-          <Box>
-            <FontAwesome5
-              style={styles.boxLogo}
-              name="history"
-              size={24}
-              color="#808e9b"
-            />
-            <Text style={styles.boxTitle}>History</Text>
-            <Text style={styles.boxQuantity}>0</Text>
-          </Box>
-        </View>
-        <View style={styles.bottom}>
-          <AvailableChallenges>
-            <ChallengeHeader>
-              <Text style={styles.AvailableChallengesText}>
-                Join challenges
-              </Text>
-              <TouchableOpacity>
-                <Text style={{ color: "blue" }}>See all</Text>
-              </TouchableOpacity>
-            </ChallengeHeader>
-            {challenges.map((c, index) => (
-              <Challenge key={index}>
-                <ChallengeTitle>
-                  <Text style={{ marginRight: 5 }}>
-                    {c.title.length > 40
-                      ? c.title.slice(0, 40) + "..."
-                      : c.title}
-                  </Text>
-                  <View>
-                    <AntDesign name="rightcircle" size={18} color="#b2bec3" />
-                  </View>
-                </ChallengeTitle>
-                {c.logo}
-                <ChallengeBtn>
-                  <Text style={styles.btnText}>Drop in now</Text>
-                </ChallengeBtn>
-                {index + 1 < challenges.length ? <Divisor /> : null}
-              </Challenge>
-            ))}
-          </AvailableChallenges>
-
-          {ongoingChallenges && (
-            <OngoingChallenge>
-              <Text style={styles.AvailableChallengesText}>
-                Your ongoing challenges
-              </Text>
-              <FlatList
-                data={ongoingChallenges}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ paddingHorizontal: 10 }}
-                ItemSeparatorComponent={<View style={{ width: 20 }} />}
-                renderItem={({ item }) => (
-                  <ChallengeBox>
-                    {item.logo}
-                    <BoxDetail>
-                      <Text style={{ marginLeft: 10, marginBottom: 10 }}>
-                        {item.title.length > 30
-                          ? item.title.slice(0, 30) + "..."
-                          : item.title}
-                      </Text>
-                      <Progress.Bar progress={0.3} width={200} />
-                      <View style={styles.moreInfo}>
-                        <Text style={styles.seeMore}>See more</Text>
-                        <Text style={styles.expiry}>Left 13 days</Text>
-                      </View>
-                    </BoxDetail>
-                  </ChallengeBox>
-                )}
-              />
-            </OngoingChallenge>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <ScrollView
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: offset } } }],
+            { useNativeDriver: false }
           )}
-        </View>
-      </ScrollView>
+          style={styles.container}
+        >
+          <View style={styles.top}>
+            <Box>
+              <Entypo
+                style={styles.boxLogo}
+                name="new"
+                size={24}
+                color="#808e9b"
+              />
+              <Text style={styles.boxTitle}>New</Text>
+              <Text style={styles.boxQuantity}>
+                {data?.filter((c) => c.state == 0).length}
+              </Text>
+            </Box>
+            <Box>
+              <FontAwesome5
+                style={styles.boxLogo}
+                name="running"
+                size={24}
+                color="#808e9b"
+              />
+              <Text style={styles.boxTitle}>Ongoing</Text>
+              <Text style={styles.boxQuantity}>
+                {data?.filter((c) => c.state == 1).length}
+              </Text>
+            </Box>
+            <Box>
+              <FontAwesome5
+                style={styles.boxLogo}
+                name="history"
+                size={24}
+                color="#808e9b"
+              />
+              <Text style={styles.boxTitle}>History</Text>
+              <Text style={styles.boxQuantity}>
+                {data?.filter((c) => c.state == 2).length}
+              </Text>
+            </Box>
+          </View>
+          <View style={styles.bottom}>
+            <AvailableChallenges>
+              <ChallengeHeader>
+                <Text style={styles.AvailableChallengesText}>
+                  Join challenges
+                </Text>
+                <TouchableOpacity>
+                  <Text style={{ color: "blue" }}>See all</Text>
+                </TouchableOpacity>
+              </ChallengeHeader>
+              {data?.map(
+                (c, index) =>
+                  c.state == 0 && (
+                    <Challenge onPress={() => toDetail(c)} key={index}>
+                      <ChallengeTitle>
+                        <Text style={{ marginRight: 5 }}>
+                          {c.body.length > 40
+                            ? c.body.slice(0, 40) + "..."
+                            : c.body}
+                        </Text>
+                        <View>
+                          <AntDesign
+                            name="rightcircle"
+                            size={18}
+                            color="#b2bec3"
+                          />
+                        </View>
+                      </ChallengeTitle>
+                      <Image style={styles.logo} source={{ uri: c.logoUrl }} />
+                      <ChallengeBtn onPress={() => onParticipate(c.id)}>
+                        {loading ? (
+                          <ActivityIndicator />
+                        ) : (
+                          <Text style={styles.btnText}>Drop in now</Text>
+                        )}
+                      </ChallengeBtn>
+                      {index + 1 < data?.length ? <Divisor /> : null}
+                    </Challenge>
+                  )
+              )}
+            </AvailableChallenges>
+
+            {data && (
+              <OngoingChallenge>
+                <Text style={styles.AvailableChallengesText}>
+                  Your ongoing challenges
+                </Text>
+                <FlatList
+                  data={[data?.find((c) => c.state == 1)]}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{ paddingHorizontal: 10 }}
+                  ItemSeparatorComponent={<View style={{ width: 20 }} />}
+                  renderItem={({ item }) => (
+                    <ChallengeBox onPress={() => toDetail(item)}>
+                      <Image
+                        style={{ ...styles.logo, marginRight: 10 }}
+                        source={{ uri: item.logoUrl }}
+                      />
+                      <BoxDetail>
+                        <Text style={{ marginLeft: 10, marginBottom: 10 }}>
+                          {item.title.length > 30
+                            ? item.title.slice(0, 30) + "..."
+                            : item.title}
+                        </Text>
+                        <Progress.Bar
+                          progress={item.progress / item.max_progress}
+                          width={200}
+                        />
+                        <View style={styles.moreInfo}>
+                          <Text style={styles.seeMore}>See more</Text>
+                          <Text style={styles.expiry}>
+                            {getLeftDays(item.expiry_date.seconds)} days left
+                          </Text>
+                        </View>
+                      </BoxDetail>
+                    </ChallengeBox>
+                  )}
+                />
+              </OngoingChallenge>
+            )}
+          </View>
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 };
@@ -378,5 +359,10 @@ const styles = StyleSheet.create({
   seeMore: {
     color: "#0984e3",
     fontWeight: "bold",
+  },
+  logo: {
+    width: 50,
+    height: 50,
+    marginVertical: 10,
   },
 });

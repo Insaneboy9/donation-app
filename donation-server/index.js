@@ -2,7 +2,15 @@ const { onRequest } = require("firebase-functions/v2/https");
 const cors = require("cors");
 const { db, storage } = require("./firebaseConfig");
 const { getDownloadURL, ref } = require("firebase/storage");
-const { collection, getDocs } = require("firebase/firestore");
+const {
+  collection,
+  getDocs,
+  query,
+  where,
+  updateDoc,
+  doc,
+  getDoc,
+} = require("firebase/firestore");
 const blockchain = require("./controllers/blockchain.js");
 const { createDocument } = require("./controllers/functions.js");
 const { addTimeBc } = require("./controllers/transactionsconn.js");
@@ -110,19 +118,62 @@ app.get("/leaderboard", async (req, res) => {
 });
 
 //Handle GET request for challenge
-app.get("/challenge", async (req, res) => {
-  const snapshot = await getDocs(collection(db, "challenge"));
-  const list = snapshot.docs.map(async (doc) => {
-    const data = doc.data();
-    const logoUrl = await getDownloadURL(ref(storage, data.logo)); // get poster URL
+app.get("/challenges/:id", async (req, res) => {
+  const userId = req.params.id;
+  const collectionRef = collection(db, "users");
+
+  const q = query(collectionRef, where("__name__", "==", userId));
+  const querySnapshot = await getDocs(q);
+
+  const currentUser = querySnapshot.docs.map((doc) => doc.data());
+  const challenges = currentUser[0].challenges.map(async (c) => {
+    const logoUrl = await getDownloadURL(ref(storage, c.logo)); // get poster URL
+    // const posterUrl = await getDownloadURL(ref(storage, c.poster)); // get poster URL
+
     return {
-      title: data.title,
+      id: c.id,
+      title: c.title,
       logoUrl,
+      // posterUrl,
+      body: c.body,
+      prize: c.prize,
+      instruction: c.instruction,
+      max_progress: c.max_progress,
+      quantity: c.quantity,
+      expiry_date: c.expiry_date,
+      progress: c.progress,
+      state: c.state,
+      type: c.type,
     };
   });
-  const results = await Promise.all(list); // wait for all the URLs to resolve
-  console.log(results);
+
+  const results = await Promise.all(challenges); // wait for all the URLs to resolve
+
   res.send(results);
+});
+
+//Handle POST request for challenge
+app.post("/challenges", async (req, res) => {
+  const { challengeId, userId } = req.body;
+  const docRef = doc(db, "users", userId);
+
+  try {
+    const doc = await getDoc(docRef);
+    const challenges = doc.data()["challenges"];
+    challenges.map((c) => {
+      if (c.id == challengeId) {
+        console.log("FOUND");
+        c.state = "1";
+      }
+    });
+    await updateDoc(docRef, {
+      ["challenges"]: challenges,
+    });
+    console.log(challenges);
+  } catch (e) {
+    console.error(e);
+  }
+  res.send("Successfully updated");
 });
 
 app.get("/blockchain", async (req, res) => {
