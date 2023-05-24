@@ -8,9 +8,10 @@ import {
   Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { MaterialIcons } from "@expo/vector-icons";
-import colors from "../../colors";
+import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import styled from "styled-components/native";
+
+import colors from "../../colors";
 import { callApi } from "../../api";
 import { useNavigation } from "@react-navigation/native";
 
@@ -55,7 +56,7 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
     }
     callApi.onTransaction(data);
     navigation.navigate("Home");
-    Alert.alert("Transaction Successful")
+    Alert.alert("Transaction Successful");
   };
 
   useEffect(() => {
@@ -109,6 +110,43 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
             )}
           </View>
         </View>
+        <View style={styles.reassuranceContainer}>
+          <View style={styles.reassuranceHeader}>
+          <Ionicons name="lock-closed-outline" size={40} />
+          <Text style={styles.reassuranceHeaderText}>
+            PaiDrop uses <Text style={styles.boldText}>Blockchain </Text>
+            for your transactions
+          </Text>
+          </View>
+          <View style={styles.reassuranceItem}>
+            <View style={styles.reassuranceItemHeader}>
+              <Ionicons
+                name="checkmark-outline"
+                size={18}
+                style={styles.tick}
+              />
+              <Text style={styles.reassuranceText}>Secure</Text>
+            </View>
+            <Text style={styles.reassuranceBody}>
+              Cryptographic verification and decentralization ensures secure
+              transactions
+            </Text>
+          </View>
+          <View style={styles.reassuranceItem}>
+            <View style={styles.reassuranceItemHeader}>
+              <Ionicons
+                name="checkmark-outline"
+                size={18}
+                style={styles.tick}
+              />
+              <Text style={styles.reassuranceText}>Tamper-Proof</Text>
+            </View>
+            <Text style={styles.reassuranceBody}>
+              Decentralized consensus mechanisms ensures tamper-proof
+              transactions
+            </Text>
+          </View>
+        </View>
         <View style={styles.buttonContainer}>
           <Button disabled={disable} onPress={onTransfer}>
             <Text style={styles.btnText}>SUBMIT</Text>
@@ -128,8 +166,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  boldText: {
+    fontWeight: "bold",
+  },
   accountContainer: {
-    position: "absolute",
     width: "100%",
     height: SCREEN_HEIGHT / 4.5,
     backgroundColor: "white",
@@ -142,6 +182,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 15,
+  },
+  lock: {
+    justifyContent: "center",
+    alignItems: "center",
   },
   item: {
     flexDirection: "row",
@@ -173,5 +217,37 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: "white",
+  },
+  reassuranceContainer: {
+    marginBottom: 20,
+  },
+  reassuranceHeader: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20
+  },
+  reassuranceHeaderText: {
+    fontSize: 20,
+    textAlign: "center",
+    margin: 20,
+  },
+  reassuranceText: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  reassuranceBody: {
+    fontSize: 16,
+    marginTop: 5,
+    fontWeight: "300",
+  },
+  reassuranceItem: {
+    paddingLeft: 30,
+    paddingBottom: 30,
+  },
+  reassuranceItemHeader: {
+    flexDirection: "row",
+  },
+  tick: {
+    marginRight: 5,
   },
 });
