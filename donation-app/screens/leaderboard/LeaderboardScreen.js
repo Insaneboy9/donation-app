@@ -7,10 +7,11 @@ import {
   Dimensions,
   Image,
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import styled from "styled-components/native";
+import moment, { add } from "moment";
 import Loader from "../../components/Loader";
 import { useQuery } from "react-query";
 import { callApi } from "../../api";
@@ -65,6 +66,7 @@ const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const LeaderboardScreen = () => {
   const { user } = useAuth();
+  const [remainingTime, setRemainingTime] = useState(7 * 24 * 60 * 60);
   // fetching users data
   const { isLoading, data, refetch } = useQuery(
     "leaderboard",
@@ -73,10 +75,31 @@ const LeaderboardScreen = () => {
   const users = data;
   // sort the users in descending order
   users?.sort((a, b) => b.points - a.points);
+
+  const formatTime = (timeInSeconds) => {
+    const hours = Math.floor(timeInSeconds / 3600);
+    const minutes = Math.floor((timeInSeconds % 3600) / 60);
+    const seconds = Math.floor(timeInSeconds % 60);
+
+    return `${hours} : ${minutes} : ${seconds}`;
+  };
+
+  const currentTime = moment().add(8, 'hours').format('hh:mm A');
+
   // rerender when the points increase
   useEffect(() => {
     refetch();
   }, [user]);
+
+  //reset timer every second
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRemainingTime((prevTime) => prevTime - 1);
+    }, 1000);
+  
+    return () => clearInterval(interval); // Clean up the interval on unmount
+  }, []);
+
   return isLoading ? (
     <Loader />
   ) : (
@@ -95,11 +118,10 @@ const LeaderboardScreen = () => {
           />
           <Text style={styles.header}>WIN 1000 POINTS!</Text>
           <Text style={styles.content}>This week's highest point wins!</Text>
-          <Text style={styles.timer}>Contest ends in 48 : 32 : 16</Text>
+          <Text style={styles.timer}>Contest ends in {formatTime(remainingTime)}</Text>
         </LinearGradient>
         <View style={styles.updateWrapper}>
-          <Text>Week 25</Text>
-          <Text style={{ color: "#808e9b" }}>Yesterday</Text>
+          <Text style={{ color: "#808e9b" }}>As of {currentTime} SGT</Text>
         </View>
         {users.map((user, index) => (
           <Card key={index} rank={index}>
@@ -181,6 +203,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     flexDirection: "row",
     justifyContent: "space-between",
+    alignSelf: "flex-end",
   },
   rankCard: {
     marginHorizontal: 20,
