@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
-import MapView, { Marker } from "react-native-maps";
-import { StyleSheet, View, FlatList, Text } from "react-native";
 import * as Location from "expo-location";
+import * as geolib from "geolib";
+import React, { useEffect, useRef, useState } from "react";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import { AutocompleteDropdown } from "react-native-autocomplete-dropdown";
+import MapView, { Marker } from "react-native-maps";
 import { useQuery } from "react-query";
-import * as geolib from 'geolib';
-
 import { callApi } from "../../api";
 import HawkerItem from "../../components/HawkerItem";
 
@@ -40,21 +40,38 @@ const MapScreen = () => {
     });
   };
 
-const hawkersWithDistance = hawkerData.map((hawker) => {
-  const hawkerLocation = {
-    latitude: parseFloat(hawker.latitude),
-    longitude: parseFloat(hawker.longitude),
+  const hawkersWithDistance = hawkerData.map((hawker) => {
+    const hawkerLocation = {
+      latitude: parseFloat(hawker.latitude),
+      longitude: parseFloat(hawker.longitude),
+    };
+
+    const distance = geolib.getDistance(mapRegion, hawkerLocation);
+    const distanceInKm = geolib.convertDistance(distance, "km");
+
+    return {
+      ...hawker,
+      distance: distanceInKm,
+    };
+  });
+
+  const hawkersSearchData = hawkerData.map((hawker) => {
+    return {
+      title: hawker.name,
+      ...hawker,
+    };
+  });
+
+  const onHawkerSearchSelect = (item) => {
+    if (item) {
+      mapRef.current?.animateToRegion({
+        latitude: item.latitude,
+        longitude: item.longitude,
+        latitudeDelta: 0.06,
+        longitudeDelta: 0.03,
+      });
+    }
   };
-
-  const distance = geolib.getDistance(mapRegion, hawkerLocation);
-  const distanceInKm = geolib.convertDistance(distance, 'km');
-
-  return {
-    ...hawker,
-    distance: distanceInKm,
-  };
-});
-
 
   useEffect(() => {
     userLocation();
@@ -62,6 +79,28 @@ const hawkersWithDistance = hawkerData.map((hawker) => {
 
   return (
     <View style={styles.container}>
+      {hawkersSearchData && (
+        <AutocompleteDropdown
+          containerStyle={{
+            position: "absolute",
+            top: 5,
+            left: "4%",
+            right: 0,
+            bottom: 0,
+            zIndex: 1,
+            width: "80%",
+          }}
+          inputContainerStyle={{
+            backgroundColor: "white",
+            borderRadius: 10,
+          }}
+          clearOnFocus={false}
+          closeOnBlur={true}
+          closeOnSubmit={false}
+          onSelectItem={onHawkerSearchSelect}
+          dataSet={hawkersSearchData}
+        />
+      )}
       <MapView
         ref={mapRef}
         style={styles.map}
@@ -94,9 +133,7 @@ const hawkersWithDistance = hawkerData.map((hawker) => {
       <FlatList
         data={hawkersWithDistance.sort((a, b) => a.distance - b.distance)}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <HawkerItem hawker={item}  mapRef={mapRef} />
-        )}
+        renderItem={({ item }) => <HawkerItem hawker={item} mapRef={mapRef} />}
       />
     </View>
   );
