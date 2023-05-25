@@ -85,8 +85,6 @@ const MapScreen = () => {
             position: "absolute",
             top: 5,
             left: "4%",
-            right: 0,
-            bottom: 0,
             zIndex: 1,
             width: "80%",
           }}
