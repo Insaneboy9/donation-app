@@ -1,23 +1,24 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { NavigationContainer } from "@react-navigation/native";
 import {
-  SafeAreaView,
-  StyleSheet,
-  StatusBar,
-  Platform,
-  View,
-} from "react-native";
-import { QueryClient, QueryClientProvider } from "react-query";
-import Root from "./navigation/Root";
-import * as Font from "expo-font";
-import { Asset } from "expo-asset";
-import * as SplashScreen from "expo-splash-screen";
-import {
+  Entypo,
+  FontAwesome,
   Ionicons,
   MaterialIcons,
-  FontAwesome,
-  Entypo,
 } from "@expo/vector-icons/";
+import { NavigationContainer } from "@react-navigation/native";
+import { Asset } from "expo-asset";
+import * as Font from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  Platform,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  View,
+} from "react-native";
+import { AutocompleteDropdownContextProvider } from "react-native-autocomplete-dropdown";
+import { QueryClient, QueryClientProvider } from "react-query";
+import Root from "./navigation/Root";
 
 // Keep the splash screen visible while fetching resources
 SplashScreen.preventAutoHideAsync();
@@ -83,11 +84,13 @@ export default function App() {
   return (
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <QueryClientProvider client={queryClient}>
-        <SafeAreaView style={styles.container}>
-          <NavigationContainer>
-            <Root />
-          </NavigationContainer>
-        </SafeAreaView>
+        <AutocompleteDropdownContextProvider>
+          <SafeAreaView style={styles.container}>
+            <NavigationContainer>
+              <Root />
+            </NavigationContainer>
+          </SafeAreaView>
+        </AutocompleteDropdownContextProvider>
       </QueryClientProvider>
     </View>
   );
