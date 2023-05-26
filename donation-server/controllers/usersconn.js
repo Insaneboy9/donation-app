@@ -32,11 +32,44 @@ const userOperation = async (fieldName, fieldValue, value, type) => {
         await updateDoc(docRef, {
           ["cash"]: Number(currentCashValue) + Number(value),
         });
-      } else {
-        await updateDoc(docRef, {
+      } else if (type == "donation") {
+        const challenges = doc.data()["challenges"];
+        challenges.map((c) => {
+          if ((c.state == 1 && c.type == 0) || c.type == 2) {
+            c.progress += 1;
+            if (c.progress >= c.max_progress) {
+              c.quantity -= 1;
+              c.state = "2";
+            }
+          }
+        });
+        const updateChallenge = await updateDoc(docRef, {
+          ["challenges"]: challenges,
+        });
+        const updateBalance = await updateDoc(docRef, {
           ["cash"]: Number(currentCashValue) - Number(value),
           ["points"]: Number(currentPointValue) + 0.1 * Number(value),
         });
+        await Promise.all([updateChallenge, updateBalance]);
+      } else {
+        const challenges = doc.data()["challenges"];
+        challenges.map((c) => {
+          if ((c.state == 1 && c.type == 1) || c.type == 2) {
+            c.progress += 1;
+            if (c.progress >= c.max_progress) {
+              c.quantity -= 1;
+              c.state = "2";
+            }
+          }
+        });
+        const updateChallenge = await updateDoc(docRef, {
+          ["challenges"]: challenges,
+        });
+        const updateBalance = await updateDoc(docRef, {
+          ["cash"]: Number(currentCashValue) - Number(value),
+          ["points"]: Number(currentPointValue) + 0.1 * Number(value),
+        });
+        await Promise.all([updateChallenge, updateBalance]);
       }
       console.log(
         `Document with ${fieldName}=${fieldValue} successfully updated!`

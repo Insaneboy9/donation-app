@@ -55,6 +55,7 @@ export default function App() {
         require("../donation-app/assets/first_prize.png"),
         require("../donation-app/assets/second_prize.png"),
         require("../donation-app/assets/third_prize.png"),
+        require("../donation-app/assets/challenges-bg.png"),
       ]);
       await Promise.all([...fonts, ...images]);
     } catch (e) {

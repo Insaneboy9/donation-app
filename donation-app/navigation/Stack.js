@@ -8,6 +8,7 @@ import CameraScreen from "../screens/camera/CameraScreen";
 import RewardDetailScreen from "../screens/rewards/RewardDetailScreen";
 import LeaderboardScreen from "../screens/leaderboard/LeaderboardScreen";
 import ChallengeDetailScreen from "../screens/challenges/ChallengeDetailScreen";
+import ChallengeHistoryScreen from "../screens/challenges/ChallengesHistoryScreen";
 
 const NativeStack = createNativeStackNavigator();
 
@@ -35,15 +36,15 @@ const Stack = ({ route }) => {
         name="RewardDetail"
         component={RewardDetailScreen}
       />
-      <NativeStack.Screen
-        // initialParams={{ user: route.params.user }}
-        name="Leaderboard"
-        component={LeaderboardScreen}
-      />
+      <NativeStack.Screen name="Leaderboard" component={LeaderboardScreen} />
       <NativeStack.Screen
         name="Challenge Detail"
         options={{ headerShown: false }}
         component={ChallengeDetailScreen}
+      />
+      <NativeStack.Screen
+        name="Challenge History"
+        component={ChallengeHistoryScreen}
       />
     </NativeStack.Navigator>
   );

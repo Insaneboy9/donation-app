@@ -19,6 +19,8 @@ const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
 
 const DetailScreen = ({ navigation: { setOptions }, route: { params } }) => {
   const navigation = useNavigation();
+  const donationType = "country" in params ? "orgnization" : "Donate";
+
   // navigate to account page
   const toAccount = (type) => {
     navigation.navigate("Stack", {
@@ -103,7 +105,7 @@ const DetailScreen = ({ navigation: { setOptions }, route: { params } }) => {
         ) : (
           <TouchableOpacity
             style={styles.dropButton}
-            onPress={() => toAccount("Donate")}
+            onPress={() => toAccount(donationType)}
           >
             <Text style={styles.buttonText}>DROP NOW</Text>
           </TouchableOpacity>

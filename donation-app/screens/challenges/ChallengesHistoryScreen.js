@@ -1,21 +1,41 @@
 import React, { useEffect, useState } from "react";
-import {
-  SafeAreaView,
-  Image,
-  StyleSheet,
-  Dimensions,
-  View,
-  Text,
-  Share,
-  Platform,
-  TouchableOpacity,
-} from "react-native";
-import styled from "styled-components/native";
+import { SafeAreaView, StyleSheet, ScrollView } from "react-native";
+import Challenges from "../../components/Challenges";
 
-const ChallengesHistoryScreen = () => {
+const ChallengesHistoryScreen = ({
+  navigation: { setOptions },
+  route: { params },
+}) => {
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setOptions({
+      title:
+        params.type == 0
+          ? "New Challenges"
+          : params.type == 1
+          ? "Ongoing Challenges"
+          : "History",
+    });
+  }, []);
+
   return (
     <SafeAreaView style={styles.wrapper}>
-      <View style={styles.container}></View>
+      <ScrollView style={styles.container}>
+        <Challenges
+          title={
+            params.type == 0
+              ? "Join New Challenges"
+              : params.type == 1
+              ? "Your Ongoing Challenges"
+              : "Your Challenge History"
+          }
+          data={params.data}
+          loading={loading}
+          setLoading={setLoading}
+          isBtn={false}
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -30,5 +50,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: "100%",
+    padding: 10,
   },
 });

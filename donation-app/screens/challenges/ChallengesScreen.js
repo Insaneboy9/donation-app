@@ -1,27 +1,23 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
-  ActivityIndicator,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   View,
   Text,
-  TouchableOpacity,
   Animated,
   FlatList,
   Image,
 } from "react-native";
 import { useQuery } from "react-query";
-import { FontAwesome5, AntDesign, Entypo } from "@expo/vector-icons";
-
-import axios from "axios";
+import { FontAwesome5, Entypo } from "@expo/vector-icons";
 import * as Progress from "react-native-progress";
-
 import styled from "styled-components/native";
 import { callApi } from "../../api";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../../firebase/firebaseAuth";
 import Loader from "../../components/Loader";
+import Challenges from "../../components/Challenges";
 
 const Header = styled.View`
   padding: 10px;
@@ -42,36 +38,6 @@ const Box = styled.TouchableOpacity`
   border-radius: 10px;
   width: 30%;
   elevation: 10;
-`;
-
-const AvailableChallenges = styled.View`
-  background-color: white;
-  padding: 15px;
-  border-radius: 20px;
-  margin-top: 10px;
-  margin-bottom: 30px;
-  elevation: 10;
-`;
-
-const Challenge = styled.TouchableOpacity`
-  flex-direction: column;
-`;
-
-const ChallengeTitle = styled.View`
-  flex-direction: row;
-`;
-
-const ChallengeHeader = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-`;
-
-const ChallengeBtn = styled.TouchableOpacity`
-  padding: 10px;
-  border-radius: 10px;
-  align-items: center;
-  background-color: aliceblue;
-  margin-bottom: 10px;
 `;
 
 const OngoingChallenge = styled.View`
@@ -97,9 +63,7 @@ const ChallengesScreen = () => {
   const { user } = useAuth();
   const userId = user?.userId;
   const navigation = useNavigation();
-
   const [loading, setLoading] = useState(false);
-
   const { isLoading, data, refetch } = useQuery(["challenges", userId], () =>
     callApi.challenges(userId)
   );
@@ -119,6 +83,13 @@ const ChallengesScreen = () => {
     });
   };
 
+  const toHistory = (data, type) => {
+    navigation.navigate("Stack", {
+      screen: "Challenge History",
+      params: { data, type },
+    });
+  };
+
   const getLeftDays = (expiry) => {
     var currentTime = new Date().getTime();
     var timeDiff = expiry * 1000 - currentTime;
@@ -126,34 +97,10 @@ const ChallengesScreen = () => {
     return Math.ceil(timeDiff / 1000 / 60 / 60 / 24);
   };
 
-  const onParticipate = async (challengeId) => {
-    setLoading(true);
-    try {
-      const data = {
-        challengeId: challengeId,
-        userId: userId,
-      };
-      await axios.post(
-        `http://10.0.2.2:5001/donation-app-8de49/us-central1/app/challenges`,
-        data
-      );
-      refetch();
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const Divisor = () => (
-    <View
-      style={{
-        borderBottomColor: "#b2bec3",
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        marginBottom: 10,
-      }}
-    />
-  );
+  // rerender when transaction made
+  useEffect(() => {
+    refetch();
+  }, [user]);
 
   return (
     <SafeAreaView style={styles.wrapper}>
@@ -175,7 +122,14 @@ const ChallengesScreen = () => {
           style={styles.container}
         >
           <View style={styles.top}>
-            <Box>
+            <Box
+              onPress={() =>
+                toHistory(
+                  data?.filter((c) => c.state == 0),
+                  "0"
+                )
+              }
+            >
               <Entypo
                 style={styles.boxLogo}
                 name="new"
@@ -187,7 +141,14 @@ const ChallengesScreen = () => {
                 {data?.filter((c) => c.state == 0).length}
               </Text>
             </Box>
-            <Box>
+            <Box
+              onPress={() =>
+                toHistory(
+                  data?.filter((c) => c.state == 1),
+                  "1"
+                )
+              }
+            >
               <FontAwesome5
                 style={styles.boxLogo}
                 name="running"
@@ -199,7 +160,14 @@ const ChallengesScreen = () => {
                 {data?.filter((c) => c.state == 1).length}
               </Text>
             </Box>
-            <Box>
+            <Box
+              onPress={() =>
+                toHistory(
+                  data?.filter((c) => c.state == 2),
+                  "2"
+                )
+              }
+            >
               <FontAwesome5
                 style={styles.boxLogo}
                 name="history"
@@ -213,46 +181,14 @@ const ChallengesScreen = () => {
             </Box>
           </View>
           <View style={styles.bottom}>
-            <AvailableChallenges>
-              <ChallengeHeader>
-                <Text style={styles.AvailableChallengesText}>
-                  Join challenges
-                </Text>
-                <TouchableOpacity>
-                  <Text style={{ color: "blue" }}>See all</Text>
-                </TouchableOpacity>
-              </ChallengeHeader>
-              {data?.map(
-                (c, index) =>
-                  c.state == 0 && (
-                    <Challenge onPress={() => toDetail(c)} key={index}>
-                      <ChallengeTitle>
-                        <Text style={{ marginRight: 5 }}>
-                          {c.body.length > 40
-                            ? c.body.slice(0, 40) + "..."
-                            : c.body}
-                        </Text>
-                        <View>
-                          <AntDesign
-                            name="rightcircle"
-                            size={18}
-                            color="#b2bec3"
-                          />
-                        </View>
-                      </ChallengeTitle>
-                      <Image style={styles.logo} source={{ uri: c.logoUrl }} />
-                      <ChallengeBtn onPress={() => onParticipate(c.id)}>
-                        {loading ? (
-                          <ActivityIndicator />
-                        ) : (
-                          <Text style={styles.btnText}>Drop in now</Text>
-                        )}
-                      </ChallengeBtn>
-                      {index + 1 < data?.length ? <Divisor /> : null}
-                    </Challenge>
-                  )
-              )}
-            </AvailableChallenges>
+            <Challenges
+              title="Join Challenges"
+              data={data?.filter((c) => c.state == 0)}
+              loading={loading}
+              setLoading={setLoading}
+              isBtn={true}
+              userId={userId}
+            />
 
             {data && (
               <OngoingChallenge>
@@ -260,7 +196,7 @@ const ChallengesScreen = () => {
                   Your ongoing challenges
                 </Text>
                 <FlatList
-                  data={[data?.find((c) => c.state == 1)]}
+                  data={data.filter((c) => c.state == 1)}
                   horizontal
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={{ paddingHorizontal: 10 }}
@@ -273,9 +209,9 @@ const ChallengesScreen = () => {
                       />
                       <BoxDetail>
                         <Text style={{ marginLeft: 10, marginBottom: 10 }}>
-                          {item.title.length > 30
-                            ? item.title.slice(0, 30) + "..."
-                            : item.title}
+                          {item.body.length > 30
+                            ? item.body.slice(0, 30) + "..."
+                            : item.body}
                         </Text>
                         <Progress.Bar
                           progress={item.progress / item.max_progress}
@@ -336,15 +272,6 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 20,
   },
-  AvailableChallengesText: {
-    fontWeight: "bold",
-    fontSize: 18,
-    marginBottom: 15,
-  },
-  btnText: {
-    fontWeight: "bold",
-    color: "blue",
-  },
   moreInfo: {
     position: "relative",
     width: "100%",
@@ -364,5 +291,10 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     marginVertical: 10,
+  },
+  AvailableChallengesText: {
+    fontWeight: "bold",
+    fontSize: 18,
+    marginBottom: 15,
   },
 });

@@ -6,11 +6,13 @@ import {
   Dimensions,
   TextInput,
   Alert,
+  KeyboardAvoidingView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import styled from "styled-components/native";
-
+import { useAuth } from "../../firebase/firebaseAuth";
+import { useQuery } from "react-query";
 import colors from "../../colors";
 import { callApi } from "../../api";
 import { useNavigation } from "@react-navigation/native";
@@ -31,6 +33,13 @@ const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
 const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
   const [disable, setDisable] = useState(true);
   const [amount, setAmount] = useState(0);
+  const { user } = useAuth();
+  const userId = user?.userId;
+  const { refetch } = useQuery(
+    ["challenges", userId],
+    () => callApi.challenges(userId),
+    refetch
+  );
   const placeholderText = `${
     params.type.length > 13 ? params.type.slice(0, 13) + "..." : params.type
   } Amount`;
@@ -45,6 +54,8 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
     };
     if (params.type === "Donate") {
       data.type = "donation";
+    } else if (params.type === "Organization") {
+      data.type == "organization";
     } else if (params.type == "Redeem") {
       data.type = "redemption";
     } else if (params.type == "Top Up") {
@@ -54,6 +65,7 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
     } else {
       data.type = params.type;
     }
+    // refetch();
     callApi.onTransaction(data);
     navigation.navigate("Home");
     Alert.alert("Transaction Successful");
@@ -112,19 +124,22 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
         </View>
         <View style={styles.reassuranceContainer}>
           <View style={styles.reassuranceHeader}>
-          <Ionicons name="lock-closed-outline" size={40} />
-          <Text style={styles.reassuranceHeaderText}>
-            PaiDrop uses <Text style={styles.boldText}>Blockchain </Text>
-            for your transactions
-          </Text>
+            <Ionicons color="#ff9f1a" name="lock-closed-outline" size={40} />
+            <Text style={styles.reassuranceHeaderText}>
+              PaiDrop uses <Text style={styles.boldText}>Blockchain </Text>
+              for your transactions
+            </Text>
           </View>
           <View style={styles.reassuranceItem}>
             <View style={styles.reassuranceItemHeader}>
-              <Ionicons
-                name="checkmark-outline"
-                size={18}
-                style={styles.tick}
-              />
+              <View style={styles.logo}>
+                <Ionicons
+                  name="checkmark-outline"
+                  size={18}
+                  color="white"
+                  style={styles.tick}
+                />
+              </View>
               <Text style={styles.reassuranceText}>Secure</Text>
             </View>
             <Text style={styles.reassuranceBody}>
@@ -134,11 +149,14 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
           </View>
           <View style={styles.reassuranceItem}>
             <View style={styles.reassuranceItemHeader}>
-              <Ionicons
-                name="checkmark-outline"
-                size={18}
-                style={styles.tick}
-              />
+              <View style={styles.logo}>
+                <Ionicons
+                  name="checkmark-outline"
+                  size={18}
+                  color="white"
+                  style={styles.tick}
+                />
+              </View>
               <Text style={styles.reassuranceText}>Tamper-Proof</Text>
             </View>
             <Text style={styles.reassuranceBody}>
@@ -147,11 +165,14 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
             </Text>
           </View>
         </View>
-        <View style={styles.buttonContainer}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.buttonContainer}
+        >
           <Button disabled={disable} onPress={onTransfer}>
             <Text style={styles.btnText}>SUBMIT</Text>
           </Button>
-        </View>
+        </KeyboardAvoidingView>
       </View>
     </SafeAreaView>
   );
@@ -224,7 +245,7 @@ const styles = StyleSheet.create({
   reassuranceHeader: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 20
+    marginTop: 20,
   },
   reassuranceHeaderText: {
     fontSize: 20,
@@ -249,5 +270,14 @@ const styles = StyleSheet.create({
   },
   tick: {
     marginRight: 5,
+  },
+  logo: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#32ff7e",
+    width: 25,
+    height: 25,
+    borderRadius: 20,
+    marginRight: 10,
   },
 });

@@ -28,7 +28,7 @@ async function updateContract(data, txnId) {
       txnId,
       userId,
       amount * 100,
-      type === "donation",
+      type === "donation" || "organization",
     ]);
 
     const gas = await transaction.estimateGas({

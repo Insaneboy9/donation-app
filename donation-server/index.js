@@ -127,14 +127,12 @@ app.get("/challenges/:id", async (req, res) => {
 
   const currentUser = querySnapshot.docs.map((doc) => doc.data());
   const challenges = currentUser[0].challenges.map(async (c) => {
-    const logoUrl = await getDownloadURL(ref(storage, c.logo)); // get poster URL
-    // const posterUrl = await getDownloadURL(ref(storage, c.poster)); // get poster URL
+    const logoUrl = await getDownloadURL(ref(storage, c.logo)); // get logo URL
 
     return {
       id: c.id,
       title: c.title,
       logoUrl,
-      // posterUrl,
       body: c.body,
       prize: c.prize,
       instruction: c.instruction,

@@ -1,15 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  SafeAreaView,
-  Image,
-  StyleSheet,
-  Dimensions,
-  View,
-  Text,
-  Share,
-  Platform,
-  TouchableOpacity,
-} from "react-native";
+import { SafeAreaView, Image, StyleSheet, View, Text } from "react-native";
 import {
   AntDesign,
   FontAwesome5,
@@ -23,20 +13,17 @@ import * as Progress from "react-native-progress";
 const Header = styled.View`
   width: 100%;
   height: 200px;
-  background-color: red;
-  padding: 15px;
   justify-content: center;
 `;
 
 const HeaderTitle = styled.View`
   flex-direction: row;
-  /* justify-items: center; */
   align-items: center;
   margin-bottom: 30px;
 `;
 
 const HeaderDescription = styled.Text`
-  color: white;
+  color: #fff200;
   font-size: 16px;
 `;
 
@@ -51,9 +38,7 @@ const BoxTitle = styled.View`
   border-radius: 15px;
   top: -30px;
   elevation: 20;
-  /* justify-content: center; */
   padding: 10px;
-  /* align-items: center; */
 `;
 
 const Body = styled.View`
@@ -72,7 +57,6 @@ const Timeline = styled.View`
 
 const Content = styled.View`
   flex-direction: row;
-  /* justify-content: center; */
   align-items: center;
   margin-bottom: 50px;
 `;
@@ -90,10 +74,7 @@ const ConditionView = styled.View`
   width: 90%;
 `;
 
-const ChallengeDetailScreen = ({
-  navigation: { setOptions },
-  route: { params },
-}) => {
+const ChallengeDetailScreen = ({ route: { params } }) => {
   const navigation = useNavigation();
   const [leftDays, setLeftDays] = useState();
   const getLeftDays = () => {
@@ -125,24 +106,34 @@ const ChallengeDetailScreen = ({
     <SafeAreaView style={styles.wrapper}>
       <View style={styles.container}>
         <Header>
-          <HeaderTitle>
-            <BackBtn onPress={goBack}>
-              <AntDesign name="arrowleft" size={30} color="white" />
-            </BackBtn>
-            <Text style={styles.title}>{params.data.title}</Text>
-          </HeaderTitle>
-          <HeaderDescription>{params.data.body}</HeaderDescription>
+          <Image
+            style={styles.bg}
+            source={require("../../assets/challenges-bg.png")}
+          />
+          <View style={{ padding: 30 }}>
+            <HeaderTitle>
+              <BackBtn onPress={goBack}>
+                <AntDesign name="arrowleft" size={30} color="#fff200" />
+              </BackBtn>
+              <Text style={styles.title}>{params.data.title}</Text>
+            </HeaderTitle>
+            <HeaderDescription>{params.data.body}</HeaderDescription>
+          </View>
         </Header>
         <BoxTitle>
           <Text style={styles.boxTitle}>
             {params.data.state == 0
               ? "Drop in to the challenge NOW!"
-              : "Take your first step, Challenger!"}
+              : params.data.state == 1
+              ? "Take your first step, Challenger!"
+              : "Congratulations!"}
           </Text>
           <Text style={styles.boxText}>
             {params.data.state == 0
               ? "Participate at the Challenge Homepage now!"
-              : "You've accepted the challenge. Time to start donating!"}
+              : params.data.state == 1
+              ? "You've accepted the challenge. Time to start donating!"
+              : "You have completed the challenge, take part in others!"}
           </Text>
         </BoxTitle>
         <Body>
@@ -153,9 +144,13 @@ const ChallengeDetailScreen = ({
               <Text style={{ ...styles.begun, marginBottom: 5 }}>
                 {params.data.state == 0
                   ? "Challenge has yet to begun"
-                  : "Challenge has begun"}
+                  : params.data.state == 1
+                  ? "Challenge has begun"
+                  : "Challengs has been completed"}
               </Text>
-              <Text style={styles.begun}>{leftDays} days left</Text>
+              {params.data.state != 2 && (
+                <Text style={styles.begun}>{leftDays} days left</Text>
+              )}
             </Detail>
           </Content>
           <Content>
@@ -237,7 +232,7 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
     fontSize: 24,
-    color: "white",
+    color: "#fff200",
   },
   boxTitle: {
     fontWeight: "bold",
@@ -275,5 +270,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
     marginBottom: 5,
+  },
+  bg: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
   },
 });
