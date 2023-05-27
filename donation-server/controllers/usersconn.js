@@ -35,7 +35,7 @@ const userOperation = async (fieldName, fieldValue, value, type) => {
       } else if (type == "donation") {
         const challenges = doc.data()["challenges"];
         challenges.map((c) => {
-          if ((c.state == 1 && c.type == 0) || c.type == 2) {
+          if ((c.state == 1 && c.type == 0) || (c.state == 1 && c.type == 2)) {
             c.progress += 1;
             if (c.progress >= c.max_progress) {
               c.quantity -= 1;
@@ -54,7 +54,7 @@ const userOperation = async (fieldName, fieldValue, value, type) => {
       } else {
         const challenges = doc.data()["challenges"];
         challenges.map((c) => {
-          if ((c.state == 1 && c.type == 1) || c.type == 2) {
+          if ((c.state == 1 && c.type == 1) || (c.state == 1 && c.type == 2)) {
             c.progress += 1;
             if (c.progress >= c.max_progress) {
               c.quantity -= 1;
