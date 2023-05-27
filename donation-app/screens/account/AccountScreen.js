@@ -11,8 +11,6 @@ import {
 import React, { useEffect, useState } from "react";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import styled from "styled-components/native";
-import { useAuth } from "../../firebase/firebaseAuth";
-import { useQuery } from "react-query";
 import colors from "../../colors";
 import { callApi } from "../../api";
 import { useNavigation } from "@react-navigation/native";
@@ -33,17 +31,11 @@ const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
 const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
   const [disable, setDisable] = useState(true);
   const [amount, setAmount] = useState(0);
-  const { user } = useAuth();
-  const userId = user?.userId;
-  const { refetch } = useQuery(
-    ["challenges", userId],
-    () => callApi.challenges(userId),
-    refetch
-  );
   const placeholderText = `${
     params.type.length > 13 ? params.type.slice(0, 13) + "..." : params.type
   } Amount`;
   const navigation = useNavigation();
+
   // post transaction data to backend
   const onTransfer = async () => {
     const data = {
@@ -65,7 +57,6 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
     } else {
       data.type = params.type;
     }
-    // refetch();
     callApi.onTransaction(data);
     navigation.navigate("Home");
     Alert.alert("Transaction Successful");

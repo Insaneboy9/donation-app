@@ -1,6 +1,7 @@
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 
-const HawkerItem = ({ hawker, mapRef  }) => {
+const HawkerItem = ({ hawker, mapRef }) => {
   const hawkerLocation = {
     latitude: parseFloat(hawker.latitude),
     longitude: parseFloat(hawker.longitude),
@@ -18,8 +19,11 @@ const HawkerItem = ({ hawker, mapRef  }) => {
   return (
     <TouchableOpacity onPress={handlePress} style={styles.hawkerItem}>
       <Text style={styles.boldText}>{hawker.name}</Text>
-      <Text>{hawker.address}</Text>
-      <Text>- {hawker.distance}km away</Text>
+      <Text style={{ marginVertical: 5 }}>{hawker.address}</Text>
+      <View style={styles.holder}>
+        <MaterialIcons name="directions-run" size={24} color="black" />
+        <Text>{hawker.distance.toFixed(2)}km away</Text>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -27,12 +31,18 @@ const HawkerItem = ({ hawker, mapRef  }) => {
 const styles = StyleSheet.create({
   hawkerItem: {
     padding: 10,
-    borderBottomWidth: 1,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: "gray",
+    backgroundColor: "#f1f2f6",
   },
   boldText: {
-    fontWeight: 'bold',
+    color: "#2ed573",
+    fontWeight: "bold",
     fontSize: 16,
+  },
+  holder: {
+    flexDirection: "row",
+    alignItems: "center",
   },
 });
 

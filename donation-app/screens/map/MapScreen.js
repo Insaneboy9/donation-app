@@ -6,6 +6,7 @@ import { AutocompleteDropdown } from "react-native-autocomplete-dropdown";
 import MapView, { Marker } from "react-native-maps";
 import { useQuery } from "react-query";
 import { callApi } from "../../api";
+import { FontAwesome5 } from "@expo/vector-icons";
 import HawkerItem from "../../components/HawkerItem";
 
 const MapScreen = () => {
@@ -127,6 +128,7 @@ const MapScreen = () => {
       </MapView>
       <View style={styles.hawkerHeader}>
         <Text style={styles.headerText}>Nearby</Text>
+        <FontAwesome5 name="search-location" size={30} color="#2ed573" />
       </View>
       <FlatList
         data={hawkersWithDistance.sort((a, b) => a.distance - b.distance)}
@@ -146,12 +148,15 @@ const styles = StyleSheet.create({
     height: "65%",
   },
   hawkerHeader: {
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: "white",
     padding: 10,
   },
   headerText: {
     fontWeight: "bold",
-    fontSize: 18,
+    fontSize: 20,
+    marginRight: 10,
   },
 });
 
