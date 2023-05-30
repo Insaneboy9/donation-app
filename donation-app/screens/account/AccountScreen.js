@@ -38,28 +38,45 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
 
   // post transaction data to backend
   const onTransfer = async () => {
-    const data = {
-      userId: params.user.userId,
-      amount: amount,
-      type: "",
-      email: params.user.email,
-    };
-    if (params.type === "Donate") {
-      data.type = "donation";
-    } else if (params.type === "Organization") {
-      data.type == "organization";
-    } else if (params.type == "Redeem") {
-      data.type = "redemption";
-    } else if (params.type == "Top Up") {
-      data.type = "deposit";
-    } else if (params.type == "Withdraw") {
-      data.type = "withdraw";
-    } else {
-      data.type = params.type;
-    }
-    callApi.onTransaction(data);
-    navigation.navigate("Home");
-    Alert.alert("Transaction Successful");
+    // Prompt the user for confirmation
+    Alert.alert(
+      'Confirm Donation',
+      'Are you sure you want to make this transaction?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Confirm',
+          onPress: async () => {
+            const data = {
+              userId: params.user.userId,
+              amount: amount,
+              type: '',
+              email: params.user.email,
+            };
+            if (params.type === 'Donate') {
+              data.type = 'donation';
+            } else if (params.type === 'Organization') {
+              data.type = 'organization';
+            } else if (params.type === 'Redeem') {
+              data.type = 'redemption';
+            } else if (params.type === 'Top Up') {
+              data.type = 'deposit';
+            } else if (params.type === 'Withdraw') {
+              data.type = 'withdraw';
+            } else {
+              data.type = params.type;
+            }
+            callApi.onTransaction(data);
+            navigation.navigate('Home');
+            Alert.alert('Transaction Successful');
+          },
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
   useEffect(() => {

@@ -1,8 +1,8 @@
 import axios from "axios";
 
 // const BASE_URL = "http://10.0.2.2:8080";
-const BASE_URL = "http://10.0.2.2:5001/donation-app-8de49/us-central1/app";
-// const BASE_URL = "https://app-62ks7ifztq-uc.a.run.app";
+// const BASE_URL = "http://10.0.2.2:5001/donation-app-8de49/us-central1/app";
+const BASE_URL = "https://app-62ks7ifztq-uc.a.run.app";
 
 // api calls to backend
 export const callApi = {
