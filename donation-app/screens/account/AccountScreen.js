@@ -40,13 +40,10 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
   const onTransfer = async () => {
     // Prompt the user for confirmation
     Alert.alert(
-      'Confirm Donation',
+      'Confirm Transaction',
       'Are you sure you want to make this transaction?',
       [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
+        
         {
           text: 'Confirm',
           onPress: async () => {
@@ -73,6 +70,10 @@ const AccountScreen = ({ navigation: { setOptions }, route: { params } }) => {
             navigation.navigate('Home');
             Alert.alert('Transaction Successful');
           },
+        },
+        {
+          text: 'Cancel',
+          style: 'cancel',
         },
       ],
       { cancelable: false }
