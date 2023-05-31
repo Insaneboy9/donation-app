@@ -14,28 +14,28 @@
 
 <h2>Donation</h2>
 
-<img height="600" src="https://github.com/Insaneboy9/donation-app/assets/16435270/c1fe04c9-5db6-4b59-a712-7b89da06176a">
-<img height="600" src="https://github.com/Insaneboy9/donation-app/assets/16435270/94229b6d-f9c3-408d-843d-9717756e4584">
-<img height="600" src="https://github.com/Insaneboy9/donation-app/assets/16435270/f06998d7-ffde-440b-9be6-4cde24aa233b">
+<img height="400" src="https://github.com/Insaneboy9/donation-app/assets/16435270/c1fe04c9-5db6-4b59-a712-7b89da06176a">
+<img height="400" src="https://github.com/Insaneboy9/donation-app/assets/16435270/94229b6d-f9c3-408d-843d-9717756e4584">
+<img height="400" src="https://github.com/Insaneboy9/donation-app/assets/16435270/f06998d7-ffde-440b-9be6-4cde24aa233b">
 
 <br/>
 <h2>Redemption</h2>
 
-<img height="600" src="https://github.com/Insaneboy9/donation-app/assets/16435270/cc115ea6-974e-48b1-8c65-4c5016cb84ca">
-<img height="600" src="https://github.com/Insaneboy9/donation-app/assets/16435270/d6737849-9392-4e97-89f1-9f55c57d9c47">
-<img height="600" src="https://github.com/Insaneboy9/donation-app/assets/16435270/0a8f8f90-2b0c-4831-8dc7-65af20dc0f3d">
+<img height="400" src="https://github.com/Insaneboy9/donation-app/assets/16435270/cc115ea6-974e-48b1-8c65-4c5016cb84ca">
+<img height="400" src="https://github.com/Insaneboy9/donation-app/assets/16435270/d6737849-9392-4e97-89f1-9f55c57d9c47">
+<img height="400" src="https://github.com/Insaneboy9/donation-app/assets/16435270/0a8f8f90-2b0c-4831-8dc7-65af20dc0f3d">
 
 <br/>
 <h2>Challenges</h2>
 
-<img height="600" src="https://github.com/Insaneboy9/donation-app/assets/16435270/25271958-e0fc-48e9-832f-32a1a4889fb4">
-<img height="600" src="https://github.com/Insaneboy9/donation-app/assets/16435270/1c018eab-e3ec-4ee5-9a8c-20f363ca26d3">
+<img height="400" src="https://github.com/Insaneboy9/donation-app/assets/16435270/25271958-e0fc-48e9-832f-32a1a4889fb4">
+<img height="400" src="https://github.com/Insaneboy9/donation-app/assets/16435270/1c018eab-e3ec-4ee5-9a8c-20f363ca26d3">
 
 <br/>
 <h2>Leaderboard & Rewards</h2>
 
-<img height="600" src="https://github.com/Insaneboy9/donation-app/assets/16435270/3dfe4da0-11c1-48ff-afee-2645bac33870">
-<img height="600" src="https://github.com/Insaneboy9/donation-app/assets/16435270/1178cca1-faad-4935-a004-1a06c8ca1e11">
+<img height="400" src="https://github.com/Insaneboy9/donation-app/assets/16435270/3dfe4da0-11c1-48ff-afee-2645bac33870">
+<img height="400" src="https://github.com/Insaneboy9/donation-app/assets/16435270/1178cca1-faad-4935-a004-1a06c8ca1e11">
 
 </div>
 
