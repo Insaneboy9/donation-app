@@ -1,10 +1,9 @@
-import { StyleSheet, Image, Text, View, ActivityIndicator } from "react-native";
-import React from "react";
-import styled from "styled-components/native";
-import { AntDesign } from "@expo/vector-icons";
-import axios from "axios";
-import { useQuery } from "react-query";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import React from "react";
+import { ActivityIndicator, Image, StyleSheet, Text, View } from "react-native";
+import { useQuery } from "react-query";
+import styled from "styled-components/native";
 import { callApi } from "../api";
 
 const AvailableChallenges = styled.View`
@@ -88,11 +87,8 @@ const Challenges = ({ data, loading, setLoading, isBtn, title, userId }) => {
         <Challenge onPress={() => toDetail(c)} key={index}>
           <ChallengeTitle>
             <Text style={{ marginRight: 5 }}>
-              {c.body.length > 40 ? c.body.slice(0, 40) + "..." : c.body}
+              {c.body}
             </Text>
-            <View>
-              <AntDesign name="rightcircle" size={18} color="#b2bec3" />
-            </View>
           </ChallengeTitle>
           <Image style={styles.logo} source={{ uri: c.logoUrl }} />
           {isBtn && (

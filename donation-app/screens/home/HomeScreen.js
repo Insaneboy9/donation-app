@@ -1,25 +1,25 @@
-import {
-  SafeAreaView,
-  Text,
-  View,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-  ScrollView,
-  Image,
-} from "react-native";
-import React, { useEffect } from "react";
-import { Ionicons, MaterialIcons, FontAwesome } from "@expo/vector-icons";
-import colors from "../../colors";
-import { LinearGradient } from "expo-linear-gradient";
-import { useQuery } from "react-query";
-import { signOut } from "firebase/auth";
-import { callApi } from "../../api";
-import Loader from "../../components/Loader";
-import HorizontalList from "../../components/HorizontalList";
-import { auth } from "../../firebase/firebaseConfig";
+import { FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
+import { signOut } from "firebase/auth";
+import React, { useEffect } from "react";
+import {
+  Dimensions,
+  Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useQuery } from "react-query";
+import { callApi } from "../../api";
+import colors from "../../colors";
+import HorizontalList from "../../components/HorizontalList";
+import Loader from "../../components/Loader";
 import { useAuth } from "../../firebase/firebaseAuth";
+import { auth } from "../../firebase/firebaseConfig";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
