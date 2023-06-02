@@ -84,7 +84,7 @@ const LeaderboardScreen = () => {
     return `${hours} : ${minutes} : ${seconds}`;
   };
 
-  const currentTime = moment().add(8, 'hours').format('hh:mm A');
+  const currentTime = moment().add(8, "hours").format("hh:mm A");
 
   // rerender when the points increase
   useEffect(() => {
@@ -96,7 +96,7 @@ const LeaderboardScreen = () => {
     const interval = setInterval(() => {
       setRemainingTime((prevTime) => prevTime - 1);
     }, 1000);
-  
+
     return () => clearInterval(interval); // Clean up the interval on unmount
   }, []);
 
@@ -105,7 +105,6 @@ const LeaderboardScreen = () => {
   ) : (
     <SafeAreaView style={styles.wrapper}>
       <ScrollView style={styles.container}>
-        <Text style={styles.title}>Leaderboard</Text>
         <LinearGradient
           colors={["#ffd32a", "#fffa65"]}
           style={styles.card}
@@ -118,7 +117,9 @@ const LeaderboardScreen = () => {
           />
           <Text style={styles.header}>WIN 1000 POINTS!</Text>
           <Text style={styles.content}>This week's highest point wins!</Text>
-          <Text style={styles.timer}>Contest ends in {formatTime(remainingTime)}</Text>
+          <Text style={styles.timer}>
+            Contest ends in {formatTime(remainingTime)}
+          </Text>
         </LinearGradient>
         <View style={styles.updateWrapper}>
           <Text style={{ color: "#808e9b" }}>As of {currentTime} SGT</Text>
