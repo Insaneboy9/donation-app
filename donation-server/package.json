@@ -4,7 +4,7 @@
   "scripts": {
     "serve": "firebase emulators:start --only functions",
     "shell": "firebase functions:shell",
-    "start": "npm run shell",
+    "start": "node index.js",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log"
   },
@@ -18,7 +18,8 @@
     "firebase": "^9.22.0",
     "firebase-admin": "^11.8.0",
     "firebase-functions": "^4.3.1",
-    "web3": "^1.8.1"
+    "web3": "^1.8.1",
+    "nodemon": "^2.0.20"
   },
   "devDependencies": {
     "firebase-functions-test": "^3.1.0"

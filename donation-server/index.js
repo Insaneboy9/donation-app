@@ -24,6 +24,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+app.listen(8080, () => console.log("Up and Running 8080"))
+
 //Handle GET request for hawkers
 app.get("/hawkers", async (req, res) => {
   const snapshot = await getDocs(collection(db, "hawkers"));
