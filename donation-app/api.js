@@ -51,4 +51,11 @@ export const callApi = {
       console.log(error);
     }
   },
+  joinChallenge: async (data) => {
+    try {
+      await axios.post(`${BASE_URL}/challenges`, data);
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };
