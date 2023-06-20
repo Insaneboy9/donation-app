@@ -86,7 +86,7 @@ const ChallengesScreen = ({ route: { params } }) => {
   const toHistory = (data, type) => {
     navigation.navigate("Stack", {
       screen: "Challenge History",
-      params: { data, type },
+      params: { data, type, userId },
     });
   };
 

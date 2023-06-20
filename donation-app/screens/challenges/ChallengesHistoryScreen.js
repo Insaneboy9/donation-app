@@ -6,6 +6,7 @@ const ChallengesHistoryScreen = ({
   navigation: { setOptions },
   route: { params },
 }) => {
+  console.log(params);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -34,6 +35,7 @@ const ChallengesHistoryScreen = ({
           loading={loading}
           setLoading={setLoading}
           isBtn={false}
+          userId={params.userId}
         />
       </ScrollView>
     </SafeAreaView>
