@@ -8,7 +8,7 @@ RUN npm install
 # Copy the server code to the container
 COPY . .
 
-# Expose the port your server is listening on (replace 3000 with your actual port)
+# Expose the port your server is listening on 
 EXPOSE 8080
 
 # Command to start the server
