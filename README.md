@@ -88,7 +88,7 @@ Pai(D)rop aims to tackle the SDGs of <b>“Zero Hunger”</b> and <b>“No Pover
 ## 📁 Directories
 
 1. `donation-app` - React Native Mobile Application
-2. `donation-server` - Node.js Firebase Functions
+2. `donation-server` - Node.js Server
 3. `smart-contract` - Solidity Smart Contract
 
 <br />
