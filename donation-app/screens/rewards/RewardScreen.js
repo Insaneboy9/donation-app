@@ -62,7 +62,7 @@ const RewardScreen = () => {
                   style={styles.pointLogo}
                   source={require("../../assets/point_logo.png")}
                 />
-                <Text style={styles.points}>{user.points}</Text>
+                <Text style={styles.points}>{Math.floor(user.points)}</Text>
               </View>
             </View>
             <View>
