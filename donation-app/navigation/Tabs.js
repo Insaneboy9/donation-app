@@ -38,6 +38,7 @@ const Tabs = ({ route }) => {
       <Tab.Screen
         name="Challenges"
         component={ChallengesScreen}
+        initialParams={{ user: route.params.user }}
         options={{
           tabBarIcon: ({ color, size }) => {
             return <AntDesign name="staro" size={size} color={color} />;

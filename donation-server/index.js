@@ -122,34 +122,30 @@ app.get("/leaderboard", async (req, res) => {
 //Handle GET request for challenge
 app.get("/challenges/:id", async (req, res) => {
   const userId = req.params.id;
-  console.log(userId);
-  const collectionRef = collection(db, "users");
 
+  const collectionRef = collection(db, "users");
   const q = query(collectionRef, where("__name__", "==", userId));
   const querySnapshot = await getDocs(q);
 
   const currentUser = querySnapshot.docs.map((doc) => doc.data());
-  let challenges;
-  if (currentUser) {
-    challenges = currentUser[0].challenges.map(async (c) => {
-      const logoUrl = await getDownloadURL(ref(storage, c.logo)); // get logo URL
+  const challenges = currentUser[0].challenges.map(async (c) => {
+    const logoUrl = await getDownloadURL(ref(storage, c.logo)); // get logo URL
 
-      return {
-        id: c.id,
-        title: c.title,
-        logoUrl,
-        body: c.body,
-        prize: c.prize,
-        instruction: c.instruction,
-        max_progress: c.max_progress,
-        quantity: c.quantity,
-        expiry_date: c.expiry_date,
-        progress: c.progress,
-        state: c.state,
-        type: c.type,
-      };
-    });
-  }
+    return {
+      id: c.id,
+      title: c.title,
+      logoUrl,
+      body: c.body,
+      prize: c.prize,
+      instruction: c.instruction,
+      max_progress: c.max_progress,
+      quantity: c.quantity,
+      expiry_date: c.expiry_date,
+      progress: c.progress,
+      state: c.state,
+      type: c.type,
+    };
+  });
 
   const results = await Promise.all(challenges); // wait for all the URLs to resolve
 

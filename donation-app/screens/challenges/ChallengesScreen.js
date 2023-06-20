@@ -59,9 +59,9 @@ const BoxDetail = styled.View`
   align-items: center;
 `;
 
-const ChallengesScreen = () => {
+const ChallengesScreen = ({ route: { params } }) => {
   const { user } = useAuth();
-  const userId = user?.userId;
+  const userId = params.user.userId;
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const { isLoading, data, refetch } = useQuery(["challenges", userId], () =>
