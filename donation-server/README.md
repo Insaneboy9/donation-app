@@ -10,11 +10,9 @@ Set up an account at [Alchemy Platform](https://www.alchemy.com/) to get access 
 
 1. Node.js
 
-2. Firebase Tools - `npm install -g firebase-tools`
-
-Run `firebase login`
-
-Run `firebase use donation-app-8de49` or your Firebase project
+### Start Server in Docker
+Run docker image and expose to port 8080 for host port
+This will automatically run the server locally for the mobile app to connect
 
 ### Start Server locally
 
@@ -26,24 +24,11 @@ Install packages
 npm install
 ```
 
-Download `.env` and `firebase-service-account.json` files from Google Drive and place them in the current directory.
-
-.env file example
-
-```txt
-ALCHEMY_API_KEY=VALUE
-OWNER_PRIVATE_KEY=VALUE
-CONTRACT_ADDRESS=VALUE
-```
 
 Start server
 
 ```bash
-npm run serve
+npm start
 ```
 
-### Deploy Server
 
-Delete `package-lock.json` file in the `donation-server` directory.
-
-Run `firebase deploy --only functions` on the root directory of the repo folder.
