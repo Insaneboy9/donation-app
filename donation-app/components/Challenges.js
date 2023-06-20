@@ -1,5 +1,4 @@
 import { useNavigation } from "@react-navigation/native";
-import axios from "axios";
 import React from "react";
 import { ActivityIndicator, Image, StyleSheet, Text, View } from "react-native";
 import { useQuery } from "react-query";
@@ -51,21 +50,13 @@ const Challenges = ({ data, loading, setLoading, isBtn, title, userId }) => {
 
   const onParticipate = async (challengeId) => {
     setLoading(true);
-    try {
-      const data = {
-        challengeId: challengeId,
-        userId: userId,
-      };
-      await axios.post(
-        `http://10.0.2.2:5001/donation-app-8de49/us-central1/app/challenges`,
-        data
-      );
-      refetch();
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
+    const data = {
+      challengeId: challengeId,
+      userId: userId,
+    };
+    callApi.joinChallenge(data);
+    refetch();
+    setLoading(false);
   };
 
   const Divisor = () => (
@@ -86,9 +77,7 @@ const Challenges = ({ data, loading, setLoading, isBtn, title, userId }) => {
       {data?.map((c, index) => (
         <Challenge onPress={() => toDetail(c)} key={index}>
           <ChallengeTitle>
-            <Text style={{ marginRight: 5 }}>
-              {c.body}
-            </Text>
+            <Text style={{ marginRight: 5 }}>{c.body}</Text>
           </ChallengeTitle>
           <Image style={styles.logo} source={{ uri: c.logoUrl }} />
           {isBtn && (
