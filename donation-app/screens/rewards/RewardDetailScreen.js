@@ -69,7 +69,7 @@ export default function RewardDetailScreen({
       <View style={styles.center}>
         <View style={styles.myPoint}>
           <Text style={styles.pointText}>My points</Text>
-          <Text style={styles.pointText}>{userPoints}</Text>
+          <Text style={styles.pointText}>{Math.floor(userPoints)}</Text>
         </View>
         <ScrollView style={styles.conditions}>
           <ConditionView>
