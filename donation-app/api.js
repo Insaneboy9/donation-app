@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const BASE_URL = "http://10.0.2.2:8080"; //local host docker version
+// const BASE_URL = "http://10.0.2.2:8080"; //local host docker version
 // const BASE_URL = "http://10.0.2.2:5001/donation-app-8de49/us-central1/app"; //local host version
-// const BASE_URL = "https://app-62ks7ifztq-uc.a.run.app"; //faas version
+const BASE_URL = "https://app-62ks7ifztq-uc.a.run.app"; //faas version
 // const BASE_URL = "http://34.172.209.193:8080"; //GKE version
 
 // api calls to backend
